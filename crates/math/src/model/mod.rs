@@ -11,7 +11,7 @@
 use {
     crate::{
         ChampionId, ItemId, RuneId,
-        libgen::{L_MSTR, L_TWRD, items, runes},
+        libgen::{L_MSTR, L_TWRD, items, rules, runes},
     },
     alloc::boxed::Box,
     bincode::{BorrowDecode, Decode, Encode},
@@ -761,11 +761,15 @@ impl RiotFormulas {
     /// yet supported
     pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.0 + runes::axiom_arcanist::ULTIMATE_BONUS_DAMAGE;
 
-    /// By 06/07/2025 Earth dragons give +5% resists
-    pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
+    /// Mountainous Vigor, resists granted by each Mountain Drake
+    pub const EARTH_DRAGON_MULTIPLIER: f32 = rules::drakes::MOUNTAINOUS_VIGOR;
 
-    /// By 06/07/2025 Fire dragons give +3% bonus attack stats
-    pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+    /// Infernal Might, attack damage and ability power granted by each Infernal Drake
+    pub const FIRE_DRAGON_MULTIPLIER: f32 = rules::drakes::INFERNAL_MIGHT;
+
+    /// Attack damage granted by each point of adaptive force, which grants one
+    /// ability power. Every source of adaptive force agrees on it
+    pub const ADAPTIVE_FORCE_AD_RATIO: f32 = 0.6;
 
     /// Item [`ItemId::PlatedSteelcaps`] damage reduction for basic attacks
     pub const STEEL_CAPS_PROTECTION: f32 = Ctx::STEEL_CAPS_PROTECTION;
@@ -905,6 +909,41 @@ impl RiotFormulas {
         (1.0 - result) * 100.0
     }
 
+    /// Value of an ability at `rank`, from its values per rank. Rank `0` means the
+    /// ability is not learned and returns `0.0`, ranks above the last are clamped
+    pub const fn by_rank(values: &[f32], rank: u8) -> f32 {
+        match rank as usize {
+            0 => 0.0,
+            rank if rank > values.len() => values[values.len() - 1],
+            rank => values[rank - 1],
+        }
+    }
+
+    /// Value that grows linearly from `min` at level 1 to `max` at level 18,
+    /// written by the wiki as `min + (max - min) / 17 * (x - 1)`
+    pub const fn by_level(min: f32, max: f32, level: NonZeroU8) -> f32 {
+        let level = if level.get() > 18 { 18 } else { level.get() };
+
+        min + (max - min) / 17.0 * (level - 1) as f32
+    }
+
+    /// Adaptive force of the runes that collect up to `max_stacks` stacks of
+    /// `per_stack`, granting `completion` more once the collection is complete,
+    /// as [`RuneId::EyeballCollection`]
+    pub const fn stacking_adaptive_force(
+        stacks: u32,
+        per_stack: f32,
+        max_stacks: f32,
+        completion: f32,
+    ) -> f32 {
+        let max_stacks = max_stacks as u32;
+
+        match stacks >= max_stacks {
+            true => per_stack * max_stacks as f32 + completion,
+            false => per_stack * stacks as f32,
+        }
+    }
+
     pub const fn combine_percentage(a: f32, b: f32) -> f32 {
         let a = a.clamp(0.0, 100.0);
         let b = b.clamp(0.0, 100.0);
@@ -925,22 +964,21 @@ impl RiotFormulas {
         ResistValue::new(percent_pen, flat_pen, resist, accept_negatives)
     }
 
-    /// Returns an [`i32`] that represents the damage against some turret
+    /// Returns an [`i32`] that represents the damage of a basic attack against the
+    /// Outer turret with `bulwark_stacks` stacks of Bulwark, gained as its health
+    /// drops. Only the attacker is assumed to be near the turret
     pub const fn tower_damage(
-        plates: u32,
+        bulwark_stacks: u32,
         base_attack_damage: f32,
         bonus_attack_damage: f32,
         ability_power: f32,
         pen_percent: f32,
         pen_flat: f32,
     ) -> i32 {
-        let base = base_attack_damage + bonus_attack_damage + ability_power * 0.6;
-        let bonus_resist = match plates == 0 {
-            true => 0.0,
-            false => -25.0 + 50.0 * (plates as f32 - 1.0),
-        };
+        use rules::turret::{AP_RATIO, BULWARK_RESISTS_PER_STACK, RESISTS};
 
-        let raw_resist = 40.0 + bonus_resist;
+        let base = base_attack_damage + bonus_attack_damage + ability_power * AP_RATIO;
+        let raw_resist = RESISTS + BULWARK_RESISTS_PER_STACK * bulwark_stacks as f32;
         let resist = raw_resist * (1.0 - pen_percent / 100.0) - pen_flat;
         let mult = 100.0 / (100.0 + resist);
 

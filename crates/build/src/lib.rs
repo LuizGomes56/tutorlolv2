@@ -198,6 +198,13 @@ impl BuildContext {
         })?;
 
         let monsters_code = scripts::monsters::monsters_code(&monsters)?;
+
+        let rules_path = self.root.join(wiki::rules::FULL_PATH);
+        let rules = wiki::rules::Rules::from_file(&rules_path).map_err(|e| {
+            format!("Reading {rules_path:?}: {e}. Run `cargo run -- wiki rules` from wiki first.")
+        })?;
+
+        let rules_code = scripts::rules::rules_code(&rules)?;
         let (champions, (items, runes)) = rayon::join(
             || ChampionParser::from_root(&self.root),
             || {
@@ -258,6 +265,12 @@ impl BuildContext {
         wiki::write(&monsters_path, monsters_code)?;
         command.arg(monsters_path);
         modules.push_str("include!(concat!(env!(\"OUT_DIR\"), \"/monsters.rs\"));\n");
+
+        let rules_path = self.out.join("rules.rs");
+
+        wiki::write(&rules_path, rules_code)?;
+        command.arg(rules_path);
+        modules.push_str("include!(concat!(env!(\"OUT_DIR\"), \"/rules.rs\"));\n");
 
         self.write_module(&mut command, &champions, &mut modules)?;
         self.write_module(&mut command, &items, &mut modules)?;

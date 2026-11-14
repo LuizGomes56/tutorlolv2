@@ -1618,9 +1618,8 @@ impl DamageTable {
     }
 }
 
-/// Returns an array with the damage against turrets of different plates.
-/// The array has 6 ([`L_TWRD`]) elements because a tower can have zero,
-/// or up to 5 plates
+/// Returns an array with the damage against the Outer turret for each number of
+/// Bulwark stacks it can have, from zero up to its maximum ([`L_TWRD`] elements)
 pub const fn get_tower_damages(
     adaptive_type: AdaptiveType,
     base_attack_damage: f32,

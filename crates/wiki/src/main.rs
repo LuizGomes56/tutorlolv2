@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use wiki::{
-    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, monsters, runes,
+    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, monsters, rules, runes,
     scraper, spells, stats, version, wikitext,
 };
 
@@ -108,6 +108,13 @@ pub enum Wiki {
     MonstersDownload,
     #[clap(alias = "mop")]
     MonstersParse,
+    /// Downloads and parses the drake buffs, stat shards and ARAM: Mayhem stats
+    #[clap(alias = "ru")]
+    Rules,
+    #[clap(alias = "rud")]
+    RulesDownload,
+    #[clap(alias = "rup")]
+    RulesParse,
     #[clap(alias = "r")]
     Runes,
     #[clap(alias = "rl")]
@@ -204,6 +211,9 @@ async fn main() -> MayFail {
             Wiki::Monsters => monsters::run().await,
             Wiki::MonstersDownload => monsters::download().await,
             Wiki::MonstersParse => monsters::parse(),
+            Wiki::Rules => rules::run().await,
+            Wiki::RulesDownload => rules::download().await,
+            Wiki::RulesParse => rules::parse(),
             Wiki::MapChangesDownload => map_changes::download().await,
             Wiki::MapChangesParse => map_changes::parse(),
             Wiki::MapChangesReport => map_changes::report(),

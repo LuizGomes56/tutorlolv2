@@ -2,7 +2,12 @@ use super::*;
 
 impl Generator for Veigar {
     fn generate(&mut self) -> MayFail {
-        self.take("Magic Damage", Q(Void))?
+        let [ap_per_stack] = self
+            .description(Key::P, "Phenomenal Evil")?
+            .capture(regex!(r"Veigar gains\s+([\d.]+) ability power"))?;
+
+        self.constant("PHENOMENAL_EVIL_AP_PER_STACK", ap_per_stack)?
+            .take("Magic Damage", Q(Void))?
             .take("Magic Damage", W(Void))?
             .take("Minimum Magic Damage", R(Min))?
             .take("Maximum Magic Damage", R(Max))?

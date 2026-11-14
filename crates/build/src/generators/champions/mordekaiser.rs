@@ -2,6 +2,13 @@ use super::*;
 
 impl Generator for Mordekaiser {
     fn generate(&mut self) -> MayFail {
+        let deaths_grasp_magic_penetration = self
+            .value("Magic Penetration", Key::E)?
+            .default_values()
+            .ok_or("[Mordekaiser] Magic Penetration has no values")?;
+
+        self.constant("DEATHS_GRASP_MAGIC_PENETRATION", deaths_grasp_magic_penetration)?;
+
         let isolated = self.value("Isolated Damage Increase", Key::Q)?;
 
         self.take_nth("Darkness Rise", 1, P(Void))?

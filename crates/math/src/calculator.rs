@@ -10,8 +10,11 @@
 
 use {
     crate::{
-        ChampionId, Ctx, GameMap, ItemId, L_MSTR, Monster, RuneId, helpers::*, libgen::items,
-        model::*, runes,
+        ChampionId, Ctx, GameMap, ItemId, L_MSTR, Monster, RuneId,
+        helpers::*,
+        libgen::{champions, items, rules},
+        model::*,
+        runes,
     },
     alloc::boxed::Box,
     core::num::NonZeroU8,
@@ -126,7 +129,9 @@ impl InferStats<'_> {
 
         match adaptive_type {
             AdaptiveType::Magic => stats.ability_power += adaptive_force,
-            AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
+            AdaptiveType::Physical => {
+                stats.attack_damage += RiotFormulas::ADAPTIVE_FORCE_AD_RATIO * adaptive_force
+            }
         }
 
         stats.assign_item_exceptions(item_exceptions, attack_type, mode);
@@ -302,14 +307,17 @@ impl InferStats<'_> {
             core::hint::cold_path();
 
             // Every 1% critical strike chance above 100% grants adaptive force
-            // #![manual_impl]: the wiki archive has no ARAM: Mayhem rules, only its
-            // items, so these ratios can't be extracted
             let excess_crit = stats.crit_chance - 100.0;
 
             if excess_crit > 0.0 {
+                let adaptive_force = rules::aram_mayhem::EXCESS_CRIT_ADAPTIVE_FORCE * excess_crit;
+
                 match adaptive_type {
-                    AdaptiveType::Physical => stats.attack_damage += 0.45 * excess_crit,
-                    AdaptiveType::Magic => stats.ability_power += 0.75 * excess_crit,
+                    AdaptiveType::Physical => {
+                        stats.attack_damage +=
+                            RiotFormulas::ADAPTIVE_FORCE_AD_RATIO * adaptive_force
+                    }
+                    AdaptiveType::Magic => stats.ability_power += adaptive_force,
                 }
             }
         }
@@ -404,13 +412,19 @@ impl PlayerStats {
         while i < runes.len() {
             match runes[i] {
                 RuneId::Waterwalking => {
+                    use runes::waterwalking::{MAX_ADAPTIVE_FORCE, MIN_ADAPTIVE_FORCE};
                     core::hint::cold_path();
-                    *adaptive_force += 12.0 + level.get() as f32;
+
+                    *adaptive_force +=
+                        RiotFormulas::by_level(MIN_ADAPTIVE_FORCE, MAX_ADAPTIVE_FORCE, level);
                 }
                 RuneId::AbsoluteFocus => {
-                    *adaptive_force += 1.8 + 16.2 / 17.0 * (level.get() - 1) as f32
+                    use runes::absolute_focus::{MAX_ADAPTIVE_FORCE, MIN_ADAPTIVE_FORCE};
+
+                    *adaptive_force +=
+                        RiotFormulas::by_level(MIN_ADAPTIVE_FORCE, MAX_ADAPTIVE_FORCE, level)
                 }
-                RuneId::Health => self.max_health += 65.0,
+                RuneId::Health => self.max_health += rules::shards::HEALTH,
                 _ => {}
             }
 
@@ -537,22 +551,64 @@ impl PlayerStats {
                             }];
                     }
                     RuneId::Conqueror => {
-                        *adaptive_force +=
-                            (stacks as f32) * (1.8 + 2.2 / 17.0 * (level.get() - 1) as f32)
+                        use runes::conqueror::{
+                            MAX_ADAPTIVE_FORCE_PER_STACK, MIN_ADAPTIVE_FORCE_PER_STACK,
+                        };
+
+                        *adaptive_force += stacks as f32
+                            * RiotFormulas::by_level(
+                                MIN_ADAPTIVE_FORCE_PER_STACK,
+                                MAX_ADAPTIVE_FORCE_PER_STACK,
+                                level,
+                            )
                     }
-                    RuneId::EyeballCollection | RuneId::GhostPoro | RuneId::ZombieWard => {
-                        *adaptive_force += match stacks {
-                            ..10 => (stacks << 1) as f32,
-                            10.. => 30.0,
-                        }
+                    RuneId::EyeballCollection => {
+                        use runes::eyeball_collection::*;
+
+                        *adaptive_force += RiotFormulas::stacking_adaptive_force(
+                            stacks,
+                            ADAPTIVE_FORCE_PER_STACK,
+                            MAX_STACKS,
+                            COMPLETION_ADAPTIVE_FORCE,
+                        )
+                    }
+                    RuneId::GhostPoro => {
+                        use runes::ghost_poro::*;
+
+                        *adaptive_force += RiotFormulas::stacking_adaptive_force(
+                            stacks,
+                            ADAPTIVE_FORCE_PER_STACK,
+                            MAX_STACKS,
+                            COMPLETION_ADAPTIVE_FORCE,
+                        )
+                    }
+                    RuneId::ZombieWard => {
+                        use runes::zombie_ward::*;
+
+                        *adaptive_force += RiotFormulas::stacking_adaptive_force(
+                            stacks,
+                            ADAPTIVE_FORCE_PER_STACK,
+                            MAX_STACKS,
+                            COMPLETION_ADAPTIVE_FORCE,
+                        )
                     }
                     RuneId::GatheringStorm => {
-                        *adaptive_force += ((stacks * (stacks + 1)) << 2) as f32
+                        // `stacks` counts the 10 minute intervals, so the wiki's
+                        // `m` is one above it
+                        let m = (stacks + 1) as f32;
+
+                        *adaptive_force +=
+                            runes::gathering_storm::ADAPTIVE_FORCE_COEFFICIENT * m * (m - 1.0)
                     }
-                    RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
-                    RuneId::AttackSpeed => self.attack_speed += 10.0 * (stacks as f32),
+                    RuneId::AdaptiveForce => {
+                        *adaptive_force += rules::shards::ADAPTIVE_FORCE * stacks as f32
+                    }
+                    RuneId::AttackSpeed => {
+                        self.attack_speed += rules::shards::ATTACK_SPEED * stacks as f32
+                    }
                     RuneId::HealthScaling => {
-                        self.max_health += 10.0 * (level.get() as u32 * stacks) as f32
+                        self.max_health += rules::shards::HEALTH_SCALING_PER_LEVEL
+                            * (level.get() as u32 * stacks) as f32
                     }
                     _ => {}
                 }
@@ -569,49 +625,57 @@ impl PlayerStats {
         stacks: u32,
     ) {
         match champion_id {
-            ChampionId::Yasuo => self.attack_damage += 0.5 * (self.crit_chance - 100.0).max(0.0),
-            ChampionId::Veigar => self.ability_power += stacks as f32,
-            ChampionId::Swain => self.max_health += (12 * stacks) as f32,
+            ChampionId::Yasuo => {
+                self.attack_damage +=
+                    champions::yasuo::INTENT_EXCESS_CRIT_AD * (self.crit_chance - 100.0).max(0.0)
+            }
+            ChampionId::Veigar => {
+                self.ability_power +=
+                    champions::veigar::PHENOMENAL_EVIL_AP_PER_STACK * stacks as f32
+            }
+            ChampionId::Swain => {
+                self.max_health += champions::swain::SOUL_FRAGMENT_HEALTH * stacks as f32
+            }
             ChampionId::Chogath => {
-                let mul = {
-                    let r = ability_levels.r;
-                    let min = 0;
-                    let max = 3;
-
-                    (if r < min {
-                        min
-                    } else if r > max {
-                        max
-                    } else {
-                        r
-                    }) as u32
-                };
-
-                self.max_health += (stacks * 80 + 40 * mul) as f32
+                // Feast grants bonus health per stack based on the current R rank
+                self.max_health += stacks as f32
+                    * RiotFormulas::by_rank(
+                        &champions::chogath::FEAST_HEALTH_PER_STACK,
+                        ability_levels.r,
+                    )
             }
             ChampionId::Sion => self.max_health += stacks as f32,
             ChampionId::Darius => {
                 self.armor_penetration_percent = RiotFormulas::combine_percentage(
                     self.armor_penetration_percent,
-                    (15 + 5 * ability_levels.e) as f32,
+                    RiotFormulas::by_rank(
+                        &champions::darius::APPREHEND_ARMOR_PENETRATION,
+                        ability_levels.e,
+                    ),
                 )
             }
             ChampionId::Pantheon => {
                 self.armor_penetration_percent = RiotFormulas::combine_percentage(
                     self.armor_penetration_percent,
-                    (10 * ability_levels.r) as f32,
+                    RiotFormulas::by_rank(
+                        &champions::pantheon::GRAND_STARFALL_ARMOR_PENETRATION,
+                        ability_levels.r,
+                    ),
                 )
             }
             ChampionId::Nilah => {
                 self.armor_penetration_percent = RiotFormulas::combine_percentage(
                     self.armor_penetration_percent,
-                    self.crit_chance / 3.0,
+                    champions::nilah::FORMLESS_BLADE_ARMOR_PENETRATION_PER_CRIT * self.crit_chance,
                 )
             }
             ChampionId::Mordekaiser => {
                 self.magic_penetration_percent = RiotFormulas::combine_percentage(
                     self.magic_penetration_percent,
-                    2.5 + 2.5 * ability_levels.e as f32,
+                    RiotFormulas::by_rank(
+                        &champions::mordekaiser::DEATHS_GRASP_MAGIC_PENETRATION,
+                        ability_levels.e,
+                    ),
                 )
             }
             _ => {}

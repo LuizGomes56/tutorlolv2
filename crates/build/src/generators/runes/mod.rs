@@ -1,14 +1,19 @@
 use crate::generators::imports::runes::*;
 crate::decl_runes!(
+    AbsoluteFocus,
     Aftershock,
     ArcaneComet,
     AxiomArcanist,
     CheapShot,
+    Conqueror,
     CoupDeGrace,
     CutDown,
     DarkHarvest,
     DeathfireTouch,
     Electrocute,
+    EyeballCollection,
+    GatheringStorm,
+    GhostPoro,
     GraspOfTheUndying,
     HailOfBlades,
     LastStand,
@@ -19,4 +24,6 @@ crate::decl_runes!(
     ShieldBash,
     SuddenImpact,
     SummonAery,
+    Waterwalking,
+    ZombieWard,
 );

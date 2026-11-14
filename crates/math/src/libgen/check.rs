@@ -50,6 +50,45 @@ const _: () = {
     );
 };
 
+/// Stats that [`types::GameMap`] grants can't read the wiki from its crate either
+const _: () = {
+    use {crate::libgen::rules::aram_mayhem::*, types::GameMap};
+
+    const fn same(a: f32, b: f32) -> bool {
+        (a - b).abs() < 1e-6
+    }
+
+    const fn same_range(a: [f32; 2], b: [f32; 2]) -> bool {
+        same(a[0], b[0]) && same(a[1], b[1])
+    }
+
+    assert!(
+        same_range(GameMap::ARAM_MAYHEM_MELEE_BASE_HEALTH, MELEE_BASE_HEALTH),
+        "GameMap::ARAM_MAYHEM_MELEE_BASE_HEALTH differs from ARAM: Mayhem in the wiki"
+    );
+
+    assert!(
+        same_range(GameMap::ARAM_MAYHEM_RANGED_BASE_HEALTH, RANGED_BASE_HEALTH),
+        "GameMap::ARAM_MAYHEM_RANGED_BASE_HEALTH differs from ARAM: Mayhem in the wiki"
+    );
+
+    assert!(
+        same(
+            GameMap::ARAM_MAYHEM_MELEE_BONUS_RESISTS,
+            MELEE_BONUS_RESISTS
+        ),
+        "GameMap::ARAM_MAYHEM_MELEE_BONUS_RESISTS differs from ARAM: Mayhem in the wiki"
+    );
+
+    assert!(
+        same_range(
+            GameMap::ARAM_MAYHEM_RANGED_BONUS_RESISTS,
+            RANGED_BONUS_RESISTS
+        ),
+        "GameMap::ARAM_MAYHEM_RANGED_BONUS_RESISTS differs from ARAM: Mayhem in the wiki"
+    );
+};
+
 #[cfg(feature = "engine")]
 const _: () = {
     let mut i = 0;

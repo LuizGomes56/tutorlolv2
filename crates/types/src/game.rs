@@ -172,22 +172,47 @@ impl GameMap {
         min + (max - min) * (level - 1) as f32 / 17.0
     }
 
+    // The ARAM: Mayhem values are checked against the values extracted from the
+    // wiki in `math::libgen::check`, so the build fails if the wiki changes them
+
+    /// Base health of melee champions in ARAM: Mayhem, from level 1 to level 18
+    pub const ARAM_MAYHEM_MELEE_BASE_HEALTH: [f32; 2] = [20.0, 600.0];
+
+    /// Base health of ranged champions in ARAM: Mayhem, from level 1 to level 18
+    pub const ARAM_MAYHEM_RANGED_BASE_HEALTH: [f32; 2] = [20.0, 400.0];
+
+    /// Bonus armor and magic resistance of melee champions in ARAM: Mayhem
+    pub const ARAM_MAYHEM_MELEE_BONUS_RESISTS: f32 = 15.0;
+
+    /// Bonus armor and magic resistance of ranged champions in ARAM: Mayhem,
+    /// from level 1 to level 18
+    pub const ARAM_MAYHEM_RANGED_BONUS_RESISTS: [f32; 2] = [2.0, 25.0];
+
+    /// Bonus magic resistance of melee champions in ARAM. The wiki doesn't list it
+    pub const ARAM_MELEE_BONUS_MAGIC_RESIST: f32 = 15.0;
+
     /// Base health that this map grants to every champion
     pub const fn base_health(self, attack_type: AttackType, level: u8) -> f32 {
-        match (self, attack_type) {
-            (Self::AramMayhem, AttackType::Melee) => Self::by_level(20.0, 600.0, level),
-            (Self::AramMayhem, AttackType::Ranged) => Self::by_level(20.0, 400.0, level),
-            _ => 0.0,
-        }
+        let [min, max] = match (self, attack_type) {
+            (Self::AramMayhem, AttackType::Melee) => Self::ARAM_MAYHEM_MELEE_BASE_HEALTH,
+            (Self::AramMayhem, AttackType::Ranged) => Self::ARAM_MAYHEM_RANGED_BASE_HEALTH,
+            _ => return 0.0,
+        };
+
+        Self::by_level(min, max, level)
     }
 
     /// Bonus armor and magic resistance that this map grants to every champion
     pub const fn bonus_resists(self, attack_type: AttackType, level: u8) -> (f32, f32) {
         match (self, attack_type) {
-            (Self::Aram, AttackType::Melee) => (0.0, 15.0),
-            (Self::AramMayhem, AttackType::Melee) => (15.0, 15.0),
+            (Self::Aram, AttackType::Melee) => (0.0, Self::ARAM_MELEE_BONUS_MAGIC_RESIST),
+            (Self::AramMayhem, AttackType::Melee) => (
+                Self::ARAM_MAYHEM_MELEE_BONUS_RESISTS,
+                Self::ARAM_MAYHEM_MELEE_BONUS_RESISTS,
+            ),
             (Self::AramMayhem, AttackType::Ranged) => {
-                let value = Self::by_level(2.0, 25.0, level);
+                let [min, max] = Self::ARAM_MAYHEM_RANGED_BONUS_RESISTS;
+                let value = Self::by_level(min, max, level);
                 (value, value)
             }
             _ => (0.0, 0.0),

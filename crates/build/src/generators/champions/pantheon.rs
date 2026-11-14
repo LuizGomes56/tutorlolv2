@@ -2,6 +2,13 @@ use super::*;
 
 impl Generator for Pantheon {
     fn generate(&mut self) -> MayFail {
+        let grand_starfall_armor_penetration = self
+            .value("Armor Penetration", Key::R)?
+            .default_values()
+            .ok_or("[Pantheon] Armor Penetration has no values")?;
+
+        self.constant("GRAND_STARFALL_ARMOR_PENETRATION", grand_starfall_armor_penetration)?;
+
         // A value written in a shape map changes can't read, by the position of its
         // numbers, as {{fd|3}}% of "3% per 100 bonus AD"
         let (mode, numbers) = self.map_numbers(Key::W, "AP ratio")?;

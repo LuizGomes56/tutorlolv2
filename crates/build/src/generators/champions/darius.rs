@@ -2,6 +2,13 @@ use super::*;
 
 impl Generator for Darius {
     fn generate(&mut self) -> MayFail {
+        let apprehend_armor_penetration = self
+            .value("Armor Penetration", Key::E)?
+            .default_values()
+            .ok_or("[Darius] Armor Penetration has no values")?;
+
+        self.constant("APPREHEND_ARMOR_PENETRATION", apprehend_armor_penetration)?;
+
         // Total per stack, then per tick, the total at 5 stacks and its tick
         self.take_nth("Hemorrhage", 0, P(Min))?
             .comment(P(Min), "Hemorrhage total damage per stack")
