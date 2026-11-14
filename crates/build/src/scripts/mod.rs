@@ -4,6 +4,7 @@ pub mod finish;
 pub mod items;
 pub mod monsters;
 pub mod parentheses;
+pub mod rules;
 pub mod runes;
 pub mod simplify;
 pub mod spells;

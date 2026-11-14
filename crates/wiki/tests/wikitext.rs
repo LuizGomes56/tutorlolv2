@@ -2209,6 +2209,19 @@ fn flat_critical_scaling_shot_counts_keep_the_base_and_continuous_scaling() {
 }
 
 #[test]
+fn descriptions_show_the_text_of_stat_icons() {
+    // `{{sti|Stat|Text}}` displays `Text` next to the icon of `Stat`
+    let model = page(
+        "{{Ability data|Test|skill=P|description={{sbc|Phenomenal Evil:}} Veigar gains {{sti|AP|{{as|1 ability power}}}} and {{sti|ability power}}.}}",
+    );
+    let text = &model.descriptions["Phenomenal Evil"];
+    assert!(
+        text.contains("Veigar gains 1 ability power and ability power."),
+        "{text}"
+    );
+}
+
+#[test]
 fn descriptions_keep_heading_text_and_continuations() {
     let model = page(
         "{{Ability data|Test|skill=P|description={{sbc|Innate:}} Swain gains {{as|12 bonus health}}.|description2=Additional '''text'''.}}",

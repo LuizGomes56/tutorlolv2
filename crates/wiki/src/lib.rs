@@ -16,6 +16,7 @@ pub mod monsters;
 pub mod parser;
 pub mod render;
 pub mod riot;
+pub mod rules;
 pub mod runes;
 pub mod scraper;
 pub mod spells;
@@ -211,6 +212,7 @@ pub async fn run() -> MayFail {
     runes::run().await?;
     spells::run().await?;
     monsters::run().await?;
+    rules::run().await?;
     // Named ability targets resolve against the structured model.
     wikitext::build::parse_model()?;
     // Resolves its keys against the champions, items and runes parsed above

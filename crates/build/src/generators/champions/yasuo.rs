@@ -2,6 +2,12 @@ use super::*;
 
 impl Generator for Yasuo {
     fn generate(&mut self) -> MayFail {
+        let [excess_crit_ad] = self
+            .description(Key::P, "Innate - Intent")?
+            .capture(regex!(r"converted into\s+([\d.]+) bonus attack damage"))?;
+
+        self.constant("INTENT_EXCESS_CRIT_AD", excess_crit_ad)?;
+
         self.take("Physical Damage", Q(Min))?
             .take("Critical Strike Damage", Q(Max))?
             .take("Bonus Damage per Stack", E(_1Min))?

@@ -128,6 +128,12 @@ impl Nodes {
                     .or(template.positional(0))
                     .map(Nodes::plain)
                     .unwrap_or_default(),
+                // `{{sti|Stat|Text}}` displays the icon of `Stat` next to `Text`
+                Node::Template(template) if template.name == "sti" => template
+                    .positional(1)
+                    .or(template.positional(0))
+                    .map(Nodes::plain)
+                    .unwrap_or_default(),
                 Node::Template(template) => {
                     template.positional(0).map(Nodes::plain).unwrap_or_default()
                 }

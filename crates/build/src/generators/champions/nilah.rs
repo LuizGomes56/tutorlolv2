@@ -2,6 +2,18 @@ use super::*;
 
 impl Generator for Nilah {
     fn generate(&mut self) -> MayFail {
+        // Armor penetration grows linearly with critical strike chance, up to
+        // its maximum at 100% critical strike chance
+        let [min, max] = self.description(Key::Q, "Passive")?.capture(regex!(
+            r"Nilah gains\s+([\d.]+) to ([\d.]+) for \d+ armor penetration"
+        ))?;
+
+        if min != 0.0 {
+            return Err("[Nilah] Passive armor penetration was expected to start at 0".into());
+        }
+
+        self.constant("FORMLESS_BLADE_ARMOR_PENETRATION_PER_CRIT", max / 100.0)?;
+
         self.take("Minimum Physical Damage", Q(Min))?
             .take("Maximum Physical Damage", Q(Max))?
             .take("Physical Damage", E(Void))?
