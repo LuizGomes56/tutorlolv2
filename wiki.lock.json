@@ -6,8 +6,8 @@
         {
           "name": "Deathbringer Stance",
           "effects": [
-            "0: Innate (61c5e2e8)",
-            "1: Innate (9e0d5169)",
+            "0: Innate (7ad96b17)",
+            "1: Innate (d1747a1b)",
             "2: Innate (1ca20e0e)"
           ]
         }
@@ -62,8 +62,8 @@
         {
           "name": "Essence Theft",
           "effects": [
-            "0: Innate (ede58fb9)",
-            "1: Innate (03fe7d00)"
+            "0: Innate (a22a7ce5)",
+            "1: Innate (3e3cca06)"
           ]
         }
       ],
@@ -112,7 +112,7 @@
           "name": "Assassin's Mark",
           "effects": [
             "0: Innate (772fc699)",
-            "1: Swinging Kama (4d545c51)"
+            "1: Swinging Kama (5688e71e)"
           ]
         }
       ],
@@ -151,7 +151,7 @@
             "0: Magic Damage (7eeaadb5)",
             "1: Minimum Magic Damage (4e1b548a)",
             "2: Maximum Magic Damage (0330f773)",
-            "3: Recast (de23be93)"
+            "3: Recast (f42d3cd5)"
           ]
         }
       ]
@@ -163,7 +163,7 @@
           "effects": [
             "0: Innate (83116a33)",
             "1: Innate (8a989113)",
-            "2: Innate (e23b1dfc)",
+            "2: Innate (ce53a7f7)",
             "3: Innate (cf8688d5)",
             "4: Innate (a365a600)"
           ]
@@ -202,13 +202,13 @@
           "name": "Comeuppance",
           "effects": [
             "0: Maximum Bullets Stored (5b6082e7)",
-            "1: Bullet Storing Interval Time (c9b12a58)",
+            "1: Bullet Storing Interval Time (65cdf82e)",
             "2: Minimum Physical Damage per Bullet (cf8fd29d)",
             "3: Maximum Physical Damage per Bullet (b83c20d9)",
             "4: Minimum Charged Physical Damage (edb2f1df)",
             "5: Damage to target on 67% missing hp (a4b6e7a5)",
             "6: Recast (5af71a2a)",
-            "7: Recast (3ad2ee67)"
+            "7: Recast (7053e903)"
           ]
         }
       ]
@@ -245,7 +245,7 @@
           "effects": [
             "0: Magic Damage Per Tick (4ed89681)",
             "1: Total Magic Damage (578a7184)",
-            "2: Active (aec511b3)"
+            "2: Active (74fbe020)"
           ]
         }
       ],
@@ -263,7 +263,7 @@
         {
           "name": "Drakehound's Step",
           "effects": [
-            "0: Medarda Maxim (49093e06)",
+            "0: Medarda Maxim (65c94d19)",
             "1: Medarda Maxim (a1f5724b)"
           ]
         }
@@ -274,7 +274,7 @@
           "effects": [
             "0: Physical Damage (107d744b)",
             "1: Increased Physical Damage (541d2d9c)",
-            "2: Active (e93a0bf7)"
+            "2: Active (429de584)"
           ]
         },
         {
@@ -282,7 +282,7 @@
           "effects": [
             "0: Physical Damage (04c6d7f8)",
             "1: Increased Physical Damage (6ff83eec)",
-            "2: Active (e93a0bf7)"
+            "2: Active (429de584)"
           ]
         }
       ],
@@ -292,7 +292,7 @@
           "effects": [
             "0: Physical Damage (ec90d012)",
             "1: Increased Physical Damage (b019ae56)",
-            "2: Active (8ec62611)"
+            "2: Active (38fa8130)"
           ]
         }
       ],
@@ -375,7 +375,7 @@
             "1: Magic Damage (a6f49c8f)",
             "2: Total Magic Damage (481e4e6d)",
             "3: Stun Duration (f268fb07)",
-            "4: Active (01caf31d)"
+            "4: Active (ef561620)"
           ]
         }
       ],
@@ -443,7 +443,7 @@
           "effects": [
             "0: Shield Strength (247d162a)",
             "1: Magic Damage (ae795aba)",
-            "2: Active (f408a30e)"
+            "2: Active (70d4f58e)"
           ]
         }
       ],
@@ -462,9 +462,9 @@
         {
           "name": "The Hitman and the Seer",
           "effects": [
-            "0: Bonus Attack Damage (1bdb3f4b)",
-            "1: Bonus Attack Speed (48ef9c91)",
-            "2: Lethality (17cbbe1f)"
+            "0: Bonus Attack Damage (6018dc68)",
+            "1: Bonus Attack Speed (2efc9730)",
+            "2: Lethality (e625b9a0)"
           ]
         },
         {
@@ -476,8 +476,8 @@
         {
           "name": "Severum",
           "effects": [
-            "0: description (0abc7597)",
-            "1: description (d29e59bb)",
+            "0: description (11ae5609)",
+            "1: description (46aeaec9)",
             "2: description2 (1b4cf14d)"
           ]
         },
@@ -574,8 +574,8 @@
           "name": "Frost Shot",
           "effects": [
             "0: Innate (17ac2bbb)",
-            "1: Innate - Frost Shot (a298619a)",
-            "2: Innate - Critical Slow (8082ff2d)"
+            "1: Innate - Frost Shot (fbc12b4b)",
+            "2: Innate - Critical Slow (bb358e43)"
           ]
         }
       ],
@@ -609,7 +609,7 @@
           "name": "Enchanted Crystal Arrow",
           "effects": [
             "0: Magic Damage (d0021742)",
-            "1: Active (250e886f)"
+            "1: Active (1d0a2219)"
           ]
         }
       ]
@@ -674,9 +674,9 @@
           "name": "Spirit Abjuration",
           "effects": [
             "0: Innate (ca7ae0bc)",
-            "1: Innate (2007f37a)",
-            "2: Innate (a60416a6)",
-            "3: Innate (a4fe0eeb)"
+            "1: Innate (7c71f3a2)",
+            "2: Innate (590a38a6)",
+            "3: Innate (870e0a5b)"
           ]
         }
       ],
@@ -689,7 +689,7 @@
             "2: Maximum Magic Damage (fe6c485b)",
             "3: Subsequent Bolt Minimum Magic Damage (47d1e9b0)",
             "4: Subsequent Bolt Maximum Magic Damage (97bf0c14)",
-            "5: Recast (5afa6686)",
+            "5: Recast (dc8c1300)",
             "6: Recast (3591f929)"
           ]
         }
@@ -818,7 +818,7 @@
         {
           "name": "Death in Lavender",
           "effects": [
-            "0: Innate - Inescapable (270bfb3a)"
+            "0: Innate - Inescapable (ea707592)"
           ]
         }
       ],
@@ -850,8 +850,8 @@
             "3: Maximum Physical Damage per hit (311b38ce)",
             "4: Minimum Monster Damage per hit (311b38ce)",
             "5: Maximum Monster Damage per hit (09b1d85e)",
-            "6: Active (7ff1da8a)",
-            "7: Active (f5dde533)"
+            "6: Active (cf969136)",
+            "7: Active (1bd51b99)"
           ]
         }
       ],
@@ -867,7 +867,7 @@
             "5: Increased Size (cbf1b55b)",
             "6: Increased Total Attack Speed (b1480ee2)",
             "7: Heal (8e68b49c)",
-            "8: Active (20d70fde)",
+            "8: Active (1d0a2219)",
             "9: Active (7bc92425)",
             "10: Active (1d0a2219)"
           ]
@@ -928,7 +928,7 @@
             "4: Ablaze (1f514ea7)",
             "5: Ablaze (3878cc93)",
             "6: Ablaze (8c5f8b11)",
-            "7: Ablaze (871cebc9)",
+            "7: Ablaze (f5822c7d)",
             "8: Ablaze (fad32d21)"
           ]
         }
@@ -974,9 +974,9 @@
         {
           "name": "Concussive Blows",
           "effects": [
-            "0: Innate (4838b796)",
+            "0: Innate (e0305221)",
             "1: Innate (73c153a7)",
-            "2: Innate (16726391)"
+            "2: Innate (07ecee57)"
           ]
         }
       ],
@@ -1025,19 +1025,19 @@
           "name": "Crimson Curse",
           "effects": [
             "0: Innate (1ca20e0e)",
-            "1: Innate (65f1b339)",
-            "2: Innate (494e0091)",
-            "3: Innate (494e0091)",
-            "4: Innate (29b3bcef)",
-            "5: Innate (470d5864)",
-            "6: Innate (8087e903)",
-            "7: Innate (827b8db7)",
-            "8: Innate (f334cda8)",
-            "9: Innate (f334cda8)",
+            "1: Innate (577ea9e6)",
+            "2: Innate (b1884f59)",
+            "3: Innate (b1884f59)",
+            "4: Innate (576b3c63)",
+            "5: Innate (c6699c83)",
+            "6: Innate (1b180efa)",
+            "7: Innate (51084cf8)",
+            "8: Innate (d336b30d)",
+            "9: Innate (d336b30d)",
             "10: Innate (e1941ac7)",
-            "11: Innate (ef4fc74e)",
-            "12: Innate (2d0b0a37)",
-            "13: Innate (19af7210)"
+            "11: Innate (473ccc55)",
+            "12: Innate (732c4f4a)",
+            "13: Innate (1d4e3758)"
           ]
         }
       ],
@@ -1117,7 +1117,7 @@
           "name": "Yordle Snap Trap",
           "effects": [
             "0: Trap Duration (6dd804ce)",
-            "1: Maximum Number of Traps (b3b8df0f)",
+            "1: Maximum Number of Traps (9b1b3a90)",
             "2: Headshot Damage Increase (120b3633)"
           ]
         }
@@ -1156,7 +1156,7 @@
             "0: Bonus Physical Damage (05a6140d)",
             "1: Bonus Movement Speed (7bdb5da6)",
             "2: Increased Mixed Damage (c82f9b55)",
-            "3: Recast (6fd9e8ec)"
+            "3: Recast (2247ccea)"
           ]
         }
       ],
@@ -1199,7 +1199,7 @@
         {
           "name": "Serpentine Grace",
           "effects": [
-            "0: Innate (aacb5e32)"
+            "0: Innate (6c6d7213)"
           ]
         }
       ],
@@ -1230,10 +1230,10 @@
           "name": "Twin Fang",
           "effects": [
             "0: Bonus Magic Damage (cd7cb6d4)",
-            "1: Total Enhanced Damage (d63180c4)",
+            "1: Total Enhanced Damage (b016caa5)",
             "2: Heal (c30850eb)",
             "3: Reduced Heal (0947e55e)",
-            "4: Active (955f6345)"
+            "4: Active (34b4ebde)"
           ]
         }
       ],
@@ -1251,7 +1251,7 @@
         {
           "name": "Carnivore",
           "effects": [
-            "0: Innate (40b408f5)"
+            "0: Innate (bc439651)"
           ]
         }
       ],
@@ -1340,7 +1340,7 @@
           "effects": [
             "0: Physical Damage (ebe6ac3c)",
             "1: Big One Physical Damage (7ca64765)",
-            "2: Passive (c4bbcd5c)"
+            "2: Passive (c31a1f3b)"
           ]
         }
       ]
@@ -1350,11 +1350,11 @@
         {
           "name": "Hemorrhage",
           "effects": [
-            "0: Hemorrhage (09a92a02)",
-            "1: Hemorrhage (728eacc6)",
-            "2: Hemorrhage (4b28035d)",
-            "3: Hemorrhage (6a52fb60)",
-            "4: Noxian Might (8cb2df81)"
+            "0: Hemorrhage (c7bce97f)",
+            "1: Hemorrhage (922762f0)",
+            "2: Hemorrhage (6093cec7)",
+            "3: Hemorrhage (50d53988)",
+            "4: Noxian Might (35dc4fdc)"
           ]
         }
       ],
@@ -1400,8 +1400,8 @@
         {
           "name": "Moonsilver Blade",
           "effects": [
-            "0: Innate (fef5cfb3)",
-            "1: Innate - Moonsilver Blade (e02abd49)"
+            "0: Innate (5483870e)",
+            "1: Innate - Moonsilver Blade (87053bfa)"
           ]
         }
       ],
@@ -1449,8 +1449,8 @@
         {
           "name": "Goes Where He Pleases",
           "effects": [
-            "0: Innate (ab5728a3)",
-            "1: Innate (56d44096)",
+            "0: Innate (5f82967b)",
+            "1: Innate (2c0d1a60)",
             "2: Passive (afca7e3a)",
             "3: Passive (ff27c65b)"
           ]
@@ -1473,7 +1473,7 @@
             "0: Magic Damage per Tick (6e74fdf8)",
             "1: Total Magic Damage (8b28ceae)",
             "2: Magic Damage (85249f6f)",
-            "3: Active (432bd5c2)"
+            "3: Active (d356ae9a)"
           ]
         }
       ],
@@ -1557,7 +1557,7 @@
         {
           "name": "Z-Drive Resonance",
           "effects": [
-            "0: Innate - Resonance (c222e2f1)",
+            "0: Innate - Resonance (f681f1fd)",
             "1: Innate - Stolen Time (587d5621)",
             "2: Innate - Stolen Time (d7ee6e2c)"
           ]
@@ -1609,7 +1609,7 @@
           "name": "Spider Queen",
           "effects": [
             "0: Innate - Human Form (e722e575)",
-            "1: Innate - Spider Form (37ae5ad1)",
+            "1: Innate - Spider Form (c687fcd3)",
             "2: Innate - Spider Form (a8d2fe29)"
           ]
         }
@@ -1671,7 +1671,7 @@
         {
           "name": "Demon Shade",
           "effects": [
-            "0: Demon Shade (ff2962ac)"
+            "0: Demon Shade (ce91de70)"
           ]
         }
       ],
@@ -1829,8 +1829,8 @@
           "name": "Duelist's Dance",
           "effects": [
             "0: Innate (a4aac48e)",
-            "1: Innate (28b96038)",
-            "2: Innate (f1bc3de6)"
+            "1: Innate (0b95aa8a)",
+            "2: Innate (34fb884d)"
           ]
         }
       ],
@@ -1931,7 +1931,7 @@
         {
           "name": "Colossal Smash",
           "effects": [
-            "0: Innate (b819b15d)",
+            "0: Innate (e9de5ec2)",
             "1: Innate (fcef35fb)"
           ]
         }
@@ -1956,8 +1956,8 @@
             "3: Minimum Magic Damage (6c7e07ea)",
             "4: Maximum Magic Damage (320777f6)",
             "5: Passive (3634aaf2)",
-            "6: Recast (68d1e4ca)",
-            "7: Recast (9ac0b1a8)"
+            "6: Recast (1d0a2219)",
+            "7: Recast (1d0a2219)"
           ]
         }
       ],
@@ -1984,9 +1984,9 @@
         {
           "name": "Trial by Fire",
           "effects": [
-            "0: Innate (e3c85cb3)",
-            "1: Innate (e9f8bcaf)",
-            "2: Innate (44a5d299)"
+            "0: Innate (ee3922b4)",
+            "1: Innate (89fc0654)",
+            "2: Innate (69da1d44)"
           ]
         }
       ],
@@ -2012,7 +2012,7 @@
         {
           "name": "Powder Keg",
           "effects": [
-            "0: Maximum charges (7d5e6fe1)",
+            "0: Maximum charges (831ac296)",
             "1: Slow (c23e4771)",
             "2: Bonus Champion Damage (6807888c)",
             "3: Active (13c0edb4)"
@@ -2039,8 +2039,8 @@
         {
           "name": "Perseverance",
           "effects": [
-            "0: Innate (e000695f)",
-            "1: Innate (0b096a05)"
+            "0: Innate (defded1b)",
+            "1: Innate (2fb315e1)"
           ]
         }
       ],
@@ -2120,7 +2120,7 @@
           "name": "Hyper",
           "effects": [
             "0: Bonus Magic Damage (7b5b99e0)",
-            "1: Passive (0ca3a2f4)"
+            "1: Passive (c480df86)"
           ]
         },
         {
@@ -2262,8 +2262,8 @@
           "name": "A Thousand Cuts",
           "effects": [
             "0: Innate (80104c1d)",
-            "1: Innate (fb3aeafd)",
-            "2: Innate (787b55de)"
+            "1: Innate (0365a82f)",
+            "2: Innate (f2f80b33)"
           ]
         }
       ],
@@ -2351,10 +2351,10 @@
           "effects": [
             "0: Minimum Physical Damage (06c35508)",
             "1: Maximum Physical Damage (9ac65fae)",
-            "2: Active (312b144b)",
-            "3: Active (c753997f)",
-            "4: Active (8fa28c44)",
-            "5: Active (ac3ea299)",
+            "2: Active (1d0a2219)",
+            "3: Active (1d0a2219)",
+            "4: Active (1d0a2219)",
+            "5: Active (1d0a2219)",
             "6: Active (fcef35fb)"
           ]
         }
@@ -2364,8 +2364,8 @@
           "name": "Onslaught of Shadows",
           "effects": [
             "0: Magic damage (ec5ceedf)",
-            "1: Active (b6168012)",
-            "2: Active (0f42e1ca)"
+            "1: Active (1d0a2219)",
+            "2: Active (1d0a2219)"
           ]
         }
       ]
@@ -2440,7 +2440,7 @@
         {
           "name": "Signature of the Visionary",
           "effects": [
-            "0: Innate (62adec33)"
+            "0: Innate (9d1e8fa7)"
           ]
         }
       ],
@@ -2467,7 +2467,7 @@
           "effects": [
             "0: Magic Damage (38253ae0)",
             "1: Disable Duration (b588419d)",
-            "2: Active - EQ (f1eef7cd)"
+            "2: Active - EQ (1d0a2219)"
           ]
         }
       ],
@@ -2488,10 +2488,10 @@
           "name": "Pool of Reflection",
           "effects": [
             "0: Initial Shield Strength (c0f07f54)",
-            "1: Bonus Shield per Tick (8ab9f241)",
+            "1: Bonus Shield per Tick (a658e1b9)",
             "2: Total Maximum Shield (983eb713)",
             "3: Ally Initial Shield (b1e3f3f1)",
-            "4: Ally Bonus Shield per Tick (ae050b7d)",
+            "4: Ally Bonus Shield per Tick (7163b9bc)",
             "5: Ally Total Maximum Shield (3b6c0f3e)"
           ]
         },
@@ -2555,8 +2555,8 @@
         {
           "name": "Prophet of an Elder God",
           "effects": [
-            "0: Innate (49a0e2f1)",
-            "1: Innate (783fddfe)",
+            "0: Innate (f2c4e89b)",
+            "1: Innate (6645d80c)",
             "2: Innate (7c4ff938)"
           ]
         }
@@ -2601,10 +2601,10 @@
         {
           "name": "Ionian Fervor",
           "effects": [
-            "0: Ionian Fervor (b5363bca)",
-            "1: Ionian Fervor (227bbd50)",
-            "2: Ionian Fervor (8da9a8c1)",
-            "3: Ionian Fervor (c638467e)"
+            "0: Ionian Fervor (66486549)",
+            "1: Ionian Fervor (3bf76447)",
+            "2: Ionian Fervor (34927297)",
+            "3: Ionian Fervor (13d7ba2f)"
           ]
         }
       ],
@@ -2614,7 +2614,7 @@
           "effects": [
             "0: Physical Damage (5fd39b55)",
             "1: Heal (9993bbd4)",
-            "2: Active (79344122)"
+            "2: Active (6a59223d)"
           ]
         }
       ],
@@ -2624,9 +2624,9 @@
           "effects": [
             "0: Minimum Physical Damage (abcea9b2)",
             "1: Maximum Physical Damage (501ff27c)",
-            "2: Active (70797920)",
-            "3: Active (1dae39ac)",
-            "4: Recast (4b2e70ff)"
+            "2: Active (11205e52)",
+            "3: Active (542f913e)",
+            "4: Recast (1d0a2219)"
           ]
         }
       ],
@@ -2654,7 +2654,7 @@
           "effects": [
             "0: Innate (c6ac9f76)",
             "1: Innate (7e53f74d)",
-            "2: Innate (73142ddb)"
+            "2: Innate (0e6ef91e)"
           ]
         }
       ],
@@ -2709,7 +2709,7 @@
             "0: Minimum Magic Damage (a364dc13)",
             "1: Bonus Damage Per Second (625a1c54)",
             "2: Maximum Magic Damage (4984ad2c)",
-            "3: Recast (fc913853)"
+            "3: Recast (1d0a2219)"
           ]
         }
       ],
@@ -2913,7 +2913,7 @@
           "name": "Whisper",
           "effects": [
             "0: Innate - Death In 4 Acts (a7dcfaf3)",
-            "1: Innate - Every Moment Matters (0a476f96)"
+            "1: Innate - Every Moment Matters (3c94d592)"
           ]
         }
       ],
@@ -2954,7 +2954,7 @@
             "1: Maximum Physical Damage per Bullet (cd7c0414)",
             "2: Minimum Fourth Shot Damage (37fb41aa)",
             "3: Maximum Fourth Shot Damage (8fc5712a)",
-            "4: Recast (a0cece7d)",
+            "4: Recast (fe3fa9f3)",
             "5: Recast (fcef35fb)"
           ]
         }
@@ -3006,7 +3006,7 @@
             "1: Minimum Physical Damage (39766359)",
             "2: Maximum Secondary Damage (85426c47)",
             "3: Minimum Secondary Damage (9d0f017b)",
-            "4: Active (acec2406)"
+            "4: Active (1d0a2219)"
           ]
         }
       ]
@@ -3016,9 +3016,9 @@
         {
           "name": "Dauntless Instinct",
           "effects": [
-            "0: Innate (6274c1ef)",
-            "1: Innate (68d844e8)",
-            "2: Innate (6c1d9468)",
+            "0: Innate (fccca568)",
+            "1: Innate (d9310ef7)",
+            "2: Innate (add5e9ff)",
             "3: All Out Bonus (54f5824f)"
           ]
         }
@@ -3040,8 +3040,8 @@
             "2: Minimum Bonus True Damage (2906490a)",
             "3: Maximum Bonus True Damage (325d0393)",
             "4: Total Maximum Mixed Damage (58017453)",
-            "5: Recast (8b6127e7)",
-            "6: All Out Bonus (fd61e126)"
+            "5: Recast (1d0a2219)",
+            "6: All Out Bonus (1d0a2219)"
           ]
         }
       ],
@@ -3070,9 +3070,9 @@
         {
           "name": "Second Skin",
           "effects": [
-            "0: Innate - Caustic Wounds (dfc63502)",
-            "1: Innate - Caustic Wounds (38d41e77)",
-            "2: Innate - Caustic Wounds (c69c8839)",
+            "0: Innate - Caustic Wounds (e54225ec)",
+            "1: Innate - Caustic Wounds (39ab8442)",
+            "2: Innate - Caustic Wounds (398eea43)",
             "3: Innate - Caustic Wounds (cce736b0)"
           ]
         }
@@ -3086,7 +3086,7 @@
             "2: Total Single-Target Damage (d87067cc)",
             "3: Total Evolved Single-Target Damage (5b92f182)",
             "4: Active (1ca20e0e)",
-            "5: Evolution (7dbcdcb1)"
+            "5: Evolution (164c5fbc)"
           ]
         }
       ],
@@ -3107,7 +3107,7 @@
             "2: Bonus Attack Speed (c23e4771)",
             "3: Active (7ff1da8a)",
             "4: Active (21b60d35)",
-            "5: Evolution (d9fbd2d5)"
+            "5: Evolution (e2326381)"
           ]
         }
       ],
@@ -3330,7 +3330,7 @@
         {
           "name": "Voracity",
           "effects": [
-            "0: Innate - Sinister Steel (e4a3c4b2)",
+            "0: Innate - Sinister Steel (40b28df3)",
             "1: Innate - Sinister Steel (b13daccc)"
           ]
         }
@@ -3377,7 +3377,7 @@
         {
           "name": "Divine Ascent",
           "effects": [
-            "0: Level 11 - Aflame (1314f6d4)"
+            "0: Level 11 - Aflame (e6c3648a)"
           ]
         }
       ],
@@ -3422,7 +3422,7 @@
         {
           "name": "The Darkin Scythe",
           "effects": [
-            "0: Shadow Assassin Bonus (f550ca89)"
+            "0: Shadow Assassin Bonus (174f3d38)"
           ]
         }
       ],
@@ -3520,7 +3520,7 @@
         {
           "name": "Unseen Threat",
           "effects": [
-            "0: Innate (4d5adad9)"
+            "0: Innate (20dfa117)"
           ]
         }
       ],
@@ -3600,7 +3600,7 @@
             "0: Magic Damage (88906539)",
             "1: Monster Damage (a9052c5b)",
             "2: Passive (330413f9)",
-            "3: Passive (cc25fae1)",
+            "3: Passive (d8b5a81d)",
             "4: Active (633e5875)"
           ]
         }
@@ -3636,7 +3636,7 @@
           "name": "Dismounted Skaarl the Cowardly Lizard",
           "effects": [
             "0: Innate (e3b0e174)",
-            "1: Innate (40b51fcc)",
+            "1: Innate (4bec4562)",
             "2: Innate (d95f80d2)",
             "3: Innate (503f14d6)",
             "4: Innate - Courage (e619e1f0)"
@@ -3694,7 +3694,7 @@
             "2: Shield Per Instance (391f5b64)",
             "3: Minimum Magic Damage (7daf4249)",
             "4: Maximum Magic Damage (0f5c98b6)",
-            "5: Mr. Kled's Wild Ride (9cc18513)"
+            "5: Mr. Kled's Wild Ride (1d0a2219)"
           ]
         },
         {
@@ -3708,7 +3708,7 @@
         {
           "name": "Icathian Surprise",
           "effects": [
-            "0: Innate (7869e95b)"
+            "0: Innate (47e3717c)"
           ]
         }
       ],
@@ -3746,7 +3746,7 @@
           "effects": [
             "0: Minimum Magic Damage (62269f3e)",
             "1: Maximum Magic Damage (ded1be94)",
-            "2: Active (bb626d3e)"
+            "2: Active (67ab51f9)"
           ]
         }
       ]
@@ -3764,7 +3764,7 @@
           "effects": [
             "0: Magic Damage (b9f7005a)",
             "1: Total Magic Damage (03bbbb0b)",
-            "2: Active (01eb631e)"
+            "2: Active (a07725f7)"
           ]
         }
       ],
@@ -3823,7 +3823,7 @@
           "effects": [
             "0: Minimum Physical Damage (92d0bd0d)",
             "1: Maximum Physical Damage (f290eccb)",
-            "2: Active (7ff1da8a)"
+            "2: Active (cf969136)"
           ]
         }
       ],
@@ -3870,7 +3870,7 @@
         {
           "name": "Sunlight",
           "effects": [
-            "0: Innate (5fbe8337)"
+            "0: Innate (09106106)"
           ]
         }
       ],
@@ -3916,8 +3916,8 @@
           "name": "Dream-Laden Bough",
           "effects": [
             "0: Innate (992931bb)",
-            "1: Innate (968fd41d)",
-            "2: Innate (7b306633)",
+            "1: Innate (135460aa)",
+            "2: Innate (96488bf9)",
             "3: Innate (93a33d3a)",
             "4: Innate (f819a1d0)",
             "5: Innate (d26a12a4)"
@@ -3969,8 +3969,8 @@
         {
           "name": "Iceborn Subjugation",
           "effects": [
-            "0: Innate (f7ce4556)",
-            "1: Innate (bc29cd20)"
+            "0: Innate (1d0a2219)",
+            "1: Innate (bb426087)"
           ]
         }
       ],
@@ -4020,9 +4020,9 @@
         {
           "name": "Silver Stake",
           "effects": [
-            "0: Innate (c61eba70)",
-            "1: Innate (6f1b616e)",
-            "2: Innate (8dc4eaa4)"
+            "0: Innate (e6c9de3e)",
+            "1: Innate (a2fba752)",
+            "2: Innate (c6fc7a8a)"
           ]
         }
       ],
@@ -4036,8 +4036,8 @@
             "3: Two Stacks Bonus Damage (3540211e)",
             "4: Three Stacks Bonus Damage (ec8c1bc4)",
             "5: Maximum Total Magic Damage (8ea424f2)",
-            "6: Recast (13e4d518)",
-            "7: Recast (463d44dd)"
+            "6: Recast (1c9df8cb)",
+            "7: Recast (b69b52d1)"
           ]
         }
       ],
@@ -4046,9 +4046,9 @@
           "name": "Soul Ignition",
           "effects": [
             "0: Damage taken grey health cap (69f1b171)",
-            "1: Active (531326c2)",
-            "2: Active (6fe6e546)",
-            "3: Active (3e294d01)"
+            "1: Active (909686d8)",
+            "2: Active (bd96b66a)",
+            "3: Active (0d5ae01a)"
           ]
         }
       ],
@@ -4122,8 +4122,8 @@
         {
           "name": "Pix, Faerie Companion",
           "effects": [
-            "0: Innate (942238c2)",
-            "1: Innate (029cbfc1)"
+            "0: Innate (ac289552)",
+            "1: Innate (0dd5e313)"
           ]
         }
       ],
@@ -4174,7 +4174,7 @@
         {
           "name": "Illumination",
           "effects": [
-            "0: Innate (32fc5b4b)"
+            "0: Innate (c5415fa3)"
           ]
         }
       ],
@@ -4281,7 +4281,7 @@
         {
           "name": "Void Swarm",
           "effects": [
-            "0: Voidling Duration (087c567f)",
+            "0: Voidling Duration (6003886a)",
             "1: Magic Damage (085c52b4)",
             "2: Minion Damage (e13d1bb3)"
           ]
@@ -4293,7 +4293,7 @@
           "effects": [
             "0: Total Magic Damage (a1825a8c)",
             "1: Magic Damage Per Tick (99151521)",
-            "2: Active (1e5b89b4)"
+            "2: Active (9ed2cba9)"
           ]
         }
       ],
@@ -4314,7 +4314,7 @@
         {
           "name": "Sap Magic",
           "effects": [
-            "0: Innate (65db41cf)"
+            "0: Innate (2f8b3352)"
           ]
         }
       ],
@@ -4342,8 +4342,8 @@
           "name": "Sapling Toss",
           "effects": [
             "0: Magic Damage (f7a96063)",
-            "1: Non-Minion Magic Damage per Instance (ad6d9242)",
-            "2: Total Attached Sapling Damage (e0cd84e2)",
+            "1: Non-Minion Magic Damage per Instance (f951a38b)",
+            "2: Total Attached Sapling Damage (5dad899f)",
             "3: Non-Minion Total Magic Damage (41287ad4)"
           ]
         }
@@ -4354,7 +4354,7 @@
           "effects": [
             "0: Bonus Movement Speed (15edf0d4)",
             "1: Magic Damage (61a87119)",
-            "2: Active (f2e5b89b)"
+            "2: Active (1d0a2219)"
           ]
         }
       ]
@@ -4397,7 +4397,7 @@
             "3: Maximum Total Heal (321122b7)",
             "4: Modified Damage Reduction (03612f24)",
             "5: Turret Modified Damage Reduction (c2da1e57)",
-            "6: Active (7ff1da8a)"
+            "6: Active (0575e2cc)"
           ]
         }
       ],
@@ -4424,11 +4424,11 @@
         {
           "name": "Searing Brilliance",
           "effects": [
-            "0: Overwhelm (c4d834f7)",
-            "1: Overwhelm (969b92b6)",
-            "2: Overwhelm (e0835ee0)",
-            "3: Innate - Searing Brilliance (5da48aa7)",
-            "4: Innate - Searing Brilliance (76a247f3)"
+            "0: Overwhelm (b4264a83)",
+            "1: Overwhelm (d0023e98)",
+            "2: Overwhelm (809275fd)",
+            "3: Innate - Searing Brilliance (485c487d)",
+            "4: Innate - Searing Brilliance (6a3e2c7f)"
           ]
         }
       ],
@@ -4440,7 +4440,7 @@
             "1: Number of Bolts (3ca2ffdd)",
             "2: Maximum Magic Damage (7503886a)",
             "3: Active (6ae49e09)",
-            "4: Active (8bd31f81)"
+            "4: Active (fc59abe1)"
           ]
         }
       ],
@@ -4488,8 +4488,8 @@
           "name": "Fired Up!",
           "effects": [
             "0: Innate (c1b80bd5)",
-            "1: Innate (04f3b253)",
-            "2: Innate (b86f6641)"
+            "1: Innate (65d99ae2)",
+            "2: Innate (1aee0827)"
           ]
         }
       ],
@@ -4586,8 +4586,8 @@
         {
           "name": "Stone Skin",
           "effects": [
-            "0: Strength of Stone (ec52bdb0)",
-            "1: Strength of Stone (79871702)",
+            "0: Strength of Stone (da334429)",
+            "1: Strength of Stone (91f3b3f5)",
             "2: Strength of Stone (27cd4a50)",
             "3: Strength of Stone (5831d6e6)"
           ]
@@ -4639,10 +4639,10 @@
           "effects": [
             "0: Innate (87558924)",
             "1: Darkness Rise (65e79611)",
-            "2: Darkness Rise (c0e99f7e)",
-            "3: Darkness Rise (c82863a0)",
-            "4: Darkness Rise (496d3533)",
-            "5: Darkness Rise (ab99f4f3)"
+            "2: Darkness Rise (83a958d5)",
+            "3: Darkness Rise (c1287533)",
+            "4: Darkness Rise (0ac9bedd)",
+            "5: Darkness Rise (186e2c20)"
           ]
         }
       ],
@@ -4663,7 +4663,7 @@
             "1: Passive (7736f39f)",
             "2: Passive (a60062fa)",
             "3: Passive (23af88f6)",
-            "4: Passive (7e4db03a)"
+            "4: Passive (5558076b)"
           ]
         }
       ],
@@ -4710,7 +4710,7 @@
             "1: Maximum Damage Per Tick (b546447b)",
             "2: Minimum Total Damage (7717e099)",
             "3: Maximum Total Damage (524ef103)",
-            "4: Active (7ff1da8a)"
+            "4: Active (cf969136)"
           ]
         }
       ],
@@ -4756,9 +4756,9 @@
             "6: Minimum Total Physical Damage (1087be2a)",
             "7: Maximum Total Physical Damage (925e13ab)",
             "8: Heal (42a9fa3a)",
-            "9: Active (7ee1271b)",
-            "10: Active (7ff1da8a)",
-            "11: Active (5a6b0bea)"
+            "9: Active (1b9cd6c9)",
+            "10: Active (cf969136)",
+            "11: Active (2e872c44)"
           ]
         }
       ],
@@ -4826,7 +4826,7 @@
             "0: Bonus Magic Damage Per Hit (e21261c6)",
             "1: Total Bonus Magic Damage (dddc829f)",
             "2: Slow (dd586c4a)",
-            "3: Active (a8701275)"
+            "3: Active (18b19196)"
           ]
         }
       ],
@@ -4835,7 +4835,7 @@
           "name": "Tidal Wave",
           "effects": [
             "0: Magic Damage (64162730)",
-            "1: Active (1eff9ec5)"
+            "1: Active (1d0a2219)"
           ]
         }
       ]
@@ -4896,7 +4896,7 @@
         {
           "name": "Staggering Blow",
           "effects": [
-            "0: Innate (17e63292)",
+            "0: Innate (8f506509)",
             "1: Innate (70439286)"
           ]
         }
@@ -5003,7 +5003,7 @@
           "effects": [
             "0: Minimum Magic Damage (9f6f78ca)",
             "1: Maximum Magic Damage (ef18a8cd)",
-            "2: Active (9e35d1ec)"
+            "2: Active (1d0a2219)"
           ]
         },
         {
@@ -5044,7 +5044,7 @@
             "0: Bonus Attack Speed (2517bd2f)",
             "1: Minimum Heal (48b152aa)",
             "2: Maximum Heal (50cc8501)",
-            "3: Active (eaa03040)"
+            "3: Active (dd7d0bb9)"
           ]
         },
         {
@@ -5074,9 +5074,9 @@
           "effects": [
             "0: Minimum Physical Damage (ea23683a)",
             "1: Maximum Physical Damage (44ffe888)",
-            "2: Passive (6d52f697)",
+            "2: Passive (066c4510)",
             "3: Active (0f9ff1c2)",
-            "4: Active (abcd1ad0)",
+            "4: Active (edd83d98)",
             "5: Active (8a989113)",
             "6: Active (5f56a058)"
           ]
@@ -5106,7 +5106,7 @@
             "1: Total Physical Damage (60f2feb2)",
             "2: Burst Physical Damage (7232d6e4)",
             "3: Maximum Total Physical Damage (2b4fa326)",
-            "4: Active (8319e545)"
+            "4: Active (ed767a1c)"
           ]
         }
       ]
@@ -5117,7 +5117,7 @@
           "name": "Umbra Blades",
           "effects": [
             "0: Innate (71942911)",
-            "1: Innate (398a665a)",
+            "1: Innate (521a0716)",
             "2: Innate (2a3bee7c)"
           ]
         }
@@ -5194,7 +5194,7 @@
             "3: Maximum Minion/Monster Roll Damage (3e9a245f)",
             "4: Active (67895dc9)",
             "5: Active (fa9cce90)",
-            "6: Active (a2a2e0c9)"
+            "6: Active (1d0a2219)"
           ]
         }
       ],
@@ -5207,7 +5207,7 @@
             "2: Slow (8d66c380)",
             "3: Maximum Total Magic Damage (7d98293a)",
             "4: Magic Damage (ee84fe6b)",
-            "5: Recast (7f26b5f9)"
+            "5: Recast (aaa501cc)"
           ]
         }
       ],
@@ -5217,9 +5217,9 @@
           "effects": [
             "0: Shield Strength (9a88e5b9)",
             "1: Maximum Magic Damage (6a855a7f)",
-            "2: Active (ae433e77)",
+            "2: Active (1d0a2219)",
             "3: Recast (50372fdf)",
-            "4: Recast (c9f7d063)"
+            "4: Recast (1d0a2219)"
           ]
         }
       ]
@@ -5229,7 +5229,7 @@
         {
           "name": "Berserker Rage",
           "effects": [
-            "0: Innate (c3f85c5b)",
+            "0: Innate (6eb8d4d2)",
             "1: Innate (5a381ffb)",
             "2: Innate (bb2bbf2e)"
           ]
@@ -5243,8 +5243,8 @@
             "1: Slow (ba03ee8c)",
             "2: Monster Bonus Physical Damage (2299df93)",
             "3: Total Monster Damage (3690c323)",
-            "4: Active (df8a9861)",
-            "5: Active (36e90148)"
+            "4: Active (1d0a2219)",
+            "5: Active (1d0a2219)"
           ]
         }
       ],
@@ -5281,9 +5281,9 @@
         {
           "name": "Clockwork Windup",
           "effects": [
-            "0: Innate (ee5bed6f)",
-            "1: Innate (fa40dddd)",
-            "2: Innate (be262aaa)"
+            "0: Innate (dcce5a3f)",
+            "1: Innate (cdc2a8eb)",
+            "2: Innate (84771820)"
           ]
         }
       ],
@@ -5329,8 +5329,8 @@
         {
           "name": "Living Forge",
           "effects": [
-            "0: Innate - Temper (d0c4418a)",
-            "1: Innate - Temper (9a15b8f2)"
+            "0: Innate - Temper (1b22eb76)",
+            "1: Innate - Temper (579ad03b)"
           ]
         }
       ],
@@ -5391,7 +5391,7 @@
             "3: Increased Hurl Secondary Damage (18d791b2)",
             "4: Thrust Physical Damage (d58a9618)",
             "5: Increased Thrust Damage (ebcdf575)",
-            "6: Mortal Will (53b0f009)"
+            "6: Mortal Will (ffd0d912)"
           ]
         }
       ],
@@ -5400,8 +5400,8 @@
           "name": "Shield Vault",
           "effects": [
             "0: Physical Damage (32a1f518)",
-            "1: Mortal Will (408a13c2)",
-            "2: Mortal Will (f8147316)"
+            "1: Mortal Will (df00faf5)",
+            "2: Mortal Will (cd8d5e01)"
           ]
         }
       ],
@@ -5412,7 +5412,7 @@
             "0: Physical Damage (d5143174)",
             "1: Active (1d0a2219)",
             "2: Active (8a989113)",
-            "3: Mortal Will (3eae78e2)"
+            "3: Mortal Will (ad74797a)"
           ]
         }
       ],
@@ -5423,7 +5423,7 @@
             "0: Armor Penetration (90a1c8a5)",
             "1: Magic Damage (ed5dd32f)",
             "2: Reduced Damage (2df4a035)",
-            "3: Active (3404375e)"
+            "3: Active (a216198e)"
           ]
         }
       ]
@@ -5433,8 +5433,8 @@
         {
           "name": "Iron Ambassador",
           "effects": [
-            "0: Innate (78557385)",
-            "1: Innate (3c017d83)"
+            "0: Innate (c285d4cf)",
+            "1: Innate (e7faa61d)"
           ]
         }
       ],
@@ -5514,8 +5514,8 @@
         {
           "name": "Death from Below",
           "effects": [
-            "0: Active (c8a271a6)",
-            "1: Active (390e3a0f)"
+            "0: Active (3436fce0)",
+            "1: Active (7cfcd4dd)"
           ]
         }
       ]
@@ -5525,7 +5525,7 @@
         {
           "name": "Royal Privilege",
           "effects": [
-            "0: Innate (985c6143)"
+            "0: Innate (ad3e6876)"
           ]
         }
       ],
@@ -5582,7 +5582,7 @@
         {
           "name": "Harrier",
           "effects": [
-            "0: Innate (745a2f98)"
+            "0: Innate (ca4ef309)"
           ]
         }
       ],
@@ -5631,7 +5631,7 @@
         {
           "name": "Fey Feathers",
           "effects": [
-            "0: Innate (03aab3aa)"
+            "0: Innate (f4a455d8)"
           ]
         }
       ],
@@ -5640,7 +5640,7 @@
           "name": "Gleaming Quill",
           "effects": [
             "0: Magic Damage (98cc66bc)",
-            "1: Active (b7be5a91)"
+            "1: Active (92782365)"
           ]
         }
       ],
@@ -5683,7 +5683,7 @@
           "effects": [
             "0: Magic Damage (2d37722b)",
             "1: Slow (d543652d)",
-            "2: Active (b539e227)"
+            "2: Active (16a96151)"
           ]
         }
       ],
@@ -5724,7 +5724,7 @@
             "0: Innate (09afe005)",
             "1: Innate (04d3013e)",
             "2: Burrowed (00e8e6dd)",
-            "3: Burrowed (58c49294)"
+            "3: Burrowed (8bf85b50)"
           ]
         }
       ],
@@ -5787,7 +5787,7 @@
           "effects": [
             "0: Innate (dd791686)",
             "1: Innate (cc051e15)",
-            "2: Innate (1a8b5c27)"
+            "2: Innate (89500577)"
           ]
         }
       ],
@@ -5820,7 +5820,7 @@
           "name": "Full Tilt",
           "effects": [
             "0: Bonus Magic Damage (542e4ec7)",
-            "1: Active (c582a2d0)"
+            "1: Active (508fd415)"
           ]
         }
       ],
@@ -5860,7 +5860,7 @@
             "1: Maximum Bonus Attack Speed (41cce509)",
             "2: Bonus Movement Speed (b9fefee7)",
             "3: Maximum Bonus Movement Speed (39df31f5)",
-            "4: Active (1f371283)",
+            "4: Active (1d0a2219)",
             "5: Active (8eb19849)",
             "6: Active (7f0ed295)",
             "7: Active (b5d14a26)"
@@ -5955,8 +5955,8 @@
           "name": "Savagery",
           "effects": [
             "0: Additional Physical Damage (b6a9c8ee)",
-            "1: Ferocity Bonus (9b426ae9)",
-            "2: Ferocity Bonus (2d4173c0)"
+            "1: Ferocity Bonus (ffd5b2bc)",
+            "2: Ferocity Bonus (1485fcca)"
           ]
         }
       ],
@@ -5965,8 +5965,8 @@
           "name": "Battle Roar",
           "effects": [
             "0: Magic Damage (c5824720)",
-            "1: Active (232a605c)",
-            "2: Ferocity Bonus (1cf5da17)"
+            "1: Active (d10c0cc5)",
+            "2: Ferocity Bonus (70b0dbf8)"
           ]
         }
       ],
@@ -5976,7 +5976,7 @@
           "effects": [
             "0: Physical Damage (8bfce4d5)",
             "1: Slow (717d313f)",
-            "2: Ferocity Bonus (819788b7)"
+            "2: Ferocity Bonus (a6bb1b6e)"
           ]
         }
       ],
@@ -5997,8 +5997,8 @@
         {
           "name": "Runic Blade",
           "effects": [
-            "0: Innate (e5ae1b68)",
-            "1: Innate (c42ed0b4)"
+            "0: Innate (98644f35)",
+            "1: Innate (d77b1705)"
           ]
         }
       ],
@@ -6039,7 +6039,7 @@
           "effects": [
             "0: Minimum Physical Damage (1b970c5a)",
             "1: Maximum Physical Damage (b37e1ee1)",
-            "2: Active (68172634)"
+            "2: Active (29677685)"
           ]
         }
       ]
@@ -6050,7 +6050,7 @@
           "name": "Junkyard Titan",
           "effects": [
             "0: Overheated (52daf4e3)",
-            "1: Overheated (edc7b340)",
+            "1: Overheated (0bc03b01)",
             "2: Overheated (28ef78ba)"
           ]
         }
@@ -6060,21 +6060,21 @@
           "name": "Flamespitter",
           "effects": [
             "0: Minimum Magic Damage (c19520df)",
-            "1: Magic Damage per Second (b3ae8db8)",
-            "2: Magic Damage per Tick (6d137ce0)",
-            "3: Maximum Magic Damage (a44b6ce2)",
-            "4: Minimum Minion Damage (94736569)",
-            "5: Minion Damage per Second (664bc71c)",
-            "6: Minion Damage per Tick (db8c5463)",
-            "7: Maximum Minion Damage (6faec87b)",
-            "8: Minimum Enhanced Damage (bf61d0a7)",
+            "1: Magic Damage per Second (be7ca909)",
+            "2: Magic Damage per Tick (4346bae3)",
+            "3: Maximum Magic Damage (d3078a0a)",
+            "4: Minimum Minion Damage (c5e082e7)",
+            "5: Minion Damage per Second (3099e10a)",
+            "6: Minion Damage per Tick (653a77a5)",
+            "7: Maximum Minion Damage (0c532e9c)",
+            "8: Minimum Enhanced Damage (eac30655)",
             "9: Enhanced Damage per Second (656df9f0)",
-            "10: Enhanced Damage per Tick (86776f84)",
-            "11: Maximum Enhanced Damage (c459ae71)",
-            "12: Minimum Enhanced Minion Damage (a1313d7d)",
+            "10: Enhanced Damage per Tick (bb656706)",
+            "11: Maximum Enhanced Damage (95228c6c)",
+            "12: Minimum Enhanced Minion Damage (3e7979d0)",
             "13: Enhanced Minion Damage per Second (0f7263ff)",
-            "14: Enhanced Minion Damage per Tick (0bf89caa)",
-            "15: Maximum Enhanced Minion Damage (c7e47332)",
+            "14: Enhanced Minion Damage per Tick (61ae2f38)",
+            "15: Maximum Enhanced Minion Damage (0b487414)",
             "16: Active (1d0a257f)",
             "17: Active (86c9f30c)",
             "18: Danger Zone Bonus (5310af11)"
@@ -6135,7 +6135,7 @@
           "effects": [
             "0: Magic Damage (2262580a)",
             "1: Bonus Movement Speed (ba03ee8c)",
-            "2: Flux Bonus (3273ff83)"
+            "2: Flux Bonus (b30bc3fa)"
           ]
         }
       ],
@@ -6171,9 +6171,9 @@
           "effects": [
             "0: Style (0889584a)",
             "1: Style (4b7a9a8a)",
-            "2: Innate (e40f4e87)",
-            "3: Innate (00e8e6dd)",
-            "4: Innate (57ea3232)",
+            "2: Innate (8349deb6)",
+            "3: Innate (7e25d7fd)",
+            "4: Innate (f75dc66f)",
             "5: Innate (8279bbde)"
           ]
         }
@@ -6223,7 +6223,7 @@
           "name": "Fury of the North",
           "effects": [
             "0: Innate - Icebreaker (808baaf8)",
-            "1: Innate - Frost Armor (52c25243)"
+            "1: Innate - Frost Armor (e96e35e0)"
           ]
         }
       ],
@@ -6268,7 +6268,7 @@
         {
           "name": "Absolution",
           "effects": [
-            "0: Innate - Weakened Soul (df544f7e)",
+            "0: Innate - Weakened Soul (d82c0887)",
             "1: Innate - Relic Cannon (0170c78e)",
             "2: Innate - Relic Cannon (92422d7e)"
           ]
@@ -6316,7 +6316,7 @@
         {
           "name": "Stage Presence",
           "effects": [
-            "0: Innate - Harmony (1ae81372)"
+            "0: Innate - Harmony (96d66c5c)"
           ]
         }
       ],
@@ -6326,7 +6326,7 @@
           "effects": [
             "0: Magic Damage (85733b97)",
             "1: Maximum Enhanced Damage (dcf900e7)",
-            "2: Active (aa34d90a)"
+            "2: Active (8583c1a9)"
           ]
         }
       ],
@@ -6367,7 +6367,7 @@
           "effects": [
             "0: Innate - Heart of the Half-Beast (79855e0a)",
             "1: Innate - Heart of the Half-Beast (8ef622ed)",
-            "2: Innate - Heavy Hands (0366552d)"
+            "2: Innate - Heavy Hands (d3639f55)"
           ]
         }
       ],
@@ -6394,7 +6394,7 @@
           "name": "Facebreaker",
           "effects": [
             "0: Physical Damage (027c96cb)",
-            "1: Active (64add606)"
+            "1: Active (63eecd60)"
           ]
         }
       ],
@@ -6413,7 +6413,7 @@
         {
           "name": "Backstab",
           "effects": [
-            "0: Innate (2c9fb350)"
+            "0: Innate (9b14ba51)"
           ]
         }
       ],
@@ -6433,7 +6433,7 @@
           "name": "Jack in the Box",
           "effects": [
             "0: Fear Duration (ad89e126)",
-            "1: Root Duration (27a47670)",
+            "1: Root Duration (23fe3aee)",
             "2: Slow Duration (a9d6c001)",
             "3: Magic Damage (2f41fbff)",
             "4: Increased Damage (07079d12)",
@@ -6451,8 +6451,8 @@
             "1: Magic Damage (c694e247)",
             "2: Increased Damage (f9e1785b)",
             "3: Slow (3e1ce64d)",
-            "4: Backstab Bonus (2378820f)",
-            "5: Backstab Bonus (6844f593)"
+            "4: Backstab Bonus (962282b3)",
+            "5: Backstab Bonus (15cdf060)"
           ]
         }
       ],
@@ -6472,8 +6472,8 @@
         {
           "name": "Ki Barrier",
           "effects": [
-            "0: Innate (b9fd2d19)",
-            "1: Innate (e31abd56)"
+            "0: Innate (2226949d)",
+            "1: Innate (1f9874d0)"
           ]
         }
       ],
@@ -6511,7 +6511,7 @@
           "effects": [
             "0: Minimum Shield Strength (cb3df12d)",
             "1: Maximum Shield Strength (81636464)",
-            "2: Active (225b133d)"
+            "2: Active (26270274)"
           ]
         }
       ]
@@ -6540,7 +6540,7 @@
             "0: Shield Strength (676f9ae5)",
             "1: Increased shield per champion (46b96f1c)",
             "2: Magic Damage (0ade6cc7)",
-            "3: Dragon Form Bonus (6bb7b39f)"
+            "3: Dragon Form Bonus (821e17fd)"
           ]
         }
       ],
@@ -6627,8 +6627,8 @@
           "name": "Glory in Death",
           "effects": [
             "0: Innate (345a02c8)",
-            "1: Innate (5a14fdc1)",
-            "2: Innate (7c82380c)",
+            "1: Innate (e3a87bad)",
+            "2: Innate (44bbac66)",
             "3: Innate (7f0ed295)"
           ]
         },
@@ -6648,8 +6648,8 @@
             "4: Maximum Monster Damage (b6cbc603)",
             "5: Minimum Minion Damage (980c883d)",
             "6: Maximum Minion Damage (ebb57338)",
-            "7: Recast (974fcd55)",
-            "8: Recast (e3cfafca)"
+            "7: Recast (1d0a2219)",
+            "8: Recast (1d0a2219)"
           ]
         }
       ],
@@ -6741,10 +6741,10 @@
         {
           "name": "Threads of Vibration",
           "effects": [
-            "0: Innate (5c37dcca)",
-            "1: Innate (f6bd94fd)",
-            "2: Innate (8cc3a65b)",
-            "3: Innate (2c29a235)"
+            "0: Innate (6003acf9)",
+            "1: Innate (fe7d2ed9)",
+            "2: Innate (519f325a)",
+            "3: Innate (e0b04f26)"
           ]
         }
       ],
@@ -6852,8 +6852,8 @@
         {
           "name": "Power Chord",
           "effects": [
-            "0: Innate - Power Chord (72ad956e)",
-            "1: Innate - Power Chord (d3d81b30)"
+            "0: Innate - Power Chord (ba62ce1c)",
+            "1: Innate - Power Chord (648e2524)"
           ]
         }
       ],
@@ -6908,7 +6908,7 @@
             "1: Total Heal (cc11bce7)",
             "2: Heal per Tick (192768a4)",
             "3: Bonus Movement Speed (4012f291)",
-            "4: Active (14dca914)"
+            "4: Active (1d0a2219)"
           ]
         }
       ],
@@ -7060,7 +7060,7 @@
           "name": "Transcendent",
           "effects": [
             "0: Innate (1203ba7c)",
-            "1: Innate (c17dbd1f)"
+            "1: Innate (f831a609)"
           ]
         }
       ],
@@ -7107,7 +7107,7 @@
         {
           "name": "An Acquired Taste",
           "effects": [
-            "0: Innate (0572113b)"
+            "0: Innate (78867404)"
           ]
         }
       ],
@@ -7115,7 +7115,7 @@
         {
           "name": "Tongue Lash",
           "effects": [
-            "0: Magic Damage (e62a2eb7)",
+            "0: Magic Damage (42fb7288)",
             "1: Heal (7789d61b)"
           ]
         }
@@ -7136,7 +7136,7 @@
             "0: Damage Stored into Grey Health (2f62d98a)",
             "1: Increased Damage Stored into Grey Health (bb5e67f0)",
             "2: Passive (6e6f8fd6)",
-            "3: Passive (fb37765c)",
+            "3: Passive (31a5afbf)",
             "4: Passive (9c0933cc)"
           ]
         }
@@ -7209,8 +7209,8 @@
         {
           "name": "Blade's End",
           "effects": [
-            "0: Innate (64a1f0b3)",
-            "1: Innate (62055f9a)"
+            "0: Innate (fd9e9dd2)",
+            "1: Innate (177ad71a)"
           ]
         }
       ],
@@ -7221,7 +7221,7 @@
             "0: Physical Damage (aee6beee)",
             "1: Critical Physical Damage (24c869aa)",
             "2: Active (9235f477)",
-            "3: Active (4720adc8)"
+            "3: Active (31610c2e)"
           ]
         }
       ],
@@ -7258,7 +7258,7 @@
         {
           "name": "Bravado",
           "effects": [
-            "0: Innate (dc64ddc7)",
+            "0: Innate (567dcc8c)",
             "1: Innate (1d0a2219)"
           ]
         }
@@ -7398,7 +7398,7 @@
         {
           "name": "Draw a Bead",
           "effects": [
-            "0: Innate (16223ca0)"
+            "0: Innate (b0733311)"
           ]
         }
       ],
@@ -7449,7 +7449,7 @@
         {
           "name": "King's Tribute",
           "effects": [
-            "0: Innate (05153dd5)"
+            "0: Innate (5b065cf9)"
           ]
         }
       ],
@@ -7547,7 +7547,7 @@
         {
           "name": "Loaded Dice",
           "effects": [
-            "0: Innate (9defc3a8)"
+            "0: Innate (1d0a2219)"
           ]
         }
       ],
@@ -7569,9 +7569,9 @@
             "3: Slow (6dd804ce)",
             "4: Magic Damage (0dd3f687)",
             "5: Stun Duration (9de46b06)",
-            "6: Blue Card Bonus (8b401d90)",
-            "7: Red Card Bonus (87e9fb9e)",
-            "8: Gold Card Bonus (0e35086a)"
+            "6: Blue Card Bonus (38a1ef1b)",
+            "7: Red Card Bonus (38593135)",
+            "8: Gold Card Bonus (44eb9089)"
           ]
         }
       ],
@@ -7660,11 +7660,11 @@
             "1: Total Physical Damage (68e175dc)",
             "2: Bonus Attack Speed (f39d0a75)",
             "3: Bonus Physical Damage On-Hit (42d64973)",
-            "4: Recast - Awaken (432184b6)",
-            "5: Recast - Awaken (492c0a77)",
-            "6: Recast - Awaken (8335a46b)",
-            "7: Recast - Awaken (81d10306)",
-            "8: Recast - Awaken (1eb136c7)"
+            "4: Recast - Awaken (0db3f9a3)",
+            "5: Recast - Awaken (94341d10)",
+            "6: Recast - Awaken (013a8629)",
+            "7: Recast - Awaken (639a031a)",
+            "8: Recast - Awaken (378d0703)"
           ]
         }
       ],
@@ -7674,9 +7674,9 @@
           "effects": [
             "0: Life Steal (c05a79e1)",
             "1: Shield Strength (2709c9eb)",
-            "2: Increased Shield Strength (94ce4bf2)",
-            "3: Total Healing (6d64cea6)",
-            "4: Heal per Tick (efc4fe4c)",
+            "2: Increased Shield Strength (ee99e4b6)",
+            "3: Total Healing (e232a4b1)",
+            "4: Heal per Tick (f037e0fb)",
             "5: Increased Life Steal (c65869e9)"
           ]
         }
@@ -7687,7 +7687,7 @@
           "effects": [
             "0: Bonus Movement Speed (36cd96df)",
             "1: Decayed Bonus Movement Speed (f6044382)",
-            "2: Recast - Awaken (95bf79b8)"
+            "2: Recast - Awaken (406b6de6)"
           ]
         }
       ],
@@ -7699,14 +7699,14 @@
             "1: Total Magic Damage (4047a09c)",
             "2: Slow (8c482b78)",
             "3: Increased Slow (a3a232c0)",
-            "4: Active - Stance (1b1d07bb)",
+            "4: Active - Stance (8890bc64)",
             "5: Active - Stance (587d5621)",
             "6: Recast - Awaken (a2294f73)",
-            "7: Recast - Awaken (3083c0a9)",
-            "8: Recast - Awaken (bc899ccd)",
-            "9: Recast - Awaken (cfcbaea7)",
-            "10: Recast - Awaken (8b2b40c9)",
-            "11: Recast - Awaken (18cf5de7)"
+            "7: Recast - Awaken (639574eb)",
+            "8: Recast - Awaken (6c2a828a)",
+            "9: Recast - Awaken (93a953c3)",
+            "10: Recast - Awaken (c422eb11)",
+            "11: Recast - Awaken (a27e3974)"
           ]
         }
       ]
@@ -7717,7 +7717,7 @@
           "name": "Echoing Flames",
           "effects": [
             "0: Innate (0d48c5fe)",
-            "1: Innate (34ed0e18)"
+            "1: Innate (35332883)"
           ]
         }
       ],
@@ -7734,7 +7734,7 @@
         {
           "name": "Purge",
           "effects": [
-            "0: Modified Physical Damage (52decd5d)"
+            "0: Modified Physical Damage (49d36ca7)"
           ]
         }
       ],
@@ -7752,7 +7752,7 @@
           "name": "Fear Beyond Death",
           "effects": [
             "0: Physical Damage (56428fe8)",
-            "1: Active (aa34d90a)"
+            "1: Active (8583c1a9)"
           ]
         }
       ]
@@ -7777,7 +7777,7 @@
             "1: Maximum Physical Damage (f34350eb)",
             "2: Minimum Reduced Damage (8a4a20f9)",
             "3: Maximum Reduced Damage (670804a5)",
-            "4: Recast (1fcdc353)",
+            "4: Recast (1d0a2219)",
             "5: Recast (681072cb)"
           ]
         }
@@ -7795,7 +7795,7 @@
             "6: Active Maximum Magic Damage (20dac389)",
             "7: Blight (40f19470)",
             "8: Blight (3d00b3c5)",
-            "9: Blight (b12e27cd)"
+            "9: Blight (1d0a2219)"
           ]
         }
       ],
@@ -7901,7 +7901,7 @@
           "effects": [
             "0: Minimum Magic Damage (2b56ea73)",
             "1: Maximum Magic Damage (012767a9)",
-            "2: Active (4c5f3c70)"
+            "2: Active (80c99b75)"
           ]
         }
       ]
@@ -7911,7 +7911,7 @@
         {
           "name": "Organic Deconstruction",
           "effects": [
-            "0: Innate (7da6ccb9)"
+            "0: Innate (e3b0ec10)"
           ]
         }
       ],
@@ -7941,7 +7941,7 @@
           "name": "Tectonic Disruption",
           "effects": [
             "0: Magic Damage (af3ab6c1)",
-            "1: Active (6292ddf1)"
+            "1: Active (1d0a2219)"
           ]
         }
       ],
@@ -7961,8 +7961,8 @@
           "name": "Doom 'n Gloom",
           "effects": [
             "0: Passive - Doom (eb03913a)",
-            "1: Passive - Doom (640eb28f)",
-            "2: Innate - Gloom (a54afc3e)",
+            "1: Passive - Doom (1d0a2219)",
+            "2: Innate - Gloom (2fb42aec)",
             "3: Innate - Gloom (f61f6970)"
           ]
         }
@@ -8019,7 +8019,7 @@
           "effects": [
             "0: Minimum Physical Damage (a8d3467e)",
             "1: Maximum Physical Damage (0106eb5b)",
-            "2: Recast (cce962a9)"
+            "2: Recast (1d0a2219)"
           ]
         }
       ],
@@ -8076,7 +8076,7 @@
           "name": "Spectral Maw",
           "effects": [
             "0: Magic Damage (3c156327)",
-            "1: Recast (97bbba8b)"
+            "1: Recast (1d0a2219)"
           ]
         }
       ],
@@ -8114,8 +8114,8 @@
             "0: Magic Damage (fad0bc00)",
             "1: Modified Magic Damage (32f6b908)",
             "2: Total Magic Damage (d4a38b1b)",
-            "3: Active (eeb783a5)",
-            "4: Augment: Turbocharge — (49f54c44)"
+            "3: Active (4213bd1a)",
+            "4: Augment: Turbocharge — (fda2d633)"
           ]
         }
       ],
@@ -8162,8 +8162,8 @@
             "0: Magic Damage (190f9ef0)",
             "1: Heal (c4578e3d)",
             "2: Increased Damage (92505fe6)",
-            "3: Active (68db33f5)",
-            "4: Active (6ae9bb1a)"
+            "3: Active (b0086fa2)",
+            "4: Active (75c3b35b)"
           ]
         }
       ],
@@ -8205,7 +8205,7 @@
         {
           "name": "The Relentless Storm",
           "effects": [
-            "0: Lightning Claws (f8d69d0d)"
+            "0: Lightning Claws (67b8952c)"
           ]
         }
       ],
@@ -8255,7 +8255,7 @@
         {
           "name": "Eternal Hunger",
           "effects": [
-            "0: Innate (550962da)"
+            "0: Innate (2dc3bb6c)"
           ]
         }
       ],
@@ -8351,7 +8351,7 @@
         {
           "name": "Mana Surge",
           "effects": [
-            "0: Innate (5008fff1)"
+            "0: Innate (bec27db7)"
           ]
         }
       ],
@@ -8361,7 +8361,7 @@
           "effects": [
             "0: Mana Refunded (ac66da79)",
             "1: Magic Damage (1d40ccab)",
-            "2: Active (542001b4)"
+            "2: Active (1d0a2219)"
           ]
         }
       ],
@@ -8380,7 +8380,7 @@
           "name": "Shocking Orb",
           "effects": [
             "0: Magic Damage (955a382f)",
-            "1: Active (dff87785)"
+            "1: Active (1d0a2219)"
           ]
         }
       ],
@@ -8425,8 +8425,8 @@
             "1: Slash Total Physical Damage (0644d219)",
             "2: Thrust Physical Damage (3222b582)",
             "3: Total Physical Damage (0a75eaa4)",
-            "4: Active (395655d3)",
-            "5: Active (8182611f)"
+            "4: Active (c832efce)",
+            "5: Active (6754a68a)"
           ]
         }
       ],
@@ -8523,9 +8523,9 @@
             "0: Total Mixed Damage (753a9399)",
             "1: Physical Damage (5002932f)",
             "2: Magic Damage (5002932f)",
-            "3: Active (3267bf01)",
-            "4: Active (8feaccd1)",
-            "5: Active (5248522c)"
+            "3: Active (2842fcb5)",
+            "4: Active (7b61ab2d)",
+            "5: Active (11de4765)"
           ]
         }
       ],
@@ -8534,7 +8534,7 @@
           "name": "Soul Unbound",
           "effects": [
             "0: Damage Stored (f4d95d89)",
-            "1: Spirit Form (ac86ff0c)"
+            "1: Spirit Form (1d0a2219)"
           ]
         }
       ],
@@ -8563,8 +8563,8 @@
           "name": "Last Rites",
           "effects": [
             "0: Bonus Physical Damage (eb65d9bf)",
-            "1: Heal (0f4d0f9c)",
-            "2: Non-Champion Heal (fd8a1443)"
+            "1: Heal (80321b4d)",
+            "2: Non-Champion Heal (e9697ef3)"
           ]
         },
         {
@@ -8576,7 +8576,7 @@
         {
           "name": "Dark Procession",
           "effects": [
-            "0: Wall Health (56e824c6)"
+            "0: Wall Health (88b8f5fb)"
           ]
         }
       ],
@@ -8633,7 +8633,7 @@
         {
           "name": "Arc of Ruin",
           "effects": [
-            "0: Active (5d1ef2be)"
+            "0: Active (53143940)"
           ]
         }
       ],
@@ -8665,7 +8665,7 @@
         {
           "name": "Feline Friendship",
           "effects": [
-            "0: Innate (42f5af3e)"
+            "0: Innate (4641fa6e)"
           ]
         }
       ],
@@ -8712,7 +8712,7 @@
             "2: Magic Damage per Hit (4437ff99)",
             "3: Reduced Damage per Hit (8af9c581)",
             "4: Total Magic Damage (06fb4323)",
-            "5: Best Friend Bonus (1f0e3917)"
+            "5: Best Friend Bonus (9e64de43)"
           ]
         }
       ]
@@ -8722,9 +8722,9 @@
         {
           "name": "Cultivation of War",
           "effects": [
-            "0: Innate (ad7b615f)",
+            "0: Innate (1d0a2219)",
             "1: Determination (3696c6d3)",
-            "2: Determination (bc8906b8)",
+            "2: Determination (0fcd4782)",
             "3: Determination (1d0a2219)",
             "4: Determination (1d0a2219)"
           ]
@@ -8778,7 +8778,7 @@
         {
           "name": "Cell Division",
           "effects": [
-            "0: Innate - Goo (848f7f1b)",
+            "0: Innate - Goo (ddbbc9f7)",
             "1: Innate - Cell Division (6f19dbe8)",
             "2: Innate - Cell Division (89a86ee8)"
           ]
@@ -8818,7 +8818,7 @@
             "0: Magic Damage Per Hit (3aa50dc1)",
             "1: Reduced Damage Per Hit (b728c313)",
             "2: Total Magic Damage (aeef0bcc)",
-            "3: Active (35bbcc80)"
+            "3: Active (1d0a2219)"
           ]
         }
       ]
@@ -8874,8 +8874,8 @@
           "name": "Living Battery",
           "effects": [
             "0: Innate (386f86ba)",
-            "1: Innate (76f2625b)",
-            "2: Innate (a7bca1de)"
+            "1: Innate (e2bd7a12)",
+            "2: Innate (72a0976a)"
           ]
         }
       ],
@@ -8886,9 +8886,9 @@
             "0: Total Physical Damage (ec52ea59)",
             "1: Total Critical Strike Damage (6974cd0e)",
             "2: Total Infinity Edge Damage (99104833)",
-            "3: Physical Damage per Hit (af5f3ebc)",
-            "4: Critical Strike per Hit (0b6dbb32)",
-            "5: Infinity Edge Damage per Hit (840887fe)",
+            "3: Physical Damage per Hit (38fe003e)",
+            "4: Critical Strike per Hit (1865501d)",
+            "5: Infinity Edge Damage per Hit (d676c337)",
             "6: Active (fcef35fb)"
           ]
         }
@@ -8932,8 +8932,8 @@
         {
           "name": "Short Fuse",
           "effects": [
-            "0: Innate (0cd09302)",
-            "1: Innate (04ad19c5)",
+            "0: Innate (7af7fdd8)",
+            "1: Innate (b9eae24e)",
             "2: Innate (f9e41b63)"
           ]
         }
@@ -9004,7 +9004,7 @@
         {
           "name": "Time Warp",
           "effects": [
-            "0: Movement Speed Modifier (d9c70bac)"
+            "0: Movement Speed Modifier (9f6eb208)"
           ]
         }
       ],
@@ -9022,7 +9022,7 @@
         {
           "name": "More Sparkles!",
           "effects": [
-            "0: Innate (419a5786)"
+            "0: Innate (ef1cbddd)"
           ]
         }
       ],
@@ -9030,9 +9030,9 @@
         {
           "name": "Paddle Star!",
           "effects": [
-            "0: Minimum Magic Damage (6a697b77)",
-            "1: Maximum Magic Damage (9d5988a0)",
-            "2: Recast (9d38397d)"
+            "0: Minimum Magic Damage (bf8d92ad)",
+            "1: Maximum Magic Damage (c85fa1d6)",
+            "2: Recast (1d0a2219)"
           ]
         }
       ],

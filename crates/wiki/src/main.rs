@@ -73,6 +73,9 @@ pub enum Wiki {
     /// Downloads raw ability sources for the structured champion model.
     #[clap(alias = "cda")]
     ChampionsDownloadAbilities,
+    /// Downloads the page of every champion, which holds their pets
+    #[clap(alias = "cdp")]
+    ChampionsDownloadPages,
     #[clap(alias = "cde")]
     ChampionsDownloadExceptions,
     #[clap(alias = "cpf")]
@@ -201,6 +204,7 @@ async fn main() -> MayFail {
             Wiki::ChampionsDownloadTemplates => champions::template::download().await,
             Wiki::ChampionsParseTemplates => champions::template::parse(),
             Wiki::ChampionsDownloadAbilities => champions::download_ability_sources().await,
+            Wiki::ChampionsDownloadPages => champions::download_pages().await,
             Wiki::ChampionsDownloadExceptions => champions::exceptions::download().await,
             Wiki::ChampionsParseExceptions => champions::exceptions::parse(),
             Wiki::ChampionsParseModel => wikitext::build::parse_model(),

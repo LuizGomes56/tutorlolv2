@@ -2,6 +2,10 @@ use super::*;
 
 impl Generator for Sett {
     fn generate(&mut self) -> MayFail {
+        let [attacks] = self
+            .description(Key::Q, "Active")?
+            .capture(regex!(r"empowers his next (\w+) basic attacks"))?;
+
         // A value written in a shape map changes can't read, by the position of its
         // numbers, as {{fd|3}}% of "3% per 100 bonus AD"
         let (mode, numbers) = self.map_numbers(Key::W, "Damage base Grit ratio")?;
@@ -14,7 +18,7 @@ impl Generator for Sett {
             .take("Physical Damage Per Hit", Q(Min))?
             .edit(Q(Min), |q| f![q - AttackDamage])
             .take("Total Physical Damage", Q(Max))?
-            .edit(Q(Max), |q| f![q - 2 * AttackDamage])
+            .edit(Q(Max), |q| f![q - attacks * AttackDamage])
             // Haymaker by Grit, his mana: the actual damage with his current Grit, and its
             // range from none to resourceMax
             .take("Damage", W(_1Max))?

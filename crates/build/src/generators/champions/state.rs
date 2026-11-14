@@ -256,6 +256,77 @@ impl ChampionGenerator {
         Ok(self)
     }
 
+    /// Basic attack damage of the pet named `name` and its damage type, read from
+    /// its `{{Infobox/Pet}}` as a value of `key`, whose rank its `{{ap}}` follow
+    pub fn pet(&self, name: &str, key: Key) -> MayFail<(Formula, DamageType)> {
+        let champion_id = self.champion_id();
+        let pet = self.model.pets.get(name).ok_or_else(|| {
+            format!(
+                "[{champion_id}] has no pet {name:?}, pets: {:?}",
+                self.model.pets.keys().collect::<Vec<_>>()
+            )
+        })?;
+
+        let effect = pet
+            .damage
+            .get(&key)
+            .ok_or_else(|| format!("[{champion_id}] pet {name:?} has no damage of {key:?}"))?;
+
+        if !effect.issues.is_empty() {
+            return Err(format!(
+                "[{champion_id}] pet {name:?} has parts the model can't read: {:?}",
+                effect.issues
+            )
+            .into());
+        }
+
+        Ok((effect.formula.clone(), pet.damage_type))
+    }
+
+    /// Damage and text of the ability named `ability` of the pet named `pet`, as the
+    /// aura of Tibbers. Its damage is read as a value of `key`, see [`Self::pet`]
+    pub fn pet_ability(&self, pet: &str, ability: &str, key: Key) -> MayFail<(Formula, &str)> {
+        let champion_id = self.champion_id();
+        let found = self
+            .model
+            .pets
+            .get(pet)
+            .ok_or_else(|| format!("[{champion_id}] has no pet {pet:?}"))?
+            .abilities
+            .get(ability)
+            .ok_or_else(|| format!("[{champion_id}] pet {pet:?} has no ability {ability:?}"))?;
+
+        let effect = found.damage.get(&key).ok_or_else(|| {
+            format!("[{champion_id}] {pet:?} {ability:?} deals no damage as a value of {key:?}")
+        })?;
+
+        if !effect.issues.is_empty() {
+            return Err(format!(
+                "[{champion_id}] {pet:?} {ability:?} has parts the model can't read: {:?}",
+                effect.issues
+            )
+            .into());
+        }
+
+        Ok((effect.formula.clone(), found.text.as_str()))
+    }
+
+    /// Adds `id` with the basic attack of the pet named `name`, see [`Self::pet`]
+    pub fn insert_pet(&mut self, id: AbilityId, name: &str) -> MayFail<&mut Self> {
+        let (formula, damage_type) = self.pet(name, id.as_key())?;
+
+        self.insert(
+            id,
+            Damage {
+                name: name.into(),
+                damage_type,
+                attributes: Attrs::Undefined,
+                comment: format!("Pet: {name} basic attack"),
+                formula,
+            },
+        )
+    }
+
     /// Damage `id`, which a generator must have taken before
     fn damage_mut(&mut self, id: AbilityId) -> &mut Damage {
         let champion_id = self.inner.champion_id.clone();
@@ -608,6 +679,26 @@ impl ChampionGenerator {
             )
             .into()),
         }
+    }
+
+    /// Text of the description under `heading` of the ability named `ability`, for
+    /// keys whose pages repeat a heading, as the `Active` of Skarner's two Q pages
+    pub fn description_in(&self, key: Key, ability: &str, heading: &str) -> MayFail<&str> {
+        self.model
+            .abilities
+            .get(&key)
+            .into_iter()
+            .flatten()
+            .find(|page| page.name == ability)
+            .and_then(|page| page.descriptions.get(heading))
+            .map(String::as_str)
+            .ok_or_else(|| {
+                format!(
+                    "[{}] {key:?} {ability:?} has no description named {heading:?}",
+                    self.champion_id()
+                )
+                .into()
+            })
     }
 
     /// Text of one of the champion's wiki exceptions, from the cached metadata

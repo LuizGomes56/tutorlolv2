@@ -2,25 +2,16 @@ use super::*;
 
 impl Generator for Naafiri {
     fn generate(&mut self) -> MayFail {
-        self.insert(
-            P(Void),
-            Damage {
-                name: "Packmate".into(),
-                damage_type: Physical,
-                attributes: Undefined,
-                comment: "Pet: Packmate basic attack".into(),
-                formula: f![10 + 10 / 17 * (Level - 1) + 0.04 * BonusAd],
-            },
-        )?
-        .map_change(P(Void), "Packmate attack damage bonus AD ratio")?
-        .take("Minimum Total Physical Damage", Q(Min))?
-        .take("Maximum Total Physical Damage", Q(Max))?
-        .take("Total Bleed Physical Damage", Q(_1))?
-        .map_change(Q(_1), "Bleed base damage")?
-        .take("Dash Physical Damage", E(Min))?
-        .map_change(E(Min), "Dash base damage")?
-        .map_change(E(Min), "Dash AD ratio")?
-        .take("Total Physical Damage", E(Max))?;
+        self.insert_pet(P(Void), "Packmate")?
+            .map_change(P(Void), "Packmate attack damage bonus AD ratio")?
+            .take("Minimum Total Physical Damage", Q(Min))?
+            .take("Maximum Total Physical Damage", Q(Max))?
+            .take("Total Bleed Physical Damage", Q(_1))?
+            .map_change(Q(_1), "Bleed base damage")?
+            .take("Dash Physical Damage", E(Min))?
+            .map_change(E(Min), "Dash base damage")?
+            .map_change(E(Min), "Dash AD ratio")?
+            .take("Total Physical Damage", E(Max))?;
 
         let initial = self.value("Initial Physical Damage", Key::Q)?;
         let initial = self.map_changed(Key::Q, "Initial base damage", initial)?;

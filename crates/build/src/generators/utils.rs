@@ -43,7 +43,8 @@ pub trait RegExtractor: Display {
             .map(|group| -> MayFail<f64> {
                 let group =
                     group.ok_or_else(|| format!("Pattern {source:?} has an empty group"))?;
-                Ok(group.as_str().parse()?)
+
+                number(group.as_str())
             })
             .collect::<MayFail<Vec<_>>>()?;
 
@@ -56,6 +57,42 @@ pub trait RegExtractor: Display {
 }
 
 impl<T: Display + ?Sized> RegExtractor for T {}
+
+/// A number written in digits, or as a word the wiki uses for counts, as the
+/// `two` of Sett's "next two basic attacks" or the `twice` of Ahri's recasts
+pub fn number(text: &str) -> MayFail<f64> {
+    if let Ok(value) = text.parse() {
+        return Ok(value);
+    }
+
+    let value = match text.to_ascii_lowercase().as_str() {
+        "half" => 0.5,
+        "one" | "once" | "single" => 1.0,
+        "two" | "twice" | "double" | "second" => 2.0,
+        "three" | "thrice" | "triple" | "third" => 3.0,
+        "four" | "quadruple" | "fourth" => 4.0,
+        "five" | "fifth" => 5.0,
+        "six" | "sixth" => 6.0,
+        "seven" => 7.0,
+        "eight" => 8.0,
+        "nine" => 9.0,
+        "ten" => 10.0,
+        _ => return Err(format!("{text:?} is not a number").into()),
+    };
+
+    Ok(value)
+}
+
+/// Number of times an effect that happens `every` seconds does over `duration`
+/// seconds, as the 8 ticks of Udyr's blizzard every 0.5 seconds for 4 seconds.
+/// A tick that would land after the duration doesn't happen
+pub fn ticks(every: f64, duration: f64) -> MayFail<f64> {
+    if every <= 0.0 || duration <= 0.0 {
+        return Err(format!("Expected positive ticks, got every {every} for {duration}").into());
+    }
+
+    Ok((duration / every + 1e-9).floor())
+}
 
 #[derive(Copy, Clone)]
 pub enum SaveTo<'a> {

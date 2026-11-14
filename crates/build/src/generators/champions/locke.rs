@@ -2,9 +2,16 @@ use super::*;
 
 impl Generator for Locke {
     fn generate(&mut self) -> MayFail {
+        // Increased by up to a percent against low health targets
+        let [increase] = self
+            .description(Key::P, "Innate")?
+            .capture(regex!(r"increased by 0 to ([\d.]+),"))?;
+
+        let maximum = 1.0 + increase / 100.0;
+
         self.take_nth("Innate", 0, P(Min))?
             .comment(P(Min), "Silver Stake on-hit damage")
-            .derive(P(Max), P(Min), |p| f![2 * (p)])?
+            .derive(P(Max), P(Min), |p| f![maximum * (p)])?
             .comment(
                 P(Max),
                 "Silver Stake on-hit damage against low health targets",

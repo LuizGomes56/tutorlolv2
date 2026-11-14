@@ -2,6 +2,13 @@ use super::*;
 
 impl Generator for Zyra {
     fn generate(&mut self) -> MayFail {
+        // Both plants attack for the same damage
+        let (plant, plant_type) = self.pet("Thorn Spitter", Key::P)?;
+
+        if self.pet("Vine Lasher", Key::P)? != (plant.clone(), plant_type) {
+            return Err("[Zyra] Thorn Spitter and Vine Lasher deal different damages".into());
+        }
+
         self.take("Magic Damage", Q(Void))?
             .take("Magic Damage", E(Void))?
             .take("Magic Damage", R(Void))?
@@ -9,10 +16,10 @@ impl Generator for Zyra {
                 P(Void),
                 Damage {
                     name: "Garden of Thorns".into(),
-                    damage_type: Magic,
+                    damage_type: plant_type,
                     attributes: Undefined,
                     comment: "Pet: Thorn Spitter / Vine Lasher basic attack".into(),
-                    formula: f![15 + 60 / 17 * (Level - 1) + 0.2 * AbilityPower],
+                    formula: plant,
                 },
             )?
             .map_change(P(Void), "Thorn Spitter and Vine Lasher AP ratio")?

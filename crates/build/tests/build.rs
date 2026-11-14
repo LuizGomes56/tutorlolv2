@@ -28,6 +28,7 @@ fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
         wiki::wikitext::ChampionModel {
             champion_id: "ComboTest".into(),
             abilities: Default::default(),
+            pets: Default::default(),
         },
     );
 

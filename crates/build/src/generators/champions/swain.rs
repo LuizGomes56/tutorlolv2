@@ -14,10 +14,14 @@ impl Generator for Swain {
             .take("Magic Damage", E(Void))?
             .take("Magic Damage per Tick", R(Void))?;
 
-        // Demonic Ascension ticks every 0.5 seconds
+        // Demonic Ascension ticks every few seconds
+        let [every] = self
+            .description(Key::R, "Demonic Ascension")?
+            .capture(regex!(r"every ([\d.]+) seconds per target"))?;
+
         let (mode, per_second) = self.map_value(Key::R, "Base damage per second")?;
 
-        self.map_base(R(Void), mode, per_second.times(0.5))?
+        self.map_base(R(Void), mode, per_second.times(every))?
             .take("Magic Damage", R(_1))?
             .combos([
                 &[

@@ -22,7 +22,12 @@ impl Generator for AurelionSol {
             .comment(R(_1), "The Skies Descend")
             .comment(R(_2), "The Skies Descend empowered by Stardust");
 
-        // The burn ticks every 0.125 seconds, 26 times at most
+        // The burn ticks every few seconds over the longest channel
+        let [duration, every] = self.description(Key::Q, "Active")?.capture(regex!(
+            r"channel for up to ([\d.]+) seconds.*?every ([\d.]+) seconds"
+        ))?;
+
+        let ticks = ticks(every, duration)?;
         let (mode, per_second) = self.map_value(Key::Q, "Burn AP ratio per second")?;
 
         self.map_ratio(Q(_1), mode, &[AbilityPower], per_second.clone())?
@@ -30,13 +35,13 @@ impl Generator for AurelionSol {
                 Q(Min),
                 mode,
                 &[AbilityPower],
-                per_second.clone().times(0.125),
+                per_second.clone().times(every),
             )?
             .map_ratio(
                 Q(Max),
                 mode,
                 &[AbilityPower],
-                per_second.times(0.125 * 26.0),
+                per_second.times(every * ticks),
             )?
             .combos([
                 &[Ability(E(Max)), Ability(R(Void)), Ability(Q(Max))],

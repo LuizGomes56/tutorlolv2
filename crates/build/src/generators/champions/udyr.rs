@@ -21,14 +21,18 @@ impl Generator for Udyr {
             .take("Magic Damage per Tick", R(Min))?
             .take("Total Magic Damage", R(Max))?;
 
-        // The blizzard ticks every 0.5 seconds
+        // The blizzard ticks every few seconds over its duration
+        let [duration, every] = self.description(Key::R, "Active - Stance")?.capture(regex!(
+            r"blizzard around himself for ([\d.]+) seconds that deals magic damage every ([\d.]+) seconds"
+        ))?;
+
+        let ticks = ticks(every, duration)?;
         let (mode, per_second) = self.map_value(Key::R, "Base damage per second")?;
         let tick = self
-            .map_base(R(Min), mode, per_second.times(0.5))?
+            .map_base(R(Min), mode, per_second.times(every))?
             .damage(R(Min))?;
 
-        // 8 ticks over its 4 seconds
-        self.set(R(Max), f![8 * tick])
+        self.set(R(Max), f![ticks * tick])
             .damage_type(Q(Void), Physical)
             .damage_type(Q(Min), Physical)
             .damage_type(Q(Max), Physical)

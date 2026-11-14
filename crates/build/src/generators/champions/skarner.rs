@@ -14,9 +14,14 @@ impl Generator for Skarner {
             .take("Magic Damage", R(Void))?
             .damage_type(W(Void), Magic);
 
-        // 3 empowered attacks
+        // The empowered attacks
+        let [attacks] = self
+            .description_in(Key::Q, "Shattered Earth", "Active")?
+            .capture(regex!(r"empowering up to (\w+) of his next basic attacks"))?;
+
         let (mode, per_hit) = self.map_value(Key::Q, "''Shattered Earth'' base damage")?;
-        self.map_base(Q(Max), mode, per_hit.times(3.0))?
+
+        self.map_base(Q(Max), mode, per_hit.times(attacks))?
             .combos([
                 &[Ability(R(Void)), Ability(W(Void))],
                 &[Ability(E(Void)), Ability(R(Void))],

@@ -19,6 +19,34 @@ use {
 pub struct ChampionModel {
     pub champion_id: String,
     pub abilities: BTreeMap<Key, Vec<AbilityModel>>,
+    /// Pets of the champion by name, read from the `{{Infobox/Pet}}` of the
+    /// champion's page, such as Ivern's `Daisy`
+    #[serde(default)]
+    pub pets: BTreeMap<String, PetModel>,
+}
+
+/// Basic attack of a pet, from the `damage` field of its `{{Infobox/Pet}}`
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct PetModel {
+    pub damage_type: DamageType,
+    /// The damage read as a value of each ability, which decides the rank its
+    /// `{{ap}}` values follow, as `R` for the rank of Daisy's ultimate
+    pub damage: BTreeMap<Key, EffectModel>,
+    /// Abilities of the pet by name, from the `;Name` sections of its `abilities`
+    /// field, as Tibbers' `Flame Aura`
+    #[serde(default)]
+    pub abilities: BTreeMap<String, PetAbility>,
+}
+
+/// An ability of a pet, as the aura of Tibbers
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct PetAbility {
+    /// The text of the ability as displayed
+    pub text: String,
+    /// The first damage the text deals, read as a value of each ability like
+    /// [`PetModel::damage`], as the `{{as|{{ap|2 to 4 3}}|magic damage}}` of Tibbers'
+    /// aura. Empty when the ability deals no damage
+    pub damage: BTreeMap<Key, EffectModel>,
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]

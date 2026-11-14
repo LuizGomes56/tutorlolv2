@@ -2,6 +2,10 @@ use super::*;
 
 impl Generator for Evelynn {
     fn generate(&mut self) -> MayFail {
+        let [bonus_hits, spikes] = self.description(Key::Q, "Active")?.capture(regex!(
+            r"next (\d+) basic attacks.*?may be recast up to (\d+) times"
+        ))?;
+
         // The recast's spikes, which deal the dart's damage except on Arena
         let spike = self.value_nth("Magic Damage", 1, Key::Q)?;
         let spike = self.map_changed(Key::Q, "Spikes base damage", spike)?;
@@ -26,8 +30,8 @@ impl Generator for Evelynn {
         let dart = self.damage(Q(Min))?;
         let bonus = self.damage(Q(_1))?;
 
-        // The dart, 3 spikes and the 3 bonus hits of its mark
-        self.set(Q(Max), f![dart + 3 * spike + 3 * bonus])
+        // The dart, its spikes and the bonus hits of its mark
+        self.set(Q(Max), f![dart + spikes * spike + bonus_hits * bonus])
             .combos([
                 &[
                     Ability(W(Void)),

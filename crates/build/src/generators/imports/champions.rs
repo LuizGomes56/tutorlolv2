@@ -5,8 +5,10 @@ pub use crate::{
     MayFail, formula as f,
     generators::champions::{ChampionGenerator, Damage},
     generators::{
-        Generator, GeneratorExt, constants::WithConstants, parser::champions::Champion,
-        utils::RegExtractor,
+        Generator, GeneratorExt,
+        constants::WithConstants,
+        parser::champions::Champion,
+        utils::{RegExtractor, ticks},
     },
 };
 pub use lazy_regex::regex;

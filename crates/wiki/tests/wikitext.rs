@@ -2230,3 +2230,119 @@ fn descriptions_keep_heading_text_and_continuations() {
     assert!(text.contains("Swain gains 12 bonus health"), "{text}");
     assert!(text.contains("Additional text."), "{text}");
 }
+
+fn pets(src: &str) -> std::collections::BTreeMap<String, PetModel> {
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let context = PageContext {
+        lookup: &lookup,
+        four_rank_ultimate: false,
+        ability_keys: Default::default(),
+        crit_damage: 200.0,
+    };
+    PetModel::from_page(src, &context).unwrap()
+}
+
+#[test]
+fn pets_read_the_damage_of_their_infobox_by_the_rank_of_each_key() {
+    let pets = pets(
+        "== Pets ==
+{{Infobox/Pet
+|name = Daisy
+|damage = {{as|{{ap|70 to 130 3}}|attack damage}} {{as|(+ 15% AP)}}
+|damagetype = Physical
+}}
+{{Infobox/Pet
+|name = Mirror Image
+}}",
+    );
+
+    assert_eq!(pets.keys().collect::<Vec<_>>(), ["Daisy"]);
+
+    let daisy = &pets["Daisy"];
+    assert_eq!(daisy.damage_type, types::DamageType::Physical);
+
+    let r = &daisy.damage[&Key::R];
+    assert!(r.issues.is_empty(), "{:?}", r.issues);
+    assert_eq!(
+        r.formula,
+        Formula::Sum(vec![
+            Formula::ByRank {
+                rank: types::CtxVar::RLevel,
+                values: vec![70.0, 100.0, 130.0],
+            },
+            Formula::Product(vec![
+                Formula::Const(0.15),
+                Formula::Var(types::CtxVar::AbilityPower),
+            ]),
+        ])
+    );
+}
+
+#[test]
+fn colored_values_by_rank_or_level_are_not_read_as_their_first_number() {
+    let pets = pets(
+        "{{Infobox/Pet
+|name = Apex
+|damage = {{as|{{ap|80|100|120}}|magic damage}} {{as|(+ 35% AP)}}
+|damagetype = Magic
+}}
+{{Infobox/Pet
+|name = Plant
+|damage = {{as|{{pp|15 + (75-15)/17*(x-1) for 20}}|magic damage}} {{as|(+ 20% AP)}}
+|damagetype = Magic
+}}",
+    );
+
+    let apex = &pets["Apex"].damage[&Key::R];
+    assert!(
+        matches!(&apex.formula, Formula::Sum(terms) if matches!(&terms[0], Formula::ByRank { values, .. } if values == &[80.0, 100.0, 120.0])),
+        "{:?}",
+        apex.formula
+    );
+
+    let plant = &pets["Plant"].damage[&Key::P];
+    assert!(plant.issues.is_empty(), "{:?}", plant.issues);
+    assert!(
+        matches!(&plant.formula, Formula::Sum(terms) if matches!(&terms[0], Formula::Table { values, .. } if values[0] == 15.0 && values[17] == 75.0)),
+        "{:?}",
+        plant.formula
+    );
+}
+
+#[test]
+fn pet_abilities_read_each_section_with_its_first_damage() {
+    let pets = pets(
+        "{{Infobox/Pet
+|name = Tibbers
+|damage = {{as|{{ap|30 to 60 3}}|magic damage}} {{as|(+ 10% AP)}}
+|abilities = ;Flame Aura
+''Tibbers'' deals {{as|{{ap|2 to 4 3}}|magic damage}} {{as|(+ 1% AP)}} {{as|magic damage}} to all enemies every {{fd|0.25}} seconds.
+
+;Recovery
+'''Tibbers''' heals himself for {{as|6% '''maximum''' health}} per second.
+}}",
+    );
+
+    let abilities = &pets["Tibbers"].abilities;
+    assert_eq!(
+        abilities.keys().collect::<Vec<_>>(),
+        ["Flame Aura", "Recovery"]
+    );
+
+    let aura = &abilities["Flame Aura"];
+    assert!(aura.text.contains("every 0.25 seconds"), "{}", aura.text);
+    assert_eq!(
+        aura.damage[&Key::R].formula,
+        Formula::Sum(vec![
+            Formula::ByRank {
+                rank: types::CtxVar::RLevel,
+                values: vec![2.0, 3.0, 4.0],
+            },
+            Formula::Product(vec![
+                Formula::Const(0.01),
+                Formula::Var(types::CtxVar::AbilityPower),
+            ]),
+        ])
+    );
+    assert!(abilities["Recovery"].damage.is_empty());
+}

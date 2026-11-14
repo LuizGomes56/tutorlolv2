@@ -6,16 +6,7 @@ impl Generator for Ivern {
             .take("Additional Magic Damage", W(_1))?
             .take("Ally Additional Magic Damage", W(_2))?
             .take("Magic Damage", E(Void))?
-            .insert(
-                R(Void),
-                Damage {
-                    name: "Daisy".into(),
-                    damage_type: Physical,
-                    attributes: Undefined,
-                    comment: "Pet: Daisy basic attack".into(),
-                    formula: f![70 + 30 * (RLevel - 1) + 0.15 * AbilityPower],
-                },
-            )?
+            .insert_pet(R(Void), "Daisy")?
             .combos([
                 &[
                     Ability(W(_1)),
