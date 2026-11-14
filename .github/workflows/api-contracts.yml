@@ -16,8 +16,8 @@ jobs:
         run: cargo fmt --all -- --check
       # The scanner and protocol checks do not need the private local game-data cache or a database.
       - name: Check generated contracts are current
-        run: cargo run --locked -p tutorlolv2_api_codegen -- check
+        run: cargo run --locked -p api_codegen -- check
       - name: Check declaration grammar and registered route inventory
-        run: cargo test --locked -p tutorlolv2_api_codegen
+        run: cargo test --locked -p api_codegen
       - name: Check common response and transport protocol
-        run: cargo test --locked -p tutorlolv2_protocol --no-default-features
+        run: cargo test --locked -p protocol --no-default-features

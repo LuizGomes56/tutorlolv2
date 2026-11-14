@@ -1,0 +1,302 @@
+use crate::{
+    context::run_formatter,
+    generators::parser::{
+        MapValueExt, Parser, champions::ChampionParser, items::ItemParser, runes::RuneParser,
+    },
+    scripts::{
+        batch::{EntityDocs, FormulaDoc, read_generator},
+        finish::{eval_abilities, eval_items_or_runes},
+    },
+};
+use codec::{Class, ClassOverride, FormulaDbBuilder, GeneratorDbBuilder};
+use heck::ToSnakeCase;
+use rayon::prelude::*;
+use serde::{Serialize, de::DeserializeOwned};
+use std::{collections::BTreeMap, fmt::Write, process::Command, str::FromStr};
+use strum::VariantNames;
+use types::{AbilityName, AttackType, CtxVar, MapMode, Tag};
+use wiki::JsonRead;
+
+pub use context::{BuildContext, project_root};
+pub use wiki::{DynError, MayFail};
+
+pub mod context;
+pub mod generators;
+pub mod scripts;
+
+pub const ENGINE_CFG: &str = r#"#[cfg(feature = "engine")]"#;
+/// Client metadata (merge data, identifiers, exceptions), enabled by `yew` and `client-data`.
+pub const CLIENT_CFG: &str = r#"#[cfg(feature = "client-data")]"#;
+/// Data that the formula docs need, with or without yew.
+pub const DOCS_CFG: &str = r#"#[cfg(any(feature = "yew", feature = "formula-docs"))]"#;
+pub const FORMULA_DOCS_ENV: &str = "CARGO_FEATURE_FORMULA_DOCS";
+
+pub struct BuildOutput {
+    pub eval: String,
+    pub formulas: Vec<FormulaDoc>,
+}
+
+pub trait Build {
+    fn build(&mut self, context: &BuildContext) -> MayFail<BuildOutput>;
+}
+
+pub fn run() -> MayFail {
+    BuildContext::from_env()?.run()
+}
+
+impl BuildContext {
+    fn build_code<T, U>(
+        &self,
+        parser: &impl Parser<T, U>,
+        aliases: Option<BTreeMap<String, Vec<String>>>,
+        eval_fn: impl FnOnce(&str) -> String,
+    ) -> MayFail<Vec<EntityDocs>>
+    where
+        T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
+        U: Build + Serialize + TryFrom<T, Error = DynError>,
+    {
+        let tag = parser.tag();
+        let keys = parser.keys().collect::<Vec<_>>();
+
+        // Indexed parallel collection preserves the enum/codec order.
+        let builds = keys
+            .par_iter()
+            .map(|id| -> MayFail<_> {
+                let mut entity = parser
+                    .run_fn(id)
+                    .map_err(|e| format!("Generating {} {id}: {e}", tag.as_ref()))?;
+
+                let export = if self.export_json {
+                    Some(parser.export(id, &entity, &self.root)?)
+                } else {
+                    None
+                };
+
+                let output = entity
+                    .build(self)
+                    .map_err(|e| format!("Building {} {id}: {e}", tag.as_ref()))?;
+
+                Ok((output, export))
+            })
+            .collect::<MayFail<Vec<_>>>()?;
+
+        let mut eval = String::new();
+        let mut docs = Vec::new();
+        let mut exports = BTreeMap::new();
+
+        for (index, (id, (output, export))) in keys.iter().zip(builds).enumerate() {
+            eval.push_str(&output.eval);
+
+            if self.docs {
+                docs.push(EntityDocs {
+                    tag,
+                    index: index.try_into()?,
+                    variant: (*id).into(),
+                    formulas: output.formulas,
+                    generator: read_generator(&self.root, tag, id)?,
+                });
+            }
+
+            if let Some(export) = export {
+                exports.insert(*id, export);
+            }
+        }
+
+        if self.export_json {
+            use wiki::JsonWrite;
+
+            exports.write_file(
+                self.root
+                    .join("cache/app")
+                    .join(tag.as_ref())
+                    .with_extension("json"),
+            )?;
+        }
+
+        wiki::write(
+            self.out.join(format!("{}_code.rs", tag.as_ref())),
+            [
+                parser.id_enum(),
+                parser.phf(aliases),
+                parser.data_variable(),
+                eval_fn(&eval),
+            ]
+            .concat(),
+        )?;
+
+        Ok(docs)
+    }
+
+    fn write_module<T, U>(
+        &self,
+        command: &mut Command,
+        parser: &impl Parser<T, U>,
+        modules: &mut String,
+    ) -> MayFail
+    where
+        T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
+        U: TryFrom<T, Error = DynError> + Serialize,
+    {
+        let mut result = String::new();
+        let dir = parser.tag().to_string();
+
+        command.arg(self.out.join(format!("{dir}_code.rs")));
+
+        for id in parser.keys() {
+            let module = id.to_snake_case();
+            let model_ty = parser.tag().enum_name().trim_end_matches("Id");
+
+            command.arg(self.out.join(&dir).join(id).with_extension("rs"));
+
+            writeln!(
+                result,
+                r#"pub mod {module} {{
+                    {model_imports}
+                    type X = {model_ty};
+                    include!(concat!(env!("OUT_DIR"), "/{dir}/{id}.rs"));
+                }}"#,
+                model_imports = format_args!(
+                    "use crate::libgen::globals::{{{model_ty}, {}}};",
+                    if matches!(parser.tag(), Tag::Champions) {
+                        "WikiStats, WikiModifiers, Stat, Modifier"
+                    } else {
+                        ""
+                    }
+                )
+            )?;
+        }
+
+        let path = self.out.join(&dir).with_extension("rs");
+
+        wiki::write(&path, result)?;
+        command.arg(path);
+
+        writeln!(modules, "pub mod {dir}_code;\npub mod {dir};")?;
+
+        Ok(())
+    }
+
+    pub fn run(&self) -> MayFail {
+        for input in self.inputs() {
+            println!("cargo:rerun-if-changed={}", input.display());
+        }
+
+        println!("cargo:rerun-if-env-changed={FORMULA_DOCS_ENV}");
+
+        let spells_path = self.root.join(wiki::spells::FULL_PATH);
+        let spells = wiki::spells::SpellData::from_file(&spells_path).map_err(|e| {
+            format!("Reading {spells_path:?}: {e}. Run `cargo run -- wiki spells` from wiki first.")
+        })?;
+
+        let spells_code = scripts::spells::spells_code(&spells)?;
+        let (champions, (items, runes)) = rayon::join(
+            || ChampionParser::from_root(&self.root),
+            || {
+                rayon::join(
+                    || ItemParser::from_root(&self.root),
+                    || RuneParser::from_root(&self.root),
+                )
+            },
+        );
+
+        let (champions, items, runes) = (champions?, items?, runes?);
+
+        if self.export_json {
+            champions.progress();
+            items.progress();
+            runes.progress();
+        }
+
+        let aliases = champions.aliases(&self.root)?;
+        let recommendations = champions.recommendations(&self.root)?;
+
+        let (c, (i, r)) = rayon::join(
+            || {
+                self.build_code(&champions, aliases, |arms| {
+                    eval_abilities(arms, &recommendations)
+                })
+            },
+            || {
+                rayon::join(
+                    || self.build_code(&items, None, |arms| eval_items_or_runes(arms, items.tag())),
+                    || self.build_code(&runes, None, |arms| eval_items_or_runes(arms, runes.tag())),
+                )
+            },
+        );
+
+        let mut docs = [c?, i?, r?].into_iter().flatten().collect::<Vec<_>>();
+
+        if self.docs {
+            let [champion_count, item_count, rune_count] =
+                [champions.len(), items.len(), runes.len()].map(u16::try_from);
+
+            self.build_docs(&mut docs, [champion_count?, item_count?, rune_count?])?;
+        }
+
+        let mut command = Command::new("rustfmt");
+
+        command.args(["--edition", "2024", "--config", "max_width=80"]);
+
+        let mut modules = String::new();
+        let spells_path = self.out.join("spells.rs");
+
+        wiki::write(&spells_path, spells_code)?;
+        command.arg(spells_path);
+        modules.push_str("include!(concat!(env!(\"OUT_DIR\"), \"/spells.rs\"));\n");
+
+        self.write_module(&mut command, &champions, &mut modules)?;
+        self.write_module(&mut command, &items, &mut modules)?;
+        self.write_module(&mut command, &runes, &mut modules)?;
+
+        run_formatter(&mut command)?;
+
+        wiki::write(self.out.join("libgen.rs"), modules)
+    }
+
+    pub fn build_docs(&self, docs: &mut [EntityDocs], counts: [u16; 3]) -> MayFail {
+        self.format_formulas(docs)?;
+
+        let overrides = [AttackType::VARIANTS, AbilityName::VARIANTS]
+            .into_iter()
+            .flatten()
+            .map(|&text| ClassOverride::new(text, Class::Constant))
+            .collect::<Vec<_>>();
+
+        let mut generators = GeneratorDbBuilder::new(counts[0], counts[1], counts[2], &overrides);
+        let mut formulas = FormulaDbBuilder::new(
+            counts[0],
+            counts[1],
+            counts[2],
+            |s| CtxVar::from_str(s).ok().map(|v| v as u8),
+            |s| MapMode::from_str(s).ok().map(|m| m as u8),
+        );
+
+        for doc in docs.iter() {
+            doc.pack_formulas(&mut formulas)?;
+
+            if let Some(source) = &doc.generator {
+                generators
+                    .push(doc.tag.entity_kind(), doc.index, source)
+                    .map_err(|e| {
+                        format!(
+                            "Packing {} generator {}: {e}",
+                            doc.tag.as_ref(),
+                            doc.variant
+                        )
+                    })?;
+            }
+        }
+
+        wiki::write(self.out.join("formulas.bin"), formulas.finish()?)?;
+        wiki::write(
+            self.out.join("generator.bin"),
+            generators.finish_with_stats()?.bytes,
+        )?;
+
+        // A lossless, inspectable sidecar for tooling; never read back as a build input.
+        wiki::write(
+            self.out.join("documentation.json"),
+            serde_json::to_vec_pretty(docs)?,
+        )
+    }
+}

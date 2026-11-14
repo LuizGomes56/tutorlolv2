@@ -1,0 +1,19 @@
+[package]
+name = "types"
+version = "0.1.2"
+edition.workspace = true
+publish = false
+
+[dependencies]
+databake = { workspace = true, features = ["derive"], optional = true }
+bincode = { workspace = true, default-features = false, features = ["derive"] }
+pastey = { workspace = true }
+serde = { workspace = true, default-features = false, features = ["derive"] }
+strum = { workspace = true, features = ["derive", "strum_macros"], default-features = true }
+yew = { workspace = true, default-features = false, optional = true }
+
+[features]
+default = []
+dev = []
+bake = ["dep:databake"]
+yew = ["dep:yew"]

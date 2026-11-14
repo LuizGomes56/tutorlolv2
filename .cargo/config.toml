@@ -1,2 +1,2 @@
 [alias]
-perf = "run --quiet -p tutorlolv2_perf_runner --"
+perf = "run --quiet -p perf_runner --"

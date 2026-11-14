@@ -1,25 +1,20 @@
-name: Run Writers Test (No Files)
+name: Rust shared crates
 
 on:
   push:
-    branches: ["*"]
   pull_request:
-    branches: ["*"]
 
 jobs:
-  test-writers:
+  shared-crates:
     runs-on: ubuntu-latest
-
-    env:
-      CDN_ENDPOINT_CHAMPIONS: ${{ secrets.CDN_ENDPOINT_CHAMPIONS }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Run test writers without file I/O
-        run: |
-          cargo test --test writers -- --fetch-remote="${CDN_ENDPOINT_CHAMPIONS}"
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Test shared libraries and benchmark launcher
+        run: cargo test --locked -p types -p codec -p perf_runner
+      - name: Test wiki library
+        run: cargo test --locked -p wiki --lib

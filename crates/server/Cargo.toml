@@ -1,0 +1,44 @@
+[package]
+name = "server"
+version = "0.1.4"
+edition.workspace = true
+
+[dependencies]
+api = { workspace = true }
+types = { workspace = true, default-features = false }
+actix-cors = "0.7.2"
+actix-files = "0.7"
+actix-web = { version = "4.18.1", default-features = false, features = [
+    "http2",
+    "macros",
+    "cookies",
+] }
+bincode = { workspace = true, default-features = true }
+brotli-decompressor = "6.2.0"
+dotenvy = "0.15.7"
+serde_json = { workspace = true, default-features = true }
+tokio = { workspace = true, default-features = false, features = ["macros", "rt-multi-thread", "sync", "time"] }
+math = { workspace = true, default-features = false, features = ["engine"] }
+protocol = { workspace = true, features = ["sqlx"] }
+sqlx = { workspace = true, default-features = false, features = ["runtime-tokio", "tls-rustls-aws-lc-rs", "postgres", "macros", "sqlx-toml", "migrate", "uuid", "chrono"] }
+uuid = { workspace = true, features = ["serde"], default-features = true }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+sha2 = { workspace = true, default-features = true }
+subtle = "2"
+base64 = "0.22.1"
+getrandom = "0.4"
+brotli = { workspace = true }
+actix-governor = "0.10"
+reqwest = { workspace = true, default-features = false, features = ["rustls", "json", "form"] }
+serde = { workspace = true, features = ["derive"], default-features = true }
+
+[dev-dependencies]
+actix-http = "3"
+wiremock = "0.6"
+
+# The build script renders the formula docs of every champion, item and rune
+[build-dependencies]
+brotli = { workspace = true }
+rayon = { workspace = true }
+strum = { workspace = true, default-features = true }
+math = { workspace = true, default-features = false, features = ["formula-docs"] }

@@ -1,0 +1,13 @@
+[package]
+name = "perf"
+version = "0.1.0"
+edition.workspace = true
+publish = false
+default-run = "perf"
+
+[dependencies]
+clap = { workspace = true, features = ["derive"] }
+serde = { workspace = true, features = ["derive"], default-features = true }
+serde_json = { workspace = true, default-features = true }
+strum = { workspace = true, default-features = true }
+math = { workspace = true, default-features = true }
