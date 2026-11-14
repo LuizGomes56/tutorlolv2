@@ -30,7 +30,10 @@ pub use {
     expr::Expr,
     lookup::Lookup,
     map::{MapChangeEntry, MapChangesReport, MapValue, PlacedEffect, Placement},
-    model::{AbilityModel, ChampionModel, EffectModel, Formula, IntoFormula, Sample},
+    model::{
+        AbilityModel, ChampionModel, EffectModel, Formula, IntoFormula, PetAbility, PetModel,
+        Sample,
+    },
     passive::PassiveProgression,
     progression::{Progression, Value},
     scaling::Scaling,

@@ -2,6 +2,14 @@ use super::*;
 
 impl Generator for Kaisa {
     fn generate(&mut self) -> MayFail {
+        let [missiles, subsequent] = self.description(Key::Q, "Active")?.capture(regex!(
+            r"releases a swarm of (\d+) missiles.*?take ([\d.]+)\*100% damage from missiles beyond their first"
+        ))?;
+
+        let [evolved] = self
+            .description(Key::Q, "Evolution")?
+            .capture(regex!(r"instead fires (\d+) missiles"))?;
+
         let per_stack = self.value_nth("Innate - Caustic Wounds", 1, Key::P)?;
 
         // "On-hit damage changed to 50% value", by the position of its numbers
@@ -25,11 +33,15 @@ impl Generator for Kaisa {
             .map_change(Q(Min), "Bonus AD ratio")?
             .map_change(Q(Min), "Bonus AD ratio per missile")?
             .map_change(Q(Min), "AP ratio per missile")?
-            // All 6 missiles, and the 12 evolved ones, on one target: the first one deals
-            // full damage, the next ones 25%
-            .derive(Q(Max), Q(Min), |q| q.scale(2.25))?
+            // All missiles, and the evolved ones, on one target: the first one deals
+            // full damage, the next ones a share of it
+            .derive(Q(Max), Q(Min), |q| {
+                q.scale(1.0 + (missiles - 1.0) * subsequent)
+            })?
             .comment(Q(Max), "Total Single-Target Damage")
-            .derive(Q(_1), Q(Min), |q| q.scale(3.75))?
+            .derive(Q(_1), Q(Min), |q| {
+                q.scale(1.0 + (evolved - 1.0) * subsequent)
+            })?
             .comment(Q(_1), "Total Evolved Single-Target Damage")
             .take("Magic Damage", W(Void))?
             .combos([

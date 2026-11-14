@@ -12,12 +12,27 @@ impl Generator for Ziggs {
             .take("Reduced Damage", R(Min))?
             .take("Epicenter Magic Damage", R(Max))?;
 
-        // Subsequent mines deal 40%, and at most 10 of them hit
+        // Subsequent mines deal a share of the first, and every mine of the cluster hits
+        let [mines, subsequent] = self.description(Key::E, "Active")?.capture(regex!(
+            r"scatters a cluster of (\d+) proximity mines.*?takes ([\d.]+)% damage from subsequent mines"
+        ))?;
+
+        let subsequent = subsequent / 100.0;
         let (mode, first) = self.map_value(Key::E, "First hit AP ratio")?;
 
         self.map_ratio(E(Void), mode, &[AbilityPower], first.clone())?
-            .map_ratio(E(Min), mode, &[AbilityPower], first.clone().times(0.4))?
-            .map_ratio(E(Max), mode, &[AbilityPower], first.times(5.0))?
+            .map_ratio(
+                E(Min),
+                mode,
+                &[AbilityPower],
+                first.clone().times(subsequent),
+            )?
+            .map_ratio(
+                E(Max),
+                mode,
+                &[AbilityPower],
+                first.times(1.0 + (mines - 1.0) * subsequent),
+            )?
             .combos([
                 &[
                     Attack,

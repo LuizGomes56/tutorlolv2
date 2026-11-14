@@ -11,18 +11,27 @@ impl Generator for MissFortune {
             .take("Physical Damage per Wave", R(Min))?
             .map_change(R(Min), "AP ratio per wave")?;
 
-        // Make It Rain ticks every 0.25 seconds over 2 seconds
+        // Make It Rain ticks every few seconds over its duration
+        let [duration, every] = self
+            .description(Key::E, "Active")?
+            .capture(regex!(r"for ([\d.]+) seconds,.*?every ([\d.]+) seconds"))?;
+
         let (mode, per_second) = self.map_value(Key::E, "AP ratio per second")?;
 
         self.map_ratio(
             E(Min),
             mode,
             &[AbilityPower],
-            per_second.clone().times(0.25),
+            per_second.clone().times(every),
         )?
-        .map_ratio(E(Max), mode, &[AbilityPower], per_second.times(2.0))?;
+        .map_ratio(E(Max), mode, &[AbilityPower], per_second.times(duration))?;
 
-        // Bullet Time fires 14 / 16 / 18 waves
+        // Bullet Time fires a number of waves by rank
+        let total_waves = self
+            .value("Total Waves", Key::R)?
+            .default_values()
+            .ok_or("[MissFortune] Total Waves has no values")?;
+
         let (mode, per_wave) = self.map_value(Key::R, "AP ratio per wave")?;
         let Formula::Const(per_wave) = per_wave else {
             return Err("[MissFortune] R: AP ratio per wave by rank".into());
@@ -30,7 +39,7 @@ impl Generator for MissFortune {
 
         let waves = Formula::ByRank {
             rank: RLevel,
-            values: [14.0, 16.0, 18.0].map(|waves| waves * per_wave).to_vec(),
+            values: total_waves.iter().map(|waves| waves * per_wave).collect(),
         };
 
         self.map_ratio(R(Max), mode, &[AbilityPower], waves)?

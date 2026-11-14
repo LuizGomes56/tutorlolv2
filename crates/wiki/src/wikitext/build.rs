@@ -6,7 +6,8 @@
 use {
     super::{
         AbilityModel, Arg, ChampionModel, EffectModel, Expr, Formula, Lookup, MapChangesReport,
-        Node, Nodes, PassiveProgression, Progression, Scaling, Template, Value, Variables,
+        Node, Nodes, PassiveProgression, PetAbility, PetModel, Progression, Scaling, Template,
+        Value, Variables,
     },
     crate::parser::assign_ctx_var,
     crate::{JsonRead, MayFail, map_changes::MapChanges},
@@ -851,7 +852,18 @@ impl<'a> Terms<'a> {
             return None;
         }
 
-        template.positional(0)?.plain().trim().parse().ok()
+        let number = template.positional(0)?;
+
+        // A value by rank or level, as `{{ap|80|100|120}}`, is not a single number
+        if number
+            .templates()
+            .iter()
+            .any(|t| matches!(t.name.as_str(), "ap" | "pp" | "pplevel"))
+        {
+            return None;
+        }
+
+        number.plain().trim().parse().ok()
     }
 
     /// `{{as}}` that only groups other `{{as}}`, as Tahm Kench's
@@ -1187,7 +1199,8 @@ impl<'a> Terms<'a> {
     }
 
     /// `{{as|{{ap|20 to 30}}|mana}}`, a value colored by a keyword rather than a
-    /// scaling, whose `{{ap}}` is returned with whether it is written in percent
+    /// scaling, whose `{{ap}}` is returned with whether it is written in percent.
+    /// A `{{pp}}` is read the same way, as Zyra's plants' `{{as|{{pp|…}}|magic damage}}`
     fn colored_value(template: &Template) -> Option<(&Template, bool)> {
         template.positional(1)?;
 
@@ -1206,7 +1219,8 @@ impl<'a> Terms<'a> {
             .iter()
             .all(|node| matches!(node, Node::Text(text) if text.trim() == "%"));
 
-        (value.name == "ap" && rest_is_unit).then_some((value, !rest.is_empty()))
+        (matches!(value.name.as_str(), "ap" | "pp" | "pplevel") && rest_is_unit)
+            .then_some((value, !rest.is_empty()))
     }
 
     /// `{{as}}` of a template in [`Self::WRAPPERS`]
@@ -1490,6 +1504,142 @@ impl<'a> Terms<'a> {
     }
 }
 
+impl PetModel {
+    /// Name of the template of each pet in the page of its champion
+    const INFOBOX: &str = "Infobox/Pet";
+
+    /// Every pet with a `damage` field in the `{{Infobox/Pet}}` of a champion's page
+    pub fn from_page(src: &str, context: &PageContext) -> Result<BTreeMap<String, Self>, String> {
+        let nodes = Variables::default().expand(&context.lookup.expand(&Nodes::parse(src)));
+        let mut pets = BTreeMap::new();
+
+        for infobox in nodes
+            .templates()
+            .into_iter()
+            .filter(|t| t.name.trim() == Self::INFOBOX)
+        {
+            let name = infobox
+                .named("name")
+                .map(|name| name.plain().trim().to_string())
+                .filter(|name| !name.is_empty())
+                .ok_or("Pet without a name")?;
+
+            let Some(damage) = infobox.named("damage") else {
+                continue;
+            };
+
+            let damage_type = infobox
+                .named("damagetype")
+                .map(|kind| AbilityModel::capitalize(kind.plain().trim()))
+                .and_then(|kind| DamageType::from_str(&kind).ok())
+                .unwrap_or(DamageType::Unspecified);
+
+            let damage = Self::by_key(damage, context, &name);
+            let abilities = infobox
+                .named("abilities")
+                .map(|abilities| Self::abilities(abilities, context))
+                .unwrap_or_default();
+
+            pets.insert(
+                name,
+                Self {
+                    damage_type,
+                    damage,
+                    abilities,
+                },
+            );
+        }
+
+        Ok(pets)
+    }
+
+    /// `value` read as a value of each ability, see [`PetModel::damage`]
+    fn by_key(value: &Nodes, context: &PageContext, label: &str) -> BTreeMap<Key, EffectModel> {
+        [Key::P, Key::Q, Key::W, Key::E, Key::R]
+            .into_iter()
+            .map(|key| (key, value.effect_model(context, key, label)))
+            .collect()
+    }
+
+    /// Every `;Name` section of the `abilities` field of a pet, each starting on
+    /// a line of its own
+    fn abilities(field: &Nodes, context: &PageContext) -> BTreeMap<String, PetAbility> {
+        let mut sections = Vec::<(String, Vec<Node>)>::new();
+        let mut line_start = true;
+
+        for node in &field.0 {
+            let Node::Text(text) = node else {
+                if let Some((_, nodes)) = sections.last_mut() {
+                    nodes.push(node.clone());
+                }
+
+                line_start = false;
+                continue;
+            };
+
+            for (i, line) in text.split('\n').enumerate() {
+                let starts_line = i > 0 || line_start;
+
+                match line.trim_start().strip_prefix(';') {
+                    Some(name) if starts_line => {
+                        sections.push((name.trim().to_string(), Vec::new()));
+                    }
+                    _ => {
+                        if let Some((_, nodes)) = sections.last_mut() {
+                            let separator = if i > 0 { "\n" } else { "" };
+                            nodes.push(Node::Text(format!("{separator}{line}")));
+                        }
+                    }
+                }
+            }
+
+            line_start = text.ends_with('\n');
+        }
+
+        sections
+            .into_iter()
+            .map(|(name, nodes)| {
+                let nodes = Nodes(nodes);
+                let damage = Self::first_damage(&nodes)
+                    .map(|value| Self::by_key(&value, context, &name))
+                    .unwrap_or_default();
+
+                let text = crate::parser::clean_text(&nodes.plain());
+
+                (name, PetAbility { text, damage })
+            })
+            .collect()
+    }
+
+    /// The first value colored by a damage type and the scalings right after it,
+    /// as `{{as|{{ap|2 to 4 3}}|magic damage}} {{as|(+ 1% AP)}}`
+    fn first_damage(nodes: &Nodes) -> Option<Nodes> {
+        let is_damage = |node: &Node| {
+            matches!(node, Node::Template(t) if t.name == "as"
+                && t.positional(1).is_some_and(|kind| kind.plain().contains("damage"))
+                && t.positional(0).is_some_and(|value| !value.templates().is_empty()))
+        };
+
+        let is_scaling = |node: &Node| {
+            matches!(node, Node::Template(t) if t.name == "as"
+                && t.positional(0).is_some_and(|value| value.plain().trim().starts_with("(+")))
+        };
+
+        let start = nodes.0.iter().position(is_damage)?;
+        let mut value = vec![nodes.0[start].clone()];
+
+        for node in &nodes.0[start + 1..] {
+            match node {
+                Node::Text(text) if text.trim().is_empty() => value.push(node.clone()),
+                node if is_scaling(node) => value.push(node.clone()),
+                _ => break,
+            }
+        }
+
+        Some(Nodes(value))
+    }
+}
+
 impl ChampionModel {
     /// Champions whose ultimate has 4 ranks and is learned at level 1
     const FOUR_RANK_ULTIMATE: [&str; 5] = ["Elise", "Jayce", "Karma", "Nidalee", "Udyr"];
@@ -1523,6 +1673,7 @@ impl ChampionModel {
         let mut model = Self {
             champion_id: champion_id.to_string(),
             abilities: BTreeMap::new(),
+            pets: BTreeMap::new(),
         };
         let mut skipped = Vec::new();
 
@@ -1548,8 +1699,21 @@ impl ChampionModel {
             }
         }
 
+        // The champion's own page, next to its abilities, holds its pets
+        if let Some(page) = abilities.parent().map(|dir| dir.join(Self::PAGE))
+            && let Ok(src) = std::fs::read_to_string(&page)
+        {
+            match PetModel::from_page(&src, &context) {
+                Ok(pets) => model.pets = pets,
+                Err(e) => skipped.push(format!("{}: {e}", page.display())),
+            }
+        }
+
         (model, skipped)
     }
+
+    /// File of the champion's page, as `cache/wiki/champions/Ivern/page.lua`
+    pub const PAGE: &str = "page.lua";
 
     /// Source of every `*.lua` page of `abilities`, ordered by key (`P`, `Q`, `W`,
     /// `E`, `R`) and then by number, so each key lists its pages as `Q0`, `Q1`, …

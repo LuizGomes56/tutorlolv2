@@ -2,6 +2,13 @@ use super::*;
 
 impl Generator for Viktor {
     fn generate(&mut self) -> MayFail {
+        // The storm strikes every second over its duration
+        let [duration] = self.description(Key::R, "Active")?.capture(regex!(
+            r"moving storm for ([\d.]+) seconds, striking a bolt of electricity onto enemies within it every second"
+        ))?;
+
+        let ticks = ticks(1.0, duration)?;
+
         // Death Ray's laser, which deals damage before its aftershock
         let laser = self.value_nth("Magic Damage", 0, Key::E)?;
         let laser = self.map_changed(Key::E, "Laser AP ratio", laser)?;
@@ -28,8 +35,8 @@ impl Generator for Viktor {
 
         self.set(Q(Max), f![device + discharge])
             .set(E(Max), f![laser + aftershock])
-            // The initial hit and 6 ticks
-            .set(R(Max), f![initial + 6 * tick])
+            // The initial hit and its ticks
+            .set(R(Max), f![initial + ticks * tick])
             .combos([
                 &[
                     Ability(R(Void)),

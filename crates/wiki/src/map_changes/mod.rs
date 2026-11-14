@@ -623,6 +623,7 @@ mod tests {
                 "Nidalee".into(),
                 ChampionModel {
                     champion_id: "Nidalee".into(),
+                    pets: BTreeMap::new(),
                     abilities: BTreeMap::from([(
                         Key::Q,
                         vec![AbilityModel {

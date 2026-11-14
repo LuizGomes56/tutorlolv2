@@ -6,16 +6,7 @@ impl Generator for Elise {
         self.take_in("Venomous Bite", "Magic Damage", Q(_1))?
             .take_in("Neurotoxin", "Magic Damage", Q(_2))?
             .take("Magic Damage", W(Void))?
-            .insert(
-                R(Void),
-                Damage {
-                    name: "Spiderling".into(),
-                    damage_type: Magic,
-                    attributes: Undefined,
-                    comment: "Pet: Spiderling basic attack".into(),
-                    formula: f![10 + 10 * (RLevel - 1) + 0.15 * AbilityPower],
-                },
-            )?
+            .insert_pet(R(Void), "Spiderling")?
             .combos([
                 &[
                     Ability(W(Void)),

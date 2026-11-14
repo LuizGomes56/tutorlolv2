@@ -10,15 +10,24 @@ impl Generator for MonkeyKing {
             .take("Total Physical Damage", R(Max))?
             .map_change(R(Min), "Base damage per tick")?;
 
-        // Cyclone ticks every 0.25 seconds
+        // Cyclone ticks every few seconds over its duration, and can be cast a second time
+        let [duration, every] = self.description(Key::R, "Active")?.capture(regex!(
+            r"spins his staff around for up to ([\d.]+) seconds.*?deals physical damage every ([\d.]+) seconds"
+        ))?;
+
+        let [casts] = self
+            .description(Key::R, "Recast")?
+            .capture(regex!(r"can cast Cyclone a (\w+) time"))?;
+
+        let ticks = ticks(every, duration)?;
+        let both_casts = casts * ticks;
         let (mode, per_second) = self.map_value(Key::R, "AD ratio per second")?;
         let tick = self
-            .map_ratio(R(Min), mode, &[AttackDamage], per_second.times(0.25))?
+            .map_ratio(R(Min), mode, &[AttackDamage], per_second.times(every))?
             .damage(R(Min))?;
 
-        // 8 ticks over its 2 seconds, and 16 when it is cast twice
-        self.set(R(Max), f![8 * tick])
-            .set(R(_1Max), f![16 * tick])
+        self.set(R(Max), f![ticks * tick])
+            .set(R(_1Max), f![both_casts * tick])
             .damage_type(W(Void), Physical)
             .damage_type(R(Min), Physical)
             .damage_type(R(Max), Physical)

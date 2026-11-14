@@ -22,6 +22,7 @@ pub async fn run() -> MayFail {
     template::download().await?;
     template::parse()?;
     download_ability_sources().await?;
+    download_pages().await?;
     exceptions::download().await?;
     exceptions::parse()?;
     concat()
@@ -55,6 +56,24 @@ pub async fn download_ability_sources() -> MayFail {
             }
         }
     }
+    Ok(())
+}
+
+/// Fetches the page of every champion, whose `{{Infobox/Pet}}` hold their pets
+pub async fn download_pages() -> MayFail {
+    for entry in crate::read_dir(cache())?.filter(is_dir) {
+        let path = entry.path();
+        let template =
+            serde_json::from_slice::<ChampionTemplate>(&crate::read(path.join("template.json"))?)?;
+
+        crate::HTTP_CLIENT
+            .fetch_raw(
+                &path.join(crate::wikitext::ChampionModel::PAGE),
+                &format!("{}?action=raw", template.name.replace(' ', "_")),
+            )
+            .await?;
+    }
+
     Ok(())
 }
 

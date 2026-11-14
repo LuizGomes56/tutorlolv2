@@ -17,10 +17,14 @@ impl Generator for Zoe {
             .map_change(W(Min), "Base damage per bolt")?
             .take("Total Magic Damage", W(Max))?;
 
-        // Paddle Star's 3 bolts
+        // The bolts that orbit Zoe
+        let [bolt_count] = self
+            .description(Key::W, "Passive - Wheeeee")?
+            .capture(regex!(r"summons (\w+) bolts that orbit her"))?;
+
         let (mode, per_bolt) = self.map_value(Key::W, "Base damage per bolt")?;
 
-        self.map_base(W(Max), mode, per_bolt.times(3.0))?
+        self.map_base(W(Max), mode, per_bolt.times(bolt_count))?
             .take("Magic Damage", E(Min))?
             .derive(E(Max), E(Min), |dmg| f![((dmg) * MagicMultiplier) + dmg])?
             .combos([

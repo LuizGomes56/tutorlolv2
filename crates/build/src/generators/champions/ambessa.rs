@@ -17,11 +17,21 @@ impl Generator for Ambessa {
         // Both sweeps' health ratio, of the increased damage, which is halved elsewhere
         let (mode, health) = self.map_value(Key::Q, "Health ratio")?;
 
+        let [increase] = self
+            .description_in(Key::Q, "Cunning Sweep", "Active")?
+            .capture(regex!(
+                r"The damage is (\w+) against enemies hit by the outer edge"
+            ))?;
+
+        let [slam_increase] = self
+            .description_in(Key::Q, "Sundering Slam", "Active")?
+            .capture(regex!(r"The damage is (\w+) against the first enemy hit"))?;
+
         for (id, share) in [
             (Q(Max), 1.0),
             (Q(_1Max), 1.0),
-            (Q(Min), 0.5),
-            (Q(_1Min), 0.5),
+            (Q(Min), 1.0 / increase),
+            (Q(_1Min), 1.0 / slam_increase),
         ] {
             self.map_ratio(id, mode, &[EnemyMaxHealth], health.clone().times(share))?;
         }

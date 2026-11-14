@@ -21,18 +21,28 @@ impl Generator for Leblanc {
             .map_change(R(_4), "Base damage")?
             .map_change(R(_4), "AP ratio")?;
 
-        // The mark and the total of Sigil of Malice deal its damage twice
+        // The mark of Sigil of Malice deals the orb's damage again, and the mimics' fracture
+        // and mark deal a multiple of it
+        let [] = self.description(Key::Q, "Active")?.capture(regex!(
+            r"consume the mark to deal the same magic damage again"
+        ))?;
+
+        let [mimic_mark] = self
+            .description(Key::R, "Mimic: Sigil of Malice")?
+            .capture(regex!(r"mark consumption deals (\w+) that amount"))?;
+
+        let hits = 2.0;
         let (mode, per_hit) = self.map_value(Key::Q, "Base damage per hit")?;
 
-        self.map_base(Q(Max), mode, per_hit.times(2.0))?;
+        self.map_base(Q(Max), mode, per_hit.times(hits))?;
 
         let (mode, mimic) = self.map_value(Key::R, "Base damage")?;
         let (_, mimic_ap) = self.map_value(Key::R, "AP ratio")?;
         let orb = self.damage(R(_4))?;
         let fracture = self.damage(R(_5))?;
 
-        self.map_base(R(_2), mode, mimic.times(2.0))?
-            .map_ratio(R(_2), mode, &[AbilityPower], mimic_ap.times(2.0))?
+        self.map_base(R(_2), mode, mimic.times(mimic_mark))?
+            .map_ratio(R(_2), mode, &[AbilityPower], mimic_ap.times(mimic_mark))?
             .set(R(_6), f![orb + fracture])
             .combos([
                 &[

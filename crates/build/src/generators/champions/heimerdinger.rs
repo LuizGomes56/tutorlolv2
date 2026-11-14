@@ -3,31 +3,22 @@ use super::*;
 impl Generator for Heimerdinger {
     fn generate(&mut self) -> MayFail {
         // The turrets' bases by rank, which map changes replace
-        let turret = Formula::ByRank {
-            rank: QLevel,
-            values: vec![7.0, 11.0, 15.0, 19.0, 23.0],
-        };
-
-        let turret = f![turret + 0.35 * AbilityPower];
+        let (turret, turret_type) = self.pet("H-28G Evolution Turret", Key::Q)?;
         let turret = self.map_changed(Key::Q, "Turret base damage", turret)?;
         let turret = self.map_changed(Key::Q, "Turret AP ratio", turret)?;
 
-        let apex = Formula::ByRank {
-            rank: RLevel,
-            values: vec![80.0, 100.0, 120.0],
-        };
-
+        let (apex, apex_type) = self.pet("H-28Q Apex Turret", Key::R)?;
         let apex = self.map_changed(
             Key::R,
             "{{ai|H-28Q Apex Turret|Heimerdinger}} base damage",
-            f![apex + 0.35 * AbilityPower],
+            apex,
         )?;
 
         self.insert(
             Q(Void),
             Damage {
                 name: "H-28G Evolution Turret".into(),
-                damage_type: Magic,
+                damage_type: turret_type,
                 attributes: Undefined,
                 comment: "Pet: H-28G Evolution Turret basic attack".into(),
                 formula: turret,
@@ -37,7 +28,7 @@ impl Generator for Heimerdinger {
             Q(_1),
             Damage {
                 name: "H-28Q Apex Turret".into(),
-                damage_type: Magic,
+                damage_type: apex_type,
                 attributes: Undefined,
                 comment: "Pet: H-28Q Apex Turret basic attack".into(),
                 formula: apex,
@@ -65,8 +56,14 @@ impl Generator for Heimerdinger {
         let initial = self.damage(W(Min))?;
         let subsequent = self.value("Subsequent Rocket Magic Damage", Key::W)?;
 
-        // The initial rocket and 4 subsequent ones
-        self.set(W(Max), f![initial + 4 * subsequent])
+        // The initial rocket and the subsequent ones of its wave
+        let [rockets] = self
+            .description(Key::W, "Active")?
+            .capture(regex!(r"launches a wave of (\d+) rockets"))?;
+
+        let subsequent_rockets = rockets - 1.0;
+
+        self.set(W(Max), f![initial + subsequent_rockets * subsequent])
             .combos([
                 &[
                     Ability(Q(Void)),

@@ -3,26 +3,21 @@ use super::*;
 impl Generator for Annie {
     fn generate(&mut self) -> MayFail {
         // Tibbers' attack and aura, by rank so map changes replace their bases
-        let attack = Formula::ByRank {
-            rank: RLevel,
-            values: vec![30.0, 45.0, 60.0],
-        };
-
-        let attack = f![attack + 0.1 * AbilityPower];
+        let (attack, attack_type) = self.pet("Tibbers", Key::R)?;
         let attack = self.map_changed(Key::R, "Tibbers base attack damage", attack)?;
         let attack = self.map_changed(Key::R, "Tibbers attack damage AP ratio", attack)?;
-        let aura = Formula::ByRank {
-            rank: RLevel,
-            values: vec![2.0, 3.0, 4.0],
+        let (mut aura, every) = {
+            let (aura, text) = self.pet_ability("Tibbers", "Flame Aura", Key::R)?;
+            let [every] = text.capture(regex!(r"every ([\d.]+) seconds"))?;
+
+            (aura, every)
         };
 
-        let mut aura = f![aura + 0.01 * AbilityPower];
-
-        // Arena's aura damage is per second, and the aura ticks every 0.25 seconds
+        // Arena's aura damage is per second, and the aura ticks every few seconds
         let (mode, per_second) = self.map_value(Key::R, "Tibbers aura base damage")?;
 
         if let Some(base) = aura.base_mut() {
-            *base = base.clone().with_map(mode, per_second.times(0.25));
+            *base = base.clone().with_map(mode, per_second.times(every));
         }
 
         self.take("Magic Damage", Q(Void))?
@@ -33,7 +28,7 @@ impl Generator for Annie {
                 R(_1),
                 Damage {
                     name: "Tibbers".into(),
-                    damage_type: Magic,
+                    damage_type: attack_type,
                     attributes: Undefined,
                     comment: "Pet: Tibbers basic attack".into(),
                     formula: attack,
@@ -45,7 +40,7 @@ impl Generator for Annie {
                     name: "Tibbers".into(),
                     damage_type: Magic,
                     attributes: Undefined,
-                    comment: "Pet: Tibbers Flame Aura per 0.25 seconds".into(),
+                    comment: format!("Pet: Tibbers Flame Aura per {every} seconds"),
                     formula: aura,
                 },
             )?

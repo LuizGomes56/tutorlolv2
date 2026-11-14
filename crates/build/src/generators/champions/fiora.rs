@@ -2,6 +2,10 @@ use super::*;
 
 impl Generator for Fiora {
     fn generate(&mut self) -> MayFail {
+        let [vitals] = self
+            .description(Key::R, "Active")?
+            .capture(regex!(r"highlighting all (\w+) of their Vitals"))?;
+
         // A value written in a shape map changes can't read, by the position of its
         // numbers, as {{fd|3}}% of "3% per 100 bonus AD"
         let (mode, numbers) = self.map_numbers(Key::P, "Bonus AD ratio")?;
@@ -19,8 +23,8 @@ impl Generator for Fiora {
             // A critical strike of 160 / 170 / 180 / 190 / 200% of AD
             .edit(E(Void), |e| f![e / 100 * AttackDamage])
             .comment(E(Void), "Second basic attack critical strike")
-            .derive(R(Void), P(Void), |p| f![4 * (p)])?
-            .comment(R(Void), "All 4 Vitals")
+            .derive(R(Void), P(Void), |p| f![vitals * (p)])?
+            .comment(R(Void), &format!("All {vitals} Vitals"))
             .combos([
                 &[
                     Ability(R(Void)),

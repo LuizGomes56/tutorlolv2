@@ -14,10 +14,16 @@ impl Generator for Akali {
             .map_change(R(Min), "AP ratio")?
             .map_change(R(Min), "Second dash minimum AP ratio")?;
 
-        // The second dash deals up to 3 times its minimum
+        // The second dash deals up to its minimum increased by a percent
+        let [increase] = self
+            .description(Key::R, "Recast")?
+            .capture(regex!(r"increased by 0 to ([\d.]+) for"))?;
+
+        let maximum = 1.0 + increase / 100.0;
+
         for subject in ["AP ratio", "Second dash minimum AP ratio"] {
             let (mode, ratio) = self.map_value(Key::R, subject)?;
-            self.map_ratio(R(Max), mode, &[AbilityPower], ratio.times(3.0))?;
+            self.map_ratio(R(Max), mode, &[AbilityPower], ratio.times(maximum))?;
         }
 
         self.combos([
