@@ -71,8 +71,10 @@ fn pack_repr_build() -> MayFail {
 
     html += "</pre></body></html>";
 
-    std::fs::create_dir_all("html")?;
-    std::fs::write("html/render.html", html)?;
+    // Tests run from the crate's folder, so the path starts at the workspace root
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../cache/app/html");
+    std::fs::create_dir_all(&dir)?;
+    std::fs::write(dir.join("render.html"), html)?;
 
     Ok(())
 }
