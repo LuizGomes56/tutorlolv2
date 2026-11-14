@@ -68,8 +68,8 @@ pub fn number(text: &str) -> MayFail<f64> {
     let value = match text.to_ascii_lowercase().as_str() {
         "half" => 0.5,
         "one" | "once" | "single" => 1.0,
-        "two" | "twice" | "double" | "second" => 2.0,
-        "three" | "thrice" | "triple" | "third" => 3.0,
+        "two" | "twice" | "double" | "doubled" | "second" => 2.0,
+        "three" | "thrice" | "triple" | "tripled" | "third" => 3.0,
         "four" | "quadruple" | "fourth" => 4.0,
         "five" | "fifth" => 5.0,
         "six" | "sixth" => 6.0,

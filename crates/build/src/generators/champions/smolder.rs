@@ -13,13 +13,18 @@ impl Generator for Smolder {
         let critical = self.value("Active", Key::Q)?;
         let bolts = self.value("Tier 2 - 125 stacks", Key::Q)?;
         let burn = self.value_nth("Tier 3 - 225 stacks", 0, Key::Q)?;
+        let [bolt_count] = self
+            .description(Key::Q, "Tier 2 - 125 stacks")?
+            .capture(regex!(r"sends forth (\d+) \("))?;
 
         self.take_nth("Physical Damage", 0, Q(Min))?
             .edit(Q(Min), |q| {
                 f![q * (1 + critical) * PhysicalMultiplier + q_passive * MagicMultiplier]
             })
-            // With the 2 bolts of Tier 2, which deal a share of the same damage
-            .derive(Q(Max), Q(Min), |q| f![q * (1 + 2 * bolts / 100) + burn])?
+            // With the bolts of Tier 2, which deal a share of the same damage
+            .derive(Q(Max), Q(Min), |q| {
+                f![q * (1 + bolt_count * bolts / 100) + burn]
+            })?
             .edit(Q(Min), |q| f![q + burn])
             .damage_type(Q(Min), Mixed)
             .damage_type(Q(Max), Mixed)
