@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use wiki::{
-    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, runes, scraper, spells,
-    stats, version, wikitext,
+    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, monsters, runes,
+    scraper, spells, stats, version, wikitext,
 };
 
 #[derive(Parser, Debug)]
@@ -101,6 +101,13 @@ pub enum Wiki {
     /// Lists the changes of each game mode that may change a damage
     #[clap(alias = "mr")]
     MapChangesReport,
+    /// Downloads and parses the health and resistances of monsters and minions
+    #[clap(alias = "mo")]
+    Monsters,
+    #[clap(alias = "mod")]
+    MonstersDownload,
+    #[clap(alias = "mop")]
+    MonstersParse,
     #[clap(alias = "r")]
     Runes,
     #[clap(alias = "rl")]
@@ -194,6 +201,9 @@ async fn main() -> MayFail {
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().and_then(|_| items::item_parser::parse_items()),
             Wiki::MapChanges => map_changes::run().await,
+            Wiki::Monsters => monsters::run().await,
+            Wiki::MonstersDownload => monsters::download().await,
+            Wiki::MonstersParse => monsters::parse(),
             Wiki::MapChangesDownload => map_changes::download().await,
             Wiki::MapChangesParse => map_changes::parse(),
             Wiki::MapChangesReport => map_changes::report(),

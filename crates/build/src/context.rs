@@ -60,6 +60,7 @@ impl BuildContext {
             "cache/wiki/runes/full.json",
             "cache/wiki/runes",
             "cache/wiki/spells/full.json",
+            "cache/wiki/monsters/full.json",
             "cache/wiki/map_changes/full.json",
             "cache/riot/items.json",
             "cache/riot/runes.json",

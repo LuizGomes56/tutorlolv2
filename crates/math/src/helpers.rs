@@ -17,7 +17,7 @@
 
 use {
     crate::{
-        AbilityBatch, ChampionId, ItemId, RuneId, WikiModifiers,
+        AbilityBatch, ChampionId, ItemId, Monster, RuneId, WikiModifiers,
         bitset::BitSet,
         libgen::{Champion, Closure, L_TWRD, Stat, WikiStats, champions, items},
         model::*,
@@ -25,7 +25,7 @@ use {
     alloc::boxed::Box,
     const_sized_bit_set::bit_set_array::BitSetArray,
     core::{mem::MaybeUninit, num::NonZeroU8},
-    strum::EnumCount,
+    strum::{EnumCount, VariantArray},
     types::{
         AbilityId, AdaptiveType, AttackSpeedRatio, AttackType, Ctx, CtxAttacker, CtxFlags,
         CtxTarget, DamageType, GameMap, MapMode, StatName, TypeMetadata,
@@ -1511,6 +1511,7 @@ impl DamageTable {
         row
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub fn fill_monster_damages(
         &mut self,
         self_state: &SelfState,
@@ -1519,14 +1520,11 @@ impl DamageTable {
         modifiers: Modifiers,
         batch: AbilityBatch,
         game_map: GameMap,
+        monster_level: u8,
     ) {
-        for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
+        for (i, &monster) in Monster::VARIANTS.iter().enumerate() {
             let full_state = EnemyState {
-                base_stats: SimpleStats {
-                    armor,
-                    max_health: 1000.0,
-                    magic_resist,
-                },
+                base_stats: monster.stats(monster_level),
                 ..Default::default()
             }
             .full_state(shred, true);

@@ -2,6 +2,7 @@ pub mod batch;
 pub mod champions;
 pub mod finish;
 pub mod items;
+pub mod monsters;
 pub mod parentheses;
 pub mod runes;
 pub mod simplify;
