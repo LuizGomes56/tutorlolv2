@@ -1,10 +1,12 @@
 //! Champion, item, rune and position images: the web app's `components/image.rs`.
 //!
 //! Until the WebP encoder exists, raster images come from `img/raw` (PNG/JPG),
-//! read from disk. Set `TUTORLOLV2_RAW_IMG` to use another folder.
+//! read from disk. WSL builds translate the default to a Windows-accessible path.
+//! Set `TUTORLOLV2_RAW_IMG` to use another folder.
 use gpui::{ImageSource, Img, IntoElement, div, img, prelude::*};
 use math::{AbilityId, AbilityName, CastId, ChampionId, ItemId, Position, RuneId};
 use std::{
+    ffi::OsString,
     path::{Path, PathBuf},
     sync::{Arc, OnceLock},
 };
@@ -13,11 +15,17 @@ use strum::VariantArray;
 fn raw_img_root() -> &'static Path {
     static ROOT: OnceLock<PathBuf> = OnceLock::new();
 
-    ROOT.get_or_init(|| {
-        std::env::var_os("TUTORLOLV2_RAW_IMG")
-            .map(PathBuf::from)
-            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("../../img/raw"))
-    })
+    ROOT.get_or_init(|| image_root(std::env::var_os("TUTORLOLV2_RAW_IMG")))
+}
+
+fn default_raw_img_root() -> PathBuf {
+    PathBuf::from(env!("TUTORLOLV2_DEFAULT_RAW_IMG"))
+}
+
+fn image_root(override_path: Option<OsString>) -> PathBuf {
+    override_path
+        .map(PathBuf::from)
+        .unwrap_or_else(default_raw_img_root)
 }
 
 fn raw_img(relative: String) -> ImageSource {
@@ -86,4 +94,49 @@ pub fn position_image(position: Position) -> Img {
     };
 
     image(path.into())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn default_image_directory_is_windows_absolute() {
+        let root = image_root(None);
+        assert!(
+            root.is_absolute(),
+            "Windows cannot resolve image default {root:?}"
+        );
+    }
+
+    #[test]
+    fn explicit_image_directory_is_preserved() {
+        let custom = OsString::from("custom images");
+        assert_eq!(image_root(Some(custom.clone())), PathBuf::from(custom));
+    }
+
+    #[test]
+    #[ignore = "requires locally downloaded raw images"]
+    fn windows_can_read_default_images() {
+        let root = image_root(None);
+        for category in [
+            "champions",
+            "items",
+            "runes",
+            "splash",
+            "centered",
+            "abilities",
+        ] {
+            let directory = root.join(category);
+            let file = std::fs::read_dir(&directory)
+                .unwrap_or_else(|error| panic!("Cannot open {directory:?}: {error}"))
+                .map(|entry| entry.unwrap().path())
+                .find(|path| path.is_file())
+                .unwrap_or_else(|| panic!("No raw images in {directory:?}"));
+            assert!(
+                !std::fs::read(&file).unwrap().is_empty(),
+                "Empty image {file:?}"
+            );
+        }
+    }
 }

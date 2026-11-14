@@ -69,7 +69,7 @@ cargo tauri build --target x86_64-pc-windows-msvc
 
 The Tauri configuration selects a four-line Linux runner that invokes `cargo-xwin` and invokes Trunk directly in `apps/web`. `dev` serves the frontend on port 8000; `build` bundles its release frontend from `apps/web/dist/`. Use `--debug --no-bundle` for a linked debug executable without producing an installer. The runner sets `CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUNNER=/usr/bin/env` before invoking cargo-xwin, so Windows binaries launch through WSL interop rather than Wine. For direct `cargo xwin run` or `test` calls, supply that same environment variable.
 
-Native raster images default to the repository's `img/raw/`. `TUTORLOLV2_RAW_IMG` can override that location. Existing application IDs, local-storage locations, environment variables, and API routes remain unchanged. Building the engine still requires the root game-data cache.
+Native raster images default to the repository's `img/raw/`. WSL builds translate this default with `wslpath` before embedding it, so the Windows executable uses a UNC or Windows drive path. `TUTORLOLV2_RAW_IMG` overrides are used as supplied at runtime. Existing application IDs, local-storage locations, environment variables, and API routes remain unchanged. Building the engine still requires the root game-data cache.
 
 ## Imported history
 
