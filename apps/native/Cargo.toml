@@ -1,0 +1,55 @@
+[package]
+name = "native"
+version = "0.0.0"
+edition.workspace = true
+repository.workspace = true
+description = ""
+
+[target.'cfg(windows)'.dependencies]
+bincode = { workspace = true, default-features = false, features = ["alloc", "derive", "std"] }
+gpui = "0.2.2"
+rust-embed = "8"
+math = { workspace = true, default-features = false, features = ["client-data", "formula-docs"] }
+codec = { workspace = true }
+api = { workspace = true }
+protocol = { workspace = true }
+unicode-segmentation = "1"
+serde = { workspace = true, default-features = false, features = ["alloc", "derive"] }
+strum = { workspace = true, default-features = false, features = ["derive"] }
+
+# The backend (`src/backend`), copied from the desktop app with the same versions.
+base64 = "0.22"
+brotli = { workspace = true }
+getrandom = "0.3"
+log = "0.4"
+reqwest = { version = "0.12", default-features = false, features = ["http2", "rustls-tls"] }
+serde_json = { workspace = true, default-features = true }
+sha2 = "0.10"
+tokio = { workspace = true, features = ["rt-multi-thread", "time", "sync", "fs", "macros"], default-features = true }
+# Already in gpui's dependency tree; `Builder` lays out the local UUIDv7 ids.
+uuid = { workspace = true, default-features = false }
+
+
+# The overlay's HWND (already in gpui's dependency tree).
+raw-window-handle = "0.6"
+# gpui's version, so the windows crates are compiled once.
+windows = { version = "0.61", features = [
+    "Foundation",
+    "Win32_Foundation",
+    "Win32_System_LibraryLoader",
+    "Win32_Storage_FileSystem",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Security_Cryptography",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_Threading",
+    "Win32_System_Memory",
+    "Win32_System_Time",
+] }
+
+[features]
+default = ["local-calculation"]
+# Run the damage calculator in process, like the web app's `local-calculation`.
+local-calculation = ["math/engine"]
+# Without `local-calculation`, send calculations to the HTTP API (`TUTORLOLV2_API_URL`).
+api = ["reqwest/blocking"]

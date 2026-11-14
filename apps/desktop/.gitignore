@@ -1,0 +1,5 @@
+**/dist
+**/target
+**/gen/schemas
+example.json
+docs/
