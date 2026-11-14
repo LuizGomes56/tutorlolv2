@@ -137,15 +137,37 @@ impl Build for Champion {
                 .iter()
                 .map(|stats| -> MayFail<String> {
                     Ok(format!(
-                        "crate::libgen::globals::MapStats {{ maps: &[{}], total_attack_speed: {:?}f32, stats: {} }}",
+                        "crate::libgen::globals::MapStats {{
+                            maps: &[{}],
+                            total_attack_speed: {:?}f32,
+                            stats: {},
+                            level_bonuses: &[{}]
+                        }}",
                         stats
+                            .data
                             .maps
                             .iter()
                             .map(|map| format!("tutorlolv2_types::GameMap::{map:?}"))
                             .collect::<Vec<_>>()
                             .join(", "),
-                        stats.total_attack_speed,
-                        cast_f32(&format!("{:?}", stats.stats))?
+                        stats.data.total_attack_speed,
+                        cast_f32(&format!("{:?}", stats.data.stats))?,
+                        stats
+                            .level_bonuses
+                            .iter()
+                            .map(|(stat, values)| format!(
+                                "crate::libgen::globals::MapStatBonus {{
+                                    stat: tutorlolv2_types::StatName::{stat:?},
+                                    values: &[{}]
+                                }}",
+                                values
+                                    .iter()
+                                    .map(|(level, value)| format!("({level}u8, {value:?}f32)"))
+                                    .collect::<Vec<_>>()
+                                    .join(", ")
+                            ))
+                            .collect::<Vec<_>>()
+                            .join(", ")
                     ))
                 })
                 .collect::<MayFail<Vec<_>>>()?

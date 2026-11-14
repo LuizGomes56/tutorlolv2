@@ -108,6 +108,32 @@ pub struct MapStats {
     pub total_attack_speed: f32,
     /// Every stat on these maps, with the ones the mode changes replaced
     pub stats: WikiStats,
+    /// Additive stat progressions, independent of ordinary champion growth.
+    pub level_bonuses: &'static [MapStatBonus],
+}
+
+#[derive(Clone, Copy, Debug)]
+pub struct MapStatBonus {
+    pub stat: StatName,
+    /// Parsed level/value samples, in ascending level order.
+    pub values: &'static [(u8, f32)],
+}
+
+impl MapStatBonus {
+    /// Preserve the parsed progression, including its lower and upper bounds.
+    pub const fn value(&self, level: u8) -> f32 {
+        if self.values.is_empty() {
+            return 0.0;
+        }
+
+        let mut index = 0;
+
+        while index + 1 < self.values.len() && self.values[index + 1].0 <= level {
+            index += 1;
+        }
+
+        self.values[index].1
+    }
 }
 
 #[derive(Clone, Copy, Debug)]

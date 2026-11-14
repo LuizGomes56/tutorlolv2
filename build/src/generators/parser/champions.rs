@@ -133,6 +133,12 @@ impl TryFrom<WikiChampion> for Champion {
     }
 }
 
+/// Map stat replacements and separately evaluated additive level bonuses.
+pub struct ChampionMapStats {
+    pub data: WikiMapStats,
+    pub level_bonuses: Vec<(StatName, Vec<(u8, f64)>)>,
+}
+
 impl Champion {
     /// Text of one of the champion's wiki exceptions, which are not parsed into
     /// abilities. See [`tutorlolv2_wiki::champions::exceptions`]
@@ -270,10 +276,19 @@ impl Champion {
 impl Champion {
     /// Stats that game modes change: the ones of `Module:ChampionData`, plus the
     /// base stats that the changes of each mode add, as Arena's "passively gains
-    /// {{pp|0 to 187}} increased base health". A progression from level 1 to 18
-    /// adds its first value to the base, and its growth over 17 levels per level
-    pub fn map_stats(&self) -> Vec<WikiMapStats> {
-        let mut list = self.data.map_stats.clone();
+    /// {{pp|0 to 187}} increased base health". These progressions are separate
+    /// from the ordinary champion stat growth curve.
+    pub fn map_stats(&self) -> Vec<ChampionMapStats> {
+        let mut list = self
+            .data
+            .map_stats
+            .iter()
+            .cloned()
+            .map(|data| ChampionMapStats {
+                data,
+                level_bonuses: Vec::new(),
+            })
+            .collect::<Vec<_>>();
 
         for changes in map_changes() {
             for entry in changes.entries.values() {
@@ -290,27 +305,23 @@ impl Champion {
                         continue;
                     };
 
-                    let (first, last) = match &amount.values {
-                        Values::ByLevel { values, .. } if values.len() > 1 => {
-                            (values[0], values[values.len() - 1])
-                        }
-                        Values::Scalar(value) => (*value, *value),
-                        _ => continue,
-                    };
-
-                    let index = match list.iter().position(|m| m.maps == changes.maps) {
+                    let index = match list.iter().position(|m| m.data.maps == changes.maps) {
                         Some(index) => index,
                         None => {
-                            list.push(WikiMapStats {
-                                maps: changes.maps.clone(),
-                                total_attack_speed: 1.0,
-                                stats: self.data.stats,
+                            list.push(ChampionMapStats {
+                                data: WikiMapStats {
+                                    maps: changes.maps.clone(),
+                                    total_attack_speed: 1.0,
+                                    stats: self.data.stats,
+                                },
+                                level_bonuses: Vec::new(),
                             });
                             list.len() - 1
                         }
                     };
 
-                    let stats = &mut list[index].stats;
+                    let entry = &mut list[index];
+                    let stats = &mut entry.data.stats;
                     let target = match stat {
                         StatName::Health => &mut stats.health,
                         StatName::Armor => &mut stats.armor,
@@ -319,8 +330,18 @@ impl Champion {
                         _ => continue,
                     };
 
-                    target.base += first as f32;
-                    target.per_level += (last - first) as f32 / 17.0;
+                    match &amount.values {
+                        Values::Scalar(value) => target.base += *value as f32,
+                        Values::ByLevel { values, levels }
+                            if !values.is_empty() && values.len() == levels.len() =>
+                        {
+                            entry.level_bonuses.push((
+                                *stat,
+                                levels.iter().copied().zip(values.iter().copied()).collect(),
+                            ));
+                        }
+                        _ => {}
+                    }
                 }
             }
         }

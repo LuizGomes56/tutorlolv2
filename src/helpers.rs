@@ -347,7 +347,34 @@ impl ChampionId {
         is_mega_gnar: bool,
         game_map: GameMap,
     ) -> BasicStats {
-        Self::base_stats_of(self.stats_on(game_map), *self, level, is_mega_gnar)
+        let map_stats = self.map_stats(game_map);
+        let source = match map_stats {
+            Some(map_stats) => &map_stats.stats,
+            None => self.stats(),
+        };
+
+        let mut stats = Self::base_stats_of(source, *self, level, is_mega_gnar);
+
+        if let Some(map_stats) = map_stats {
+            let mut index = 0;
+
+            while index < map_stats.level_bonuses.len() {
+                let bonus = &map_stats.level_bonuses[index];
+                let value = bonus.value(level.get());
+
+                match bonus.stat {
+                    StatName::Health => stats.max_health += value,
+                    StatName::Armor => stats.armor += value,
+                    StatName::MagicResist => stats.magic_resist += value,
+                    StatName::AttackDamage => stats.attack_damage += value,
+                    _ => {}
+                }
+
+                index += 1;
+            }
+        }
+
+        stats
     }
 
     const fn base_stats_of(
@@ -1007,10 +1034,16 @@ impl SelfState {
         let data = champion.data();
 
         // Item attack speed is a percent bonus, while live attack_speed is attacks/sec.
+        let total_attack_speed = match champion.map_stats(game_map) {
+            Some(map_stats) => map_stats.total_attack_speed,
+            None => 1.0,
+        };
+
         stats.attack_speed = current.attack_speed
             + champion.stats_on(game_map).attack_speed_ratio
                 * (stats.attack_speed - current.attack_speed)
-                / 100.0;
+                / 100.0
+                * total_attack_speed;
 
         let mut already_owned = false;
         let mut i = 0;

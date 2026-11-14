@@ -1134,6 +1134,69 @@ fn arena_changes_base_stats_from_champion_data_and_its_changes() {
 }
 
 #[test]
+fn arena_base_stat_bonuses_keep_their_parsed_level_progression() {
+    for level in 1..=18 {
+        let level = NonZeroU8::new(level).unwrap();
+        let health = |map| {
+            ChampionId::Azir
+                .map_base_stats(level, false, map)
+                .max_health
+        };
+        close(
+            health(GameMap::Arena) - health(GameMap::SummonersRift),
+            11.0 * (level.get() - 1) as f32,
+        );
+    }
+}
+
+#[test]
+fn map_attack_speed_purchase_matches_inferred_build() {
+    for map in [GameMap::Aram, GameMap::AramMayhem, GameMap::SummonersRift] {
+        let infer = |items| {
+            let mut input = game(items, &[], &[]);
+            input.active_player.data.champion_id = ChampionId::Xayah;
+            input.game_map = map;
+            calculator(input)
+        };
+        let bare = infer(&[]);
+        let player = &bare.current_player;
+        let state = SelfState {
+            bonus_attack_speed_ratio: ChampionId::Xayah
+                .stats_on(map)
+                .bonus_attack_speed_ratio(player.current_stats.attack_speed),
+            current_stats: player.current_stats,
+            base_stats: player.base_stats,
+            adaptive_type: player.adaptive_type,
+            ability_levels: game(&[], &[], &[]).active_player.abilities,
+            level: player.level,
+            stacks: 0.0,
+        };
+        let purchased = state.simulated_purchase(
+            ItemId::NashorsTooth,
+            &[],
+            ChampionId::Xayah,
+            Dragons::default(),
+            map,
+        );
+        let inferred = infer(&[ItemId::NashorsTooth]);
+        close(
+            purchased.current_stats.attack_speed,
+            inferred.current_player.current_stats.attack_speed,
+        );
+        close(
+            purchased.bonus_attack_speed_ratio.get(),
+            inferred
+                .monster_rows()
+                .next()
+                .unwrap()
+                .ctx
+                .bonus_attack_speed_ratio
+                .get(),
+        );
+    }
+}
+
+#[test]
 fn arena_changes_item_stats() {
     let ad = |map| {
         player_stats_on(&[ItemId::BladeOfTheRuinedKing], &[], map).attack_damage
