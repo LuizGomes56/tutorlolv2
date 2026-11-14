@@ -1,0 +1,8 @@
+[macros.type-overrides]
+'end_reason' = "protocol::EndReason"
+'game_result' = "protocol::GameResult"
+'share_mode' = "protocol::CodeMode"
+'riot_game_source' = "crate::server::db_enums::RiotGameSource"
+'share_delete_reason' = "crate::server::db_enums::ShareDeleteReason"
+
+'session_kind' = "crate::server::db_enums::SessionKind"

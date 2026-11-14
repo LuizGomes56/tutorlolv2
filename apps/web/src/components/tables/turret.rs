@@ -1,0 +1,46 @@
+use crate::components::image::{Image, ImageType};
+use crate::hover::{Builtin, DocView, Docs};
+use math::L_TWRD;
+use yew::prelude::*;
+
+#[derive(PartialEq, Properties)]
+pub struct TurretTableProps {
+    pub damages: Html,
+}
+
+#[component]
+pub fn TurretTable(props: &TurretTableProps) -> Html {
+    let header = use_memo((), |_| {
+        html! {
+            <thead>
+                <tr>
+                    for i in 0..L_TWRD {
+                        <th data_docs={Docs::Builtin(Builtin::Tower, DocView::Global).encode()}>
+                            <div class={classes!(
+                                "relative", "w-fit", "flex",
+                                "items-center", "justify-center",
+                                "place-self-center"
+                            )}>
+                                <Image src={ImageType::Tower} />
+                                <span class={classes!(
+                                    "text-sm", "img-letter"
+                                )}>
+                                    {i}
+                                </span>
+                            </div>
+                        </th>
+                    }
+                </tr>
+            </thead>
+        }
+    });
+
+    html! {
+        <table class={classes!("data-table")}>
+            {(*header).clone()}
+            <tbody>
+                <tr>{props.damages.clone()}</tr>
+            </tbody>
+        </table>
+    }
+}

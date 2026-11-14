@@ -1,0 +1,7 @@
+/target
+*.ttf
+*.txt
+/dist
+/docs
+.vscode
+.zed

@@ -1,4 +1,3 @@
-*.lock
 *.env
 *.vscode
 *.sh
@@ -12,15 +11,21 @@
 *.html
 *.zip
 target
-html
-raw_img
-internal
-cache
+/img/raw/
+/cache/
 archives
 **/conv
 build_output
-/perf/fixtures/
-/perf/results/
-/perf/__pycache__/
+/crates/perf/fixtures/
+/crates/perf/results/
+/crates/perf/__pycache__/
 /captures/
 docs/
+
+# Source files in applications must not inherit generated-file exclusions.
+!/apps/**/*.html
+!/apps/**/*.js
+!/apps/**/*.ps1
+
+/tools/
+/.zed/

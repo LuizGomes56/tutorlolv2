@@ -1,0 +1,67 @@
+#![cfg(feature = "tauri")]
+
+use yew::prelude::*;
+
+#[derive(PartialEq, Properties)]
+pub struct DynamicProps {
+    pub children: Children,
+    pub panel_id: AttrValue,
+    pub focused: bool,
+    #[prop_or(true)]
+    pub resize: bool,
+}
+
+#[component]
+pub fn Dynamic(props: &DynamicProps) -> Html {
+    let DynamicProps {
+        children,
+        panel_id,
+        focused,
+        resize,
+    } = props;
+
+    let circle = |handle, class| {
+        html! {
+            <div data-resize-handle={handle} class={classes!(
+                "absolute",
+                "w-2.5",
+                "h-2.5",
+                "rounded-full",
+                "bg-std-700",
+                "z-10",
+                class
+            )} />
+        }
+    };
+
+    html! {
+        <div
+            data-panel-id={panel_id}
+            data-panel={true}
+            data-scale={1}
+            data-active={false}
+            data-interactive={focused.to_string()}
+            class={classes!(
+                "relative", "border", "border-2",
+                "border-dashed", "select-none",
+                "touch-none", "p-2", "overlay-panel",
+                if *focused {
+                    classes!("border-std-700", "cursor-move", "bg-std-900/75")
+                } else {
+                    classes!("border-transparent", "cursor-auto", "bg-transparent")
+                }
+            )}
+        >
+            <div data-panel-content={true} class={classes!("overlay-panel-content")}>
+                {children}
+            </div>
+
+            if *focused && *resize {
+                {circle("nw", classes!("-left-1.5", "-top-1.5", "cursor-nwse-resize"))}
+                {circle("ne", classes!("-right-1.5", "-top-1.5", "cursor-nesw-resize"))}
+                {circle("sw", classes!("-left-1.5", "-bottom-1.5", "cursor-nesw-resize"))}
+                {circle("se", classes!("-right-1.5", "-bottom-1.5", "cursor-nwse-resize"))}
+            }
+        </div>
+    }
+}

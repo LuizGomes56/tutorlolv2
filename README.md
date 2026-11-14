@@ -30,7 +30,7 @@ let port_2999_bytes = request.bytes().await?;
 let deserialized = serde_json::from_slice(&port_2999_bytes)?;
 
 // Call the realtime function
-let data = tutorlolv2::realtime(&deserialized)
+let data = math::realtime(&deserialized)
     .ok_or("Error on function realtime");
 
 // You can turn it to a JSON string
@@ -45,22 +45,41 @@ The variable `data` holds all the information of damages against every player in
 
 ## Project structure
 
-This project is split in several different modules or crates, where each do part of the work. Most of these modules help generate the crate `tutorlolv2`, which contains closures and enum definitions that are used in the core library and frontend application
+The root is a virtual Cargo workspace using resolver 3. `cargo build`, `cargo check`, and `cargo test` at the root select `math` by default. Use `-p <name>` for a particular crate. Use `cargo core-check` or `cargo core-test` for the shared crates; applications require their own platform targets.
 
-### `tutorlolv2_avif`
+| Location | Package | Purpose |
+| --- | --- | --- |
+| `crates/math` | `math` | Damage engine and its build script |
+| `crates/types` | `types` | Shared domain types |
+| `crates/codec` | `codec` | Formula encoding and rendering |
+| `crates/build` | `build` | Data/code generation; executable named `generate` |
+| `crates/wiki` | `wiki` | Data downloads, parsing, and patch archives |
+| `crates/api_codegen` | `api_codegen` | API contract generation |
+| `crates/api` | `api` | Generated API contracts |
+| `crates/protocol` | `protocol` | Shared transport protocol |
+| `crates/server` | `server` | HTTP server |
+| `crates/perf` | `perf` | Benchmark harness |
+| `crates/perf/runner` | `perf_runner` | `cargo perf` launcher |
+
+Shared dependency versions and build profiles live in root `Cargo.toml`; `Cargo.lock` and `wiki.lock.json` remain at the root. Images, caches, captures, and `style.css` stay at the root as well. Run `cargo run -p wiki -- <command>` or `cargo run -p build -- <options>` from any working directory in this repository. Applications live under `apps/{web,desktop,native}`; see [application builds and Zed selections](apps/README.md).
+
+
+This project is split in several different modules or crates, where each do part of the work. Most of these modules help generate the crate `math`, which contains closures and enum definitions that are used in the core library and frontend application
+
+### `wiki::avif`
 
 This module is used to convert all images downloaded from Riot's API to the `.avif` encoding, which help reduce the total size of all images by 66%.
 
 By now, all images are embedded in the final compiled binary, which means there's no need to save them to a folder and move them to the AWS server, but it causes the final binary to be over 200MB in size, and requires recompilation to add new images
 
-### `tutorlolv2_dev`
+### Data generators (`build`)
 
 Has several "generator files", which read cache files the following directories
 
 - `cache/riot/(champions | items)`
 - `cache/meraki/(champions | items)`
 
-With the data in those folders, the useful information is gathered and new JSON files are generated on `internal/(champions | items)`, which will be read by `tutorlolv2_build` module and generate closures, structs, enums, static and constant variables. This method makes the evaluation speed of all functions much faster and type-safe than if we used Regex or other string-parsing method. However, the cost of this approach is that it needs the program to be recompiled every patch
+With the data in those folders, the useful information is gathered and new JSON files are generated on `cache/app/(champions | items)`, which will be read by `build` module and generate closures, structs, enums, static and constant variables. This method makes the evaluation speed of all functions much faster and type-safe than if we used Regex or other string-parsing method. However, the cost of this approach is that it needs the program to be recompiled every patch
 
 ### Example of generator file
 
@@ -94,7 +113,7 @@ impl Generator<Champion> for Neeko {
 }
 ```
 
-After this function is called, it generates a JSON file at location `internal/champions/Neeko.json` that look like the following
+After this function is called, it generates a JSON file at location `cache/app/champions/Neeko.json` that look like the following
 
 ```jsonc
 {
@@ -139,7 +158,7 @@ Note that if the function runs successfully, the damage formula of all abilities
 
 ```rs
 ChampionFactory::run(ChampionId::Neeko);
-let data = std::fs::read("internal/champions/Neeko.json")?;
+let data = std::fs::read("cache/app/champions/Neeko.json")?;
 let neeko_data = serde_json::from_slice::<Champion>(&data)?;
 let neeko_q1 = neeko_data.abilities[0];
 
@@ -153,7 +172,7 @@ ChampionFactory::run_all()?;
 ItemFactory::run_all()?;
 ```
 
-Also, this module scrapes from the internet the usual combos for every champion, and their recommended items/runes for each position (top, mid, jungle, adc, support). Check folder `internal/scraper/data.json`
+Also, this module scrapes from the internet the usual combos for every champion, and their recommended items/runes for each position (top, mid, jungle, adc, support). Check folder `cache/app/scraper/data.json`
 
 ### Example of scraped data
 
@@ -176,7 +195,7 @@ Also, this module scrapes from the internet the usual combos for every champion,
 }
 ```
 
-### `tutorlolv2_fmt`
+### `codec`
 
 Exports functions that compresses data, converts literal code to html, format code, minifies html, or convert strings to PascalCase
 
@@ -186,7 +205,7 @@ Exports functions that compresses data, converts literal code to html, format co
 - `encode_brotli_11(&[u8])` Compresses data using brotli at the maximum compression level
 - `encode_zstd_9` Compresses data using zstd library to the maximum compression level
 
-### `tutorlolv2_server`
+### `server`
 
 Same as a common ExpressJS http server, but using `actix_web`. Exposes routes that call functions from the core library, serve images, or use functions exported by the `dev` module.
 
@@ -196,15 +215,15 @@ GET http://localhost:8082/img/champions/Neeko.avif
 GET http://localhost:8082/api/setup/project
 ```
 
-### `tutorlolv2_types`
+### `types`
 
 Exports enums `AbilityId`, `AbilityName`, and `StatName`, which are used by almost all modules. There's nothing special about this crate
 
-### `tutorlolv2_build`
+### `build`
 
-Reads all data generated in the `internal` folder and generates a huge rust file at `tutorlolv2/src/data.rs`. Generates structs, arrays and phf maps with the necessary data to evaluate damages of all kinds, as well as a big brotli-compressed block of about 6MB in size, and several offsets to it, which represents the internal source code used by this application. It is helpful to let users see how the damages are being calculated, if they're accurate, and most importantly, if they're outdated.
+Reads cached game data and generates Rust modules plus compressed formula documentation in Cargo’s `OUT_DIR`. The engine includes those generated modules at compile time. Optional JSON exports are written to `cache/app/`.
 
-### Examples of generated structures (`tutorlolv2`)
+### Examples of generated structures (`math`)
 
 ```rs
 #[derive(...)]
@@ -372,27 +391,19 @@ The expected size of the whole frontend application is 1.3MB (WASM), while the c
 
 ## Running the project and Documentation
 
-Download the project and run `cargo d` to get a detailed webpage explaining how to use each function exported by each internal library
+Run these commands from the repository root:
 
-To run the project, do the following:
+```sh
+cargo build                          # math, with default features
+cargo test -p math
+cargo doc -p math --no-deps
+cargo run -p server --release
+cargo run -p wiki -- update           # download/update local game data
+cargo run -p build -- --no-export     # generate Rust into build_output/
+cargo perf --help
+```
 
-> cd tutorlolv2_server
-
-- Running server
-
-    > cargo run -r
-
-- Setting up the project (generating cache folders)
-
-    > GET `http://localhost:8082/api/setup/project`
-
-- Running build script (create `tutorlolv2_gen/src/data.rs`)
-
-    > cd tutorlolv2_build
-
-    > cargo run -r
-
-To interact with the math module library, you can edit `src/main.rs` directly
+Building `math` or `server` requires the local game-data cache. The server also requires the configured database for SQLx compile-time checks and integration tests. The API code generator and protocol checks can run without that cache or database.
 
 
 ## Calculation features and Bincode requests
@@ -421,11 +432,11 @@ The sibling frontend defaults to `local-calculation`; build it with
 ## API endpoint contracts
 
 Every `/api` endpoint is declared next to its handler in
-`tutorlolv2_server/src/server/routes`, one file per full URL path, with
+`crates/server/src/server/routes`, one file per full URL path, with
 `api_endpoint!` (method, path, path params, query, body, response mode, success
 statuses, auth, and request/response headers). Shared named DTOs are declared with
 `api_contract!`; their fields must be public and may only carry `#[serde(default)]`.
-`tutorlolv2_api_codegen` turns these declarations into `tutorlolv2_api/src/generated.rs`,
+`api_codegen` turns these declarations into `crates/api/src/generated.rs`,
 which the server, the web app and the desktop app all use. Clients pick an endpoint
 marker and supply its `Path`/`Query`/`Headers`/`Body`; they cannot choose another
 input or output type.
@@ -447,14 +458,14 @@ every hop records its file/line/column. For expected absence, use
 error methods rather than handler-local `map_err`. Never put credentials, cookies or
 authorization values in trace context.
 
-`tutorlolv2_api`'s build script regenerates `generated.rs` whenever a file under
+`api`'s build script regenerates `generated.rs` whenever a file under
 `server/routes` changes, so building the server (or anything that depends on
-`tutorlolv2_api`) keeps it current; it only rewrites the file when its contents
+`api`) keeps it current; it only rewrites the file when its contents
 change. The generator can also be run by hand:
 
-    > cargo run -p tutorlolv2_api_codegen -- generate
-    > cargo run -p tutorlolv2_api_codegen -- check
-    > cargo test -p tutorlolv2_api_codegen -p tutorlolv2_protocol -p tutorlolv2_api -p tutorlolv2_server
+    > cargo run -p api_codegen -- generate
+    > cargo run -p api_codegen -- check
+    > cargo test -p api_codegen -p protocol -p api -p server
 
 Commit `generated.rs` together with the declarations. The generated file is excluded
 from rustfmt (it is formatted by the generator itself). CI (`api-contracts.yml`) checks

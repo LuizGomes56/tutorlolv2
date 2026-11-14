@@ -1,0 +1,36 @@
+<html lang="en" data-theme="dark">
+    <head>
+        <base href="/" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Tutorlolv2</title>
+        <link data-trunk rel="copy-dir" href="../../img/abilities" />
+        <link data-trunk rel="copy-dir" href="../../img/champions" />
+        <link data-trunk rel="copy-dir" href="../../img/centered" />
+        <link data-trunk rel="copy-dir" href="../../img/items" />
+        <link data-trunk rel="copy-dir" href="../../img/runes" />
+        <link data-trunk rel="copy-dir" href="../../img/other" />
+        <link data-trunk rel="copy-dir" href="../../img/stats" />
+        <link data-trunk rel="copy-dir" href="./public/svgs" />
+        <link data-trunk rel="copy-dir" href="./public/fonts" />
+        <link data-trunk rel="css" href="./public/main.css" />
+        <link data-trunk rel="css" href="./public/highliter.css" />
+        <link data-trunk rel="tailwind-css" href="./public/tailwind.css" />
+        <link
+            data-trunk
+            rel="rust"
+            data-wasm-opt="4"
+            data-wasm-opt-params="--inlining -O4 --strip-debug --fast-math --enable-bulk-memory --strip-dwarf --enable-nontrapping-float-to-int"
+        />
+        <link data-trunk rel="inline" type="js" href="./public/hover.js" />
+        <link data-trunk rel="inline" type="js" href="./public/init.js" />
+        <script>
+            addEventListener("TrunkApplicationStarted", () => {
+                init_events(window.wasmBindings);
+                init_hover();
+            });
+        </script>
+    </head>
+
+    <body class="overflow-hidden"></body>
+</html>

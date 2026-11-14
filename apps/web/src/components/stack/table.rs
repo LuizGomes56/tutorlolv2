@@ -1,0 +1,115 @@
+use crate::components::{
+    image::{Image, ImageType},
+    stack::{Stack, StackValue},
+    tables::body::Victim,
+};
+use crate::hover::Docs;
+use math::{ignite, model::DamageTable};
+use std::{num::NonZeroU8, rc::Rc};
+use yew::prelude::*;
+
+#[derive(PartialEq, Properties)]
+pub struct StackTableProps<T: Victim + PartialEq + 'static> {
+    pub enemies: Rc<[T]>,
+    pub damages: Rc<DamageTable>,
+    #[prop_or_default]
+    pub row_offset: usize,
+    #[prop_or(1)]
+    pub row_stride: usize,
+    pub stack: Stack,
+    pub level: NonZeroU8,
+
+    #[prop_or_default]
+    pub callback: Option<Callback<usize>>,
+
+    #[prop_or_default]
+    pub index: Option<usize>,
+}
+
+#[component]
+pub fn StackTable<T: Victim + PartialEq + 'static>(props: &StackTableProps<T>) -> Html {
+    let StackTableProps {
+        ref callback,
+        ref enemies,
+        ref damages,
+        row_offset,
+        row_stride,
+        ref stack,
+        index,
+        level,
+    } = *props;
+
+    html! {
+        <table class={classes!(
+            "data-table",
+            if index.is_some() {
+                Some("overlay")
+            } else {
+                None
+            }
+        )}>
+            <thead>
+                <tr>
+                    <th class={classes!("w-0")}></th>
+                    <th>{"Damage"}</th>
+                    <th>{"Health"}</th>
+                    <th class={classes!("whitespace-nowrap")}>
+                        {"% HP"}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    enemies.iter().enumerate().filter_map(|(i, enemy)| {
+                        if let Some(j) = index && i != j {
+                            return None;
+                        }
+
+                        let damages = damages.row(row_offset + i * row_stride);
+                        let enemy_id = enemy.champion_id();
+                        let max_health = enemy.max_health();
+
+                        let total = stack
+                            .iter()
+                            .map(|entry| match entry.value {
+                                StackValue::Ability { slot, .. } => damages.abilities[slot],
+                                StackValue::Item(j, ..) => damages.items[j],
+                                StackValue::Rune(j, ..) => damages.runes[j],
+                                StackValue::BasicAttack => damages.attacks.basic_attack,
+                                StackValue::CritStrike => damages.attacks.critical_strike,
+                                StackValue::OnhitMin => damages.attacks.onhit_damage.minimum_damage,
+                                StackValue::OnhitMax => damages.attacks.onhit_damage.maximum_damage,
+                                StackValue::Ignite => ignite(level),
+                            })
+                            .sum::<i32>();
+
+                        let final_hp = max_health - total;
+                        let hp_damage = ((total as f32 / max_health as f32) * 100.0) as i32;
+
+                        Some(html! {
+                            <tr>
+                                <td data_docs={Docs::global(enemy_id).encode()} class={classes!("w-12")}>
+                                    <button
+                                        class={classes!(
+                                            "outline-hidden",
+                                            "focus:ring-1",
+                                            "focus:ring-blue-500/75"
+                                        )}
+                                        disabled={callback.is_none()}
+                                        onclick={callback.clone().map(|f| Callback::from(move |_| f.emit(i)))}
+                                    >
+                                        <Image src={ImageType::from(enemy_id)} />
+                                    </button>
+                                </td>
+                                <td>{total}</td>
+                                <td>{final_hp}</td>
+                                <td>{hp_damage}{"%"}</td>
+                            </tr>
+                        })
+                    })
+                    .collect::<Html>()
+                }
+            </tbody>
+        </table>
+    }
+}

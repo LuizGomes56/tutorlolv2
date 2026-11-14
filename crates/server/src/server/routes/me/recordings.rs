@@ -1,0 +1,102 @@
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{google::Owner, state::AppState};
+use actix_web::web::{Data, Query};
+use protocol::*;
+
+use crate::server::me::*;
+
+pub async fn list(
+    state: Data<AppState>,
+    auth: Owner,
+    query: Query<Pagination>,
+) -> crate::server::response::ApiResult<HistoryPage> {
+    let limit = query.limit.unwrap_or(50);
+
+    if !(1..=100).contains(&limit) {
+        return Err(AppError::bad_request("limit must be between 1 and 100"));
+    }
+
+    let rows = sqlx::query_as!(
+        HistoryRow,
+        r#"
+        SELECT r.id,
+               r.champion,
+               r.game_mode,
+               r.queue_id,
+               r.active_riot_id,
+               r.started_at_estimate,
+               r.first_game_time,
+               r.last_game_time,
+               r.game_length_s,
+               r.result,
+               r.is_custom,
+               r.is_practice,
+               r.ended_at,
+               r.end_reason,
+               r.coverage_s,
+               r.kills,
+               r.deaths,
+               r.assists,
+               r.creep_score,
+               r.level,
+               s.code AS "code?",
+               s.mode AS "mode?"
+        FROM recordings r
+        LEFT JOIN share_codes s ON s.recording_id = r.id
+        AND s.deleted_at IS NULL
+        WHERE ((r.device_id = $1
+                AND $1 IS NOT NULL)
+               OR (r.account_id = $4
+                   AND $4 IS NOT NULL))
+            AND r.deleted_at IS NULL
+            AND EXISTS
+                (SELECT 1
+                 FROM devices d
+                 WHERE d.id = r.device_id
+                     AND d.deleted_at IS NULL)
+            AND ($2::UUID IS NULL
+                 OR r.id < $2)
+        ORDER BY r.id DESC
+        LIMIT $3
+        "#,
+        auth.device_id,
+        query.before,
+        i64::from(limit) + 1,
+        auth.account_id,
+    )
+    .fetch_all(&state.db)
+    .await
+    .trace_ctx("History storage unavailable")?;
+
+    let more = rows.len() > limit as usize;
+    let items: Vec<_> = rows
+        .iter()
+        .take(limit as usize)
+        .map(|row| (HistoryService { state: &state }).item(row))
+        .collect::<AppResult<Vec<_>>>()
+        .trace()?;
+
+    let next_before = if more {
+        items.last().map(|v| v.summary.recording.id)
+    } else {
+        None
+    };
+
+    Ok(::api::ListRecordings::reply(HistoryPage {
+        items,
+        next_before,
+    }))
+    .map(|reply| reply.no_store())
+}
+
+api_contract! { pub struct Pagination { pub before: Option<Uuid>, pub limit: Option<u32> } }
+
+api_endpoint! {
+    pub ListRecordings {
+        handler: list, method: GET, path: "/api/me/recordings",
+        path_params: {  }, query: form(Pagination), body: none,
+        response: envelope(protocol::HistoryPage), success: [200], auth: owner,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

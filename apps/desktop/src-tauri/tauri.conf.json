@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.tauri.app/config/2",
+    "productName": "tutorlolv2_desktop",
+    "version": "0.1.0",
+    "identifier": "com.tutorlolv2",
+    "build": {
+        "frontendDist": "../../web/dist",
+        "devUrl": "http://localhost:8000",
+        "beforeDevCommand": {
+            "script": "trunk serve --locked --features tauri --minify false --port 8000",
+            "cwd": "../../web"
+        },
+        "beforeBuildCommand": {
+            "script": "trunk build --locked --release --features tauri --minify false",
+            "cwd": "../../web"
+        },
+        "runner": "../scripts/xwin-wsl"
+    },
+    "app": {
+        "windows": [
+            {
+                "title": "tutorlolv2",
+                "width": 1280,
+                "height": 720,
+                "alwaysOnTop": false,
+                "x": 32,
+                "y": 32,
+                "focus": false,
+                "resizable": true,
+                "fullscreen": false,
+                "transparent": false,
+                "decorations": true,
+                "center": false,
+                "create": false
+            }
+        ],
+        "security": {
+            "csp": null
+        },
+        "withGlobalTauri": true
+    },
+    "bundle": {
+        "active": true,
+        "targets": [
+            "nsis"
+        ],
+        "icon": [
+            "icons/32x32.png",
+            "icons/128x128.png",
+            "icons/128x128@2x.png",
+            "icons/icon.icns",
+            "icons/icon.ico"
+        ],
+        "windows": {
+            "nsis": {
+                "installMode": "currentUser",
+                "installerHooks": "nsis/hooks.nsh",
+                "template": "nsis/installer.nsi"
+            }
+        }
+    }
+}
