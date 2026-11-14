@@ -1,8 +1,9 @@
 #![cfg(feature = "engine")]
 
 use core::num::NonZeroU8;
-use math::{AttackType, ChampionId, GameMap, L_MSTR, calculator::EnemyMap, model::*};
+use math::{AttackType, ChampionId, GameMap, L_MSTR, Monster, calculator::EnemyMap, model::*};
 use strum::EnumCount;
+use strum::VariantArray;
 
 #[test]
 fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
@@ -65,13 +66,10 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
         let layout = DamageLayout::new(&eval_data, false);
         let mut legacy = DamageTable::zeroed(layout, L_MSTR + enemy_players.len(), 1);
         let mut batched = legacy.clone();
-        for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
+        let monster_level = 10;
+        for (i, &monster) in Monster::VARIANTS.iter().enumerate() {
             let full_state = EnemyState {
-                base_stats: SimpleStats {
-                    armor,
-                    magic_resist,
-                    max_health: 1000.0,
-                },
+                base_stats: monster.stats(monster_level),
                 ..Default::default()
             }
             .full_state(shred, true);
@@ -89,6 +87,7 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
             modifiers,
             champion.ability_batch,
             GameMap::default(),
+            monster_level,
         );
         let legacy_enemies = legacy.calculator_enemies(
             &enemy_players,

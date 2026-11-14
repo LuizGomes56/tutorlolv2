@@ -12,6 +12,7 @@ pub use {
     globals::*,
     impls::traits::{CastId, ValueId},
     items_code::{ITEM_NAME_TO_ID, ItemId},
+    monsters_code::Monster,
     runes_code::{RUNE_NAME_TO_ID, RuneId},
 };
 
@@ -174,5 +175,5 @@ pub const fn zero(_: &types::Ctx) -> f32 {
     0.0
 }
 
-pub const L_MSTR: usize = 7;
+pub const L_MSTR: usize = <Monster as strum::EnumCount>::COUNT;
 pub const L_TWRD: usize = 6;

@@ -28,9 +28,11 @@ use {
 use crate::libgen::Closure;
 
 mod damage_table;
+mod monsters;
 mod owned_input;
 
 pub use damage_table::DamageTableMut;
+pub use monsters::*;
 pub use owned_input::*;
 pub use types::AbilityLevels;
 /// Holds the real resistence that a enemy has, after applying the appropriate
@@ -789,26 +791,6 @@ impl RiotFormulas {
 
     /// Rune [`RuneId::CutDown`] bonus damage against high health champions
     pub const CUT_DOWN_BONUS_DAMAGE: f32 = 1.0 + runes::cut_down::BONUS_DAMAGE;
-
-    /// Constant array containing the armor and magic resistences of jungle monsters.
-    /// Note that there's no specific name to each monster since the damage against
-    /// most of them repeats since their armor and magic resistence values are the same
-    pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
-        // Minions
-        (0f32, 0f32),
-        // Dragons
-        (21f32, 30f32),
-        // Red, Blue, Gromp, Wolves
-        (42f32, 42f32),
-        // Krug, Raptor
-        (20f32, 20f32),
-        // Baron Nashor
-        (120f32, 70f32),
-        // Atakhan
-        (90f32, 75f32),
-        // Super Minion
-        (100f32, -30f32),
-    ];
 
     /// Ratio of the maximum health that is missing, from `0.0` at full health
     /// to `1.0` at zero health. The maximum health is at least `1.0` to avoid

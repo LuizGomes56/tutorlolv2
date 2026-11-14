@@ -10,8 +10,8 @@
 
 use {
     crate::{
-        ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, libgen::items, model::*,
-        runes,
+        ChampionId, Ctx, GameMap, ItemId, L_MSTR, Monster, RuneId, helpers::*, libgen::items,
+        model::*, runes,
     },
     alloc::boxed::Box,
     core::num::NonZeroU8,
@@ -775,6 +775,9 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         modifiers,
         ability_batch,
         game_map,
+        Monster::level(
+            core::iter::once(level.get()).chain(enemy_players.iter().map(|e| e.level.get())),
+        ),
     );
 
     let enemies = damages.calculator_enemies_with(
