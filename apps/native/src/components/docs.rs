@@ -6,7 +6,7 @@
 use crate::components::code::Highlighted;
 use codec::{Class, Markup, Spans};
 use math::{
-    AbilityId, CastId, ChampionId, Ctx, CtxVar, EntityId, ItemId, RuneId,
+    AbilityId, CastId, ChampionId, Ctx, CtxVar, EntityId, ItemId, Monster, RuneId,
     formula_docs::FormulaRenderer,
 };
 
@@ -19,6 +19,8 @@ pub enum Docs {
     Rune(RuneId),
     Global(EntityId),
     Builtin(Builtin, DocView),
+    /// A monster's stats when monsters are of the given level
+    Monster(Monster, u8),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -85,6 +87,11 @@ impl Docs {
             Self::Rune(rune) => vec![rune.render_fn_markup::<Spans>().into()],
             Self::Global(id) => vec![Self::global_markup(id)],
             Self::Builtin(builtin, view) => vec![Highlighted::new(&Self::builtin(builtin, view))],
+            Self::Monster(monster, level) => {
+                vec![Highlighted::new(
+                    &monster.render_global_markup::<Spans>(level),
+                )]
+            }
         }
     }
 }

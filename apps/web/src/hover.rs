@@ -3,7 +3,7 @@ use crate::{components::image::ImageType, model::AbilityKind, utils::BINCODE_CON
 use base64::{Engine as _, engine::general_purpose::STANDARD_NO_PAD};
 use bincode::{Decode, Encode};
 use math::yew::render::{FormulaRenderer, MayFail};
-use math::{AbilityId, CastId, ChampionId, Ctx, CtxVar, EntityId, ItemId, RuneId};
+use math::{AbilityId, CastId, ChampionId, Ctx, CtxVar, EntityId, ItemId, Monster, RuneId};
 use std::fmt::Write;
 use wasm_bindgen::prelude::*;
 
@@ -18,6 +18,8 @@ pub enum Docs {
     ItemGlobal(ItemId),
     RuneGlobal(RuneId),
     Builtin(Builtin, DocView),
+    /// A monster's stats when monsters are of the given level
+    Monster(Monster, u8),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Encode, Decode)]
@@ -98,6 +100,7 @@ impl Docs {
                 Ok(FormulaRenderer::basic_attack_global())
             }
             Self::Builtin(Builtin::Ignite, _) => Ok(FormulaRenderer::ignite_fn()),
+            Self::Monster(monster, level) => Ok(monster.render_global(level)),
         }?;
 
         html.push_str("<pre>");
@@ -295,6 +298,9 @@ mod tests {
         for &rune in RuneId::VARIANTS {
             check(Docs::Rune(rune));
             check(Docs::RuneGlobal(rune));
+        }
+        for &monster in Monster::VARIANTS {
+            check(Docs::Monster(monster, u8::MAX));
         }
         for builtin in [
             Builtin::Tower,

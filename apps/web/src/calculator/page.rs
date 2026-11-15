@@ -224,6 +224,7 @@ pub fn Calculator() -> Html {
 
     let data = match game_data.as_ref() {
         Some(data) => {
+            let monster_level = data.monster_level();
             let Game {
                 damages: damage_table,
                 current_player,
@@ -314,22 +315,20 @@ pub fn Calculator() -> Html {
                                             None
                                         );
 
-                                        let title = group
-                                            .monsters
-                                            .iter()
-                                            .map(|&monster| monster.name())
-                                            .collect::<Vec<_>>()
-                                            .join(", ");
-
                                         html! {
                                             <tr>
-                                                <td {title} class={classes!("px-2")}>
+                                                <td class={classes!("px-2")}>
                                                     <div class={classes!(
-                                                        "flex", "flex-wrap", "items-center", "gap-1"
+                                                        "flex", "flex-wrap", "items-center", "justify-start", "gap-1"
                                                     )}>
                                                         {
                                                             group.monsters.iter().map(|&monster| html! {
-                                                                <Image class={classes!("w-8")} src={ImageType::Monster(monster)} />
+                                                                <span
+                                                                    title={monster.name()}
+                                                                    data_docs={Docs::Monster(monster, monster_level).encode()}
+                                                                >
+                                                                    <Image class={classes!("w-8")} src={ImageType::Monster(monster)} />
+                                                                </span>
                                                             }).collect::<Html>()
                                                         }
                                                     </div>

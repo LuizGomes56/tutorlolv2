@@ -105,6 +105,16 @@ pub struct Game {
     pub runes_meta: Rc<[TypeMetadata<RuneId>]>,
 }
 
+impl Game {
+    /// Level of every monster, from the levels of all champions as the calculator uses
+    pub fn monster_level(&self) -> u8 {
+        math::Monster::level(
+            std::iter::once(self.current_player.level.get())
+                .chain(self.enemies.iter().map(|enemy| enemy.level.get())),
+        )
+    }
+}
+
 impl From<math::model::OutputGame> for Game {
     fn from(output: math::model::OutputGame) -> Self {
         Self {

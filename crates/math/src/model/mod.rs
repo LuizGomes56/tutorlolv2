@@ -746,6 +746,14 @@ pub struct OutputGame {
 }
 
 impl OutputGame {
+    /// Level of every monster, from the levels of all champions as the calculator uses
+    pub fn monster_level(&self) -> u8 {
+        crate::Monster::level(
+            core::iter::once(self.current_player.level.get())
+                .chain(self.enemies.iter().map(|enemy| enemy.level.get())),
+        )
+    }
+
     pub fn monster_rows(&self) -> impl Iterator<Item = Damages<'_>> + '_ {
         (0..L_MSTR).map(|m| self.damages.row(m))
     }

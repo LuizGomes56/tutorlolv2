@@ -1,5 +1,5 @@
 use crate::{
-    AbilityId, CastId, ChampionId, DamageIndex, ItemId, RuneId,
+    AbilityId, CastId, ChampionId, DamageIndex, ItemId, Monster, RuneId,
     formula_docs::{FORMULA_RENDERER, FormulaRenderer, MayFail},
 };
 use alloc::{format, string::String};
@@ -204,7 +204,33 @@ impl RuneId {
     }
 }
 
+impl Monster {
+    /// The monster's stats when monsters are of `level`, see [`OutputGame::monster_level`]
+    ///
+    /// [`OutputGame::monster_level`]: crate::model::OutputGame::monster_level
+    pub fn render_global_markup<M: Markup>(self, level: u8) -> M {
+        let stats = self.stats(level);
+        let mut h = GenericHighlighter::<M>::new();
+
+        h.global_struct(self.into())
+            .field("name", Class::String, self.name())
+            .field("level", Class::Number, level)
+            .field("health", Class::Number, stats.max_health.round())
+            .field("armor", Class::Number, stats.armor.round())
+            .field("magic_resist", Class::Number, stats.magic_resist.round())
+            .finish_struct();
+
+        h.into_markup()
+    }
+}
+
 // HTML strings, as used by the web frontend.
+
+impl Monster {
+    pub fn render_global(self, level: u8) -> String {
+        self.render_global_markup::<Html>(level).into_string()
+    }
+}
 
 impl ChampionId {
     pub fn render_global(&self) -> MayFail<String> {

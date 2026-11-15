@@ -7,7 +7,8 @@
 //! reuses the previous frame's layout and paint until [`DamageTables::set_game`] notifies it.
 use crate::{
     components::{
-        box_shadow, docs, hover_docs,
+        box_shadow, docs,
+        hover_docs::{self, HoverDocsExt},
         image::{Entry, image, monster_image},
         tables::{Cell, Column, ROW_HEIGHT, damage_columns, empty_table, table, turret_columns},
     },
@@ -139,7 +140,9 @@ impl DamageTables {
             &game.runes_meta,
         );
 
-        // The portraits of each row's monsters, then their names
+        // The portraits of each row's monsters, showing their stats when hovered
+        let monster_level = game.monster_level();
+
         monster_columns.insert(
             0,
             Column {
@@ -147,27 +150,16 @@ impl DamageTables {
                 cells: monster_groups
                     .iter()
                     .map(|group| {
-                        let names = group
-                            .monsters
-                            .iter()
-                            .map(|monster| monster.name())
-                            .collect::<Vec<_>>()
-                            .join(", ");
-
-                        Cell::new(
-                            div()
-                                .px_2()
-                                .flex()
-                                .items_center()
-                                .gap_1()
-                                .children(
-                                    group
-                                        .monsters
-                                        .iter()
-                                        .map(|&monster| monster_image(monster).size(px(24.))),
-                                )
-                                .child(div().text_xs().whitespace_nowrap().child(names)),
-                        )
+                        Cell::new(div().w_full().flex().items_center().gap_1().children(
+                            group.monsters.iter().map(|&monster| {
+                                div()
+                                    .id(("monster-portrait", monster as usize))
+                                    .child(monster_image(monster).size(px(24.)))
+                                    .docs(move || {
+                                        docs::Docs::Monster(monster, monster_level).blocks()
+                                    })
+                            }),
+                        ))
                     })
                     .collect(),
             },

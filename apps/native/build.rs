@@ -48,5 +48,14 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("cargo:rustc-env=TUTORLOLV2_DEFAULT_RAW_IMG={windows_path}");
 
+    // gpui calls TaskDialogIndirect, which only exists in comctl32 v6. Windows
+    // loads v6 only when the executable's manifest asks for it.
+    println!("cargo:rustc-link-arg-bins=/MANIFEST:EMBED");
+    println!(
+        "cargo:rustc-link-arg-bins=/MANIFESTDEPENDENCY:type='win32' \
+         name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
+         processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'"
+    );
+
     Ok(())
 }
