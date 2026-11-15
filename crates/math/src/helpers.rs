@@ -219,6 +219,59 @@ impl SimpleStats {
 }
 
 impl WikiStats {
+    /// Movement speed above the base, from the total the game shows. The soft
+    /// caps are undone first, so a total of 450 means a raw 458.75, not 450
+    pub const fn bonus_move_speed(&self, move_speed: f32) -> f32 {
+        if !move_speed.is_finite() || move_speed <= 0.0 {
+            return 0.0;
+        }
+
+        (RiotFormulas::raw_move_speed(move_speed) - self.move_speed).max(0.0)
+    }
+
+    /// Movement speed the game would show with `items` and `runes`: flat bonuses
+    /// add to the base, additive percent bonuses scale that sum, then the soft caps
+    /// apply. Buffs, actives and conditional passives are not inferred
+    pub const fn inferred_move_speed(
+        &self,
+        items: &[ItemId],
+        runes: &[RuneId],
+        game_map: GameMap,
+    ) -> f32 {
+        let mut flat = 0.0;
+        let mut percent = 0.0;
+        let mut i = 0;
+
+        while i < items.len() {
+            let stats = items[i].stats_on(game_map);
+            let mut j = 0;
+
+            while j < stats.len() {
+                match stats[j] {
+                    (StatName::MoveSpeed, v) => flat += v as f32,
+                    (StatName::MoveSpeedPercent, v) => percent += v as f32,
+                    _ => {}
+                }
+
+                j += 1;
+            }
+
+            i += 1;
+        }
+
+        i = 0;
+
+        while i < runes.len() {
+            if matches!(runes[i], RuneId::MoveSpeed) {
+                percent += crate::libgen::rules::shards::MOVE_SPEED;
+            }
+
+            i += 1;
+        }
+
+        RiotFormulas::capped_move_speed((self.move_speed + flat) * (1.0 + percent / 100.0))
+    }
+
     /// Recover total bonus attack speed from attacks per second and the champion ratio.
     /// Observed attack speed cannot reveal bonuses hidden by the game's attack speed cap;
     /// callers with the true bonus can supply it directly through the context.
@@ -555,6 +608,7 @@ impl PlayerStats {
     ) -> Self {
         let mut added = PlayerStats::default();
 
+        // A simulated purchase keeps the observed movement speed
         added.get_item_bonus_stats(&[item], &mut Modifiers::default(), &mut 0.0, game_map);
 
         Self {
@@ -932,6 +986,7 @@ impl SelfState {
     pub const fn ctx_attacker(&self, game_map: GameMap) -> CtxAttacker {
         let SelfState {
             stacks,
+            bonus_move_speed,
             bonus_attack_speed_ratio,
             ability_levels,
             current_stats:
@@ -951,6 +1006,7 @@ impl SelfState {
                     max_health,
                     max_mana,
                     current_mana,
+                    ..
                 },
             base_stats:
                 BasicStats {
@@ -992,6 +1048,7 @@ impl SelfState {
             ability_power,
             attack_damage,
             stacks,
+            bonus_move_speed,
             flags: CtxFlags::attacker(adaptive_type),
             map: game_map.mode(),
         }
@@ -1384,8 +1441,7 @@ impl EnemyFullState {
             bonus_stats:
                 SimpleStats {
                     max_health: enemy_bonus_health,
-                    armor: enemy_bonus_armor,
-                    magic_resist: enemy_bonus_magic_resist,
+                    ..
                 },
             steelcaps,
             rocksolid,
@@ -1396,8 +1452,6 @@ impl EnemyFullState {
 
         CtxTarget {
             enemy_bonus_health,
-            enemy_bonus_armor,
-            enemy_bonus_magic_resist,
             enemy_armor,
             enemy_current_health,
             enemy_max_health,

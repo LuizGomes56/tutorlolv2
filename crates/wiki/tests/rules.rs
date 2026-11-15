@@ -1,4 +1,4 @@
-use wiki::rules::{AramMayhem, ByLevel, Drakes, Shards, Turret};
+use wiki::rules::{AramMayhem, ByLevel, Drakes, MoveSpeedCaps, Shards, Turret};
 
 #[test]
 fn drake_buffs_read_the_ratio_of_one_stack() {
@@ -22,6 +22,7 @@ fn shards_are_read_from_their_section_only() {
 | [[File:Rune shard Attack Speed.png|30px|link=]]<br />{{as|10% '''bonus''' attack speed}}
 | [[File:Rune shard Health Scaling.png|30px|link=]]<br />{{pp|10 * x for 20|color=health}} {{as|'''bonus''' health}}
 | [[File:Rune shard Health.png|30px|link=]]<br />{{as|65 '''bonus''' health}}
+| [[File:Rune shard Movement Speed.png|30px|link=]]<br />{{as|{{fd|2.5}}% '''bonus''' movement speed}}
 == Patch history ==
 * [[File:Rune shard Health.png|20px|link=]]<br />{{as|15 '''bonus''' health}}
 ";
@@ -33,6 +34,31 @@ fn shards_are_read_from_their_section_only() {
             attack_speed: 10.0,
             health: 65.0,
             health_scaling_per_level: 10.0,
+            move_speed: 2.5,
+        }
+    );
+}
+
+#[test]
+fn movement_speed_soft_caps_are_read_from_their_sentences() {
+    let src = "\
+When the raw movement speed is greater than 415, there are two soft caps applied:
+* The raw speed between 415 and 490 gets multiplied by 80%.
+* The raw speed over 490 gets multiplied by 50%.
+When the raw movement speed is less than 220 another two soft caps are used:
+* If the raw speed is below 220, final speed is increased to {{tt|110|220*(1-0.5)}}{{plus}}(Raw MS){{times}}{{fd|0.5}}.
+";
+
+    assert_eq!(
+        MoveSpeedCaps::from_page(src).unwrap(),
+        MoveSpeedCaps {
+            first_cap: 415.0,
+            first_ratio: 0.8,
+            second_cap: 490.0,
+            second_ratio: 0.5,
+            lower_cap: 220.0,
+            lower_floor: 110.0,
+            lower_ratio: 0.5,
         }
     );
 }

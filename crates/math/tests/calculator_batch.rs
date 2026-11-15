@@ -31,6 +31,7 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
             bonus_attack_speed_ratio: types::AttackSpeedRatio::new(0.0),
             level,
             stacks: 150.0,
+            bonus_move_speed: 0.0,
             ability_levels: AbilityLevels {
                 q: 5,
                 w: 5,

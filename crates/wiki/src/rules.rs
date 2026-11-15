@@ -1,6 +1,6 @@
 //! Values of the game that belong to no champion, item or rune: the multipliers of
-//! the elemental drakes, the stat shards, the global stats of ARAM: Mayhem and the
-//! resistances of turrets.
+//! the elemental drakes, the stat shards, the global stats of ARAM: Mayhem, the
+//! resistances of turrets and the soft caps of movement speed.
 
 use crate::{HTTP_CLIENT, JsonRead, JsonWrite, MayFail};
 use lazy_regex::{Lazy, Regex, regex};
@@ -18,13 +18,16 @@ const INFERNAL_MIGHT_PAGE: &str = "Template:Buff_data_Infernal_Might";
 const MOUNTAINOUS_VIGOR_PAGE: &str = "Template:Buff_data_Mountainous_Vigor";
 /// Page holding the infobox of every turret and the Bulwark passive
 const TURRET_PAGE: &str = "Turret";
+/// Page holding the soft caps of movement speed, under `== Movement speed caps ==`
+const MOVEMENT_SPEED_PAGE: &str = "Movement_speed";
 
-const PAGES: [&str; 5] = [
+const PAGES: [&str; 6] = [
     RUNE_PAGE,
     ARAM_MAYHEM_PAGE,
     INFERNAL_MIGHT_PAGE,
     MOUNTAINOUS_VIGOR_PAGE,
     TURRET_PAGE,
+    MOVEMENT_SPEED_PAGE,
 ];
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -33,6 +36,22 @@ pub struct Rules {
     pub shards: Shards,
     pub aram_mayhem: AramMayhem,
     pub turret: Turret,
+    pub move_speed: MoveSpeedCaps,
+}
+
+/// Soft caps that turn the raw movement speed into the one the game shows
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct MoveSpeedCaps {
+    /// Raw speed above this is multiplied by `first_ratio`, up to `second_cap`
+    pub first_cap: f64,
+    pub first_ratio: f64,
+    /// Raw speed above this is multiplied by `second_ratio`
+    pub second_cap: f64,
+    pub second_ratio: f64,
+    /// Raw speed below this becomes `lower_floor + raw * lower_ratio`
+    pub lower_cap: f64,
+    pub lower_floor: f64,
+    pub lower_ratio: f64,
 }
 
 /// Outer turret of Summoner's Rift, attacked by a single champion with no other
@@ -66,6 +85,8 @@ pub struct Shards {
     pub health: f64,
     /// Bonus health per level of the scaling health shard
     pub health_scaling_per_level: f64,
+    /// Percent of bonus movement speed, as `2.5` for 2.5%
+    pub move_speed: f64,
 }
 
 /// Values that grow linearly from level 1 to level 18
@@ -123,6 +144,8 @@ pub fn parse() -> MayFail {
             .map_err(|e| format!("[rules] {ARAM_MAYHEM_PAGE}: {e}"))?,
         turret: Turret::from_page(&read(TURRET_PAGE)?)
             .map_err(|e| format!("[rules] {TURRET_PAGE}: {e}"))?,
+        move_speed: MoveSpeedCaps::from_page(&read(MOVEMENT_SPEED_PAGE)?)
+            .map_err(|e| format!("[rules] {MOVEMENT_SPEED_PAGE}: {e}"))?,
     };
 
     rules.write_file(FULL_PATH)
@@ -212,11 +235,72 @@ impl Shards {
             regex!(r"Rune shard Health Scaling\.png[^\n]*<br />\{\{pp\|([\d.]+) \* x for \d+"),
         )?;
 
+        let [move_speed] = capture(
+            shards,
+            regex!(
+                r"Rune shard Movement Speed\.png[^\n]*<br />\{\{as\|\{\{fd\|([\d.]+)\}\}% '''bonus''' movement speed"
+            ),
+        )?;
+
         Ok(Self {
             adaptive_force,
             attack_speed,
             health,
             health_scaling_per_level,
+            move_speed,
+        })
+    }
+}
+
+impl MoveSpeedCaps {
+    pub fn from_page(src: &str) -> MayFail<Self> {
+        let [first_cap] = capture(
+            src,
+            regex!(r"When the raw movement speed is greater than ([\d.]+), there are two soft caps"),
+        )?;
+
+        let [between_low, second_cap, first_percent] = capture(
+            src,
+            regex!(r"The raw speed between ([\d.]+) and ([\d.]+) gets multiplied by ([\d.]+)%"),
+        )?;
+
+        let [over, second_percent] = capture(
+            src,
+            regex!(r"The raw speed over ([\d.]+) gets multiplied by ([\d.]+)%"),
+        )?;
+
+        if between_low != first_cap || over != second_cap {
+            return Err(format!(
+                "Soft caps disagree: {first_cap} vs {between_low}, {second_cap} vs {over}"
+            )
+            .into());
+        }
+
+        let [lower_cap] = capture(
+            src,
+            regex!(r"When the raw movement speed is less than ([\d.]+) another"),
+        )?;
+
+        // `{{tt|110|220*(1-0.5)}}{{plus}}(Raw MS){{times}}{{fd|0.5}}`
+        let [low, lower_floor, lower_ratio] = capture(
+            src,
+            regex!(
+                r"If the raw speed is below ([\d.]+), final speed is increased to \{\{tt\|([\d.]+)\|[^}]*\}\}\{\{plus\}\}\(Raw MS\)\{\{times\}\}\{\{fd\|([\d.]+)\}\}"
+            ),
+        )?;
+
+        if low != lower_cap {
+            return Err(format!("Lower soft cap disagrees: {lower_cap} vs {low}").into());
+        }
+
+        Ok(Self {
+            first_cap,
+            first_ratio: first_percent / 100.0,
+            second_cap,
+            second_ratio: second_percent / 100.0,
+            lower_cap,
+            lower_floor,
+            lower_ratio,
         })
     }
 }

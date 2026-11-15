@@ -245,6 +245,7 @@ create_eval_struct!(
         base_health,
         base_magic_resist,
         base_mana,
+        bonus_move_speed,
         crit_chance,
         crit_damage,
         current_health,
@@ -259,9 +260,7 @@ create_eval_struct!(
     }
     target {
         enemy_armor,
-        enemy_bonus_armor,
         enemy_bonus_health,
-        enemy_bonus_magic_resist,
         enemy_current_health,
         enemy_magic_resist,
         enemy_max_health,
@@ -274,7 +273,6 @@ create_eval_struct!(
         bonus_health,
         bonus_magic_resist,
         bonus_mana,
-        bonus_move_speed,
         e_level,
         enemy_missing_health_flat,
         life_steal,
@@ -503,11 +501,6 @@ impl Ctx {
         self.max_mana - self.base_mana
     }
 
-    /// Movement speed is not modeled, so its scalings use a neutral value
-    pub const fn bonus_move_speed(&self) -> f32 {
-        1.0
-    }
-
     pub const fn q_level(&self) -> f32 {
         self.ability_levels.q as f32
     }
@@ -545,11 +538,9 @@ impl Ctx {
 impl CtxVar {
     pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
 
-    pub const ENEMY_VARS: [Self; 7] = [
+    pub const ENEMY_VARS: [Self; 5] = [
         CtxVar::EnemyArmor,
-        CtxVar::EnemyBonusArmor,
         CtxVar::EnemyBonusHealth,
-        CtxVar::EnemyBonusMagicResist,
         CtxVar::EnemyCurrentHealth,
         CtxVar::EnemyMagicResist,
         CtxVar::EnemyMaxHealth,

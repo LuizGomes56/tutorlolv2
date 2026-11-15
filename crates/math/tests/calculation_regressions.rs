@@ -13,6 +13,7 @@ fn close(actual: f32, expected: f32) {
 #[test]
 fn purchase_and_context_helpers_are_const_callable() {
     const STATE: SelfState = SelfState {
+        bonus_move_speed: 0.0,
         bonus_attack_speed_ratio: types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
@@ -542,6 +543,7 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
     // the same purchase helper directly rather than changing that item selection.
     let player = &out.current_player;
     let state = SelfState {
+        bonus_move_speed: 0.0,
         bonus_attack_speed_ratio: types::AttackSpeedRatio::new(0.0),
         current_stats: player.current_stats,
         base_stats: player.base_stats,
@@ -778,6 +780,7 @@ fn const_evaluation_preserves_modifiers_with_explicit_stats() {
 #[test]
 fn owned_warmog_amplifies_health_converted_from_new_mana() {
     let state = SelfState {
+        bonus_move_speed: 0.0,
         bonus_attack_speed_ratio: types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
@@ -1192,6 +1195,7 @@ fn map_attack_speed_purchase_matches_inferred_build() {
         let bare = infer(&[]);
         let player = &bare.current_player;
         let state = SelfState {
+            bonus_move_speed: 0.0,
             bonus_attack_speed_ratio: ChampionId::Xayah
                 .stats_on(map)
                 .bonus_attack_speed_ratio(player.current_stats.attack_speed),
@@ -1310,6 +1314,7 @@ fn item_critical_damage_adds_to_the_champion_base_unscaled() {
 #[test]
 fn simulated_critical_damage_adds_unscaled() {
     let state = SelfState {
+        bonus_move_speed: 0.0,
         bonus_attack_speed_ratio: types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
@@ -1431,4 +1436,63 @@ fn inferred_lethal_tempo_stacks_feed_the_damage_amplification_on_each_map() {
             );
         }
     }
+}
+
+#[test]
+fn move_speed_soft_caps_round_trip() {
+    // Examples from the wiki: 600 raw shows as 530, 180 as 200, 0 as 110
+    for (raw, capped) in [
+        (600.0, 530.0),
+        (450.0, 443.0),
+        (380.0, 380.0),
+        (180.0, 200.0),
+    ] {
+        close(RiotFormulas::capped_move_speed(raw), capped);
+        close(RiotFormulas::raw_move_speed(capped), raw);
+    }
+
+    close(RiotFormulas::capped_move_speed(0.0), 110.0);
+    close(RiotFormulas::raw_move_speed(100.0), 0.0);
+}
+
+#[test]
+fn bonus_move_speed_undoes_the_soft_caps() {
+    let stats = ChampionId::Janna.stats_on(GameMap::SummonersRift);
+    let base = stats.move_speed;
+
+    close(stats.bonus_move_speed(base + 40.0), 40.0);
+    // 443 shown is 450 raw
+    close(stats.bonus_move_speed(443.0), 450.0 - base);
+    close(stats.bonus_move_speed(base - 20.0), 0.0);
+    close(stats.bonus_move_speed(0.0), 0.0);
+}
+
+#[test]
+fn inferred_move_speed_adds_boots_to_the_base() {
+    let enemies = [InputMinData {
+        champion_id: ChampionId::Aatrox,
+        level: NonZeroU8::new(18).unwrap(),
+        ..Default::default()
+    }];
+    let base = ChampionId::Gnar.stats_on(GameMap::SummonersRift).move_speed;
+    let boots = calculator(game(&[ItemId::BootsOfSwiftness], &[], &enemies));
+    let none = calculator(game(&[], &[], &enemies));
+
+    close(boots.current_player.current_stats.move_speed, base + 55.0);
+    close(none.current_player.current_stats.move_speed, base);
+}
+
+#[test]
+fn inferred_move_speed_adds_the_shard_percent() {
+    let stats = ChampionId::Janna.stats_on(GameMap::SummonersRift);
+    let base = stats.move_speed;
+
+    close(
+        stats.inferred_move_speed(
+            &[ItemId::BootsOfSwiftness],
+            &[RuneId::MoveSpeed],
+            GameMap::SummonersRift,
+        ),
+        RiotFormulas::capped_move_speed((base + 55.0) * 1.025),
+    );
 }

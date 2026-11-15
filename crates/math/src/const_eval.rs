@@ -234,6 +234,9 @@ impl<
             bonus_attack_speed_ratio: champion_id
                 .stats_on(GameMap::Unknown)
                 .bonus_attack_speed_ratio(stats.attack_speed),
+            bonus_move_speed: champion_id
+                .stats_on(GameMap::Unknown)
+                .bonus_move_speed(stats.move_speed),
             stacks: stacks as _,
             ability_levels,
             current_stats: stats,

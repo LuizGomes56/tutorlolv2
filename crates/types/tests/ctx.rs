@@ -5,10 +5,10 @@ use types::{
 
 #[test]
 fn ctx_fits_in_two_cache_lines() {
-    assert_eq!(size_of::<Ctx>(), 128);
+    assert_eq!(size_of::<Ctx>(), 124);
     // Output tables store these parts instead of a context per row
-    assert_eq!(size_of::<CtxAttacker>(), 100);
-    assert_eq!(size_of::<CtxTarget>(), 32);
+    assert_eq!(size_of::<CtxAttacker>(), 104);
+    assert_eq!(size_of::<CtxTarget>(), 24);
 }
 
 #[test]

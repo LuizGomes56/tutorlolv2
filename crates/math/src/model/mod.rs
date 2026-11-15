@@ -183,6 +183,9 @@ pub struct SelfState {
     #[serde(default)]
     pub bonus_attack_speed_ratio: AttackSpeedRatio,
     pub stacks: f32,
+    /// Movement speed above the champion's base, before the soft caps
+    #[serde(default)]
+    pub bonus_move_speed: f32,
     pub ability_levels: AbilityLevels,
     pub current_stats: PlayerStats,
     /// Bonus stats are the difference to `current_stats`, see [`Ctx`]
@@ -776,6 +779,54 @@ impl OutputGame {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
+    /// Movement speed above this value is reduced by [`Self::MS_FIRST_CAP_RATIO`]
+    pub const MS_FIRST_CAP: f32 = rules::move_speed::FIRST_CAP;
+    /// Movement speed above this value is reduced by [`Self::MS_SECOND_CAP_RATIO`]
+    pub const MS_SECOND_CAP: f32 = rules::move_speed::SECOND_CAP;
+    pub const MS_FIRST_CAP_RATIO: f32 = rules::move_speed::FIRST_RATIO;
+    pub const MS_SECOND_CAP_RATIO: f32 = rules::move_speed::SECOND_RATIO;
+    /// Movement speed below this value is raised towards [`Self::MS_LOWER_CAP_FLOOR`]
+    pub const MS_LOWER_CAP: f32 = rules::move_speed::LOWER_CAP;
+    pub const MS_LOWER_CAP_FLOOR: f32 = rules::move_speed::LOWER_FLOOR;
+    pub const MS_LOWER_CAP_RATIO: f32 = rules::move_speed::LOWER_RATIO;
+
+    /// Movement speed shown by the game for a `raw` value, after the soft caps
+    pub const fn capped_move_speed(raw: f32) -> f32 {
+        let first = Self::MS_FIRST_CAP;
+        let second = Self::MS_SECOND_CAP;
+
+        if raw > second {
+            first
+                + (second - first) * Self::MS_FIRST_CAP_RATIO
+                + (raw - second) * Self::MS_SECOND_CAP_RATIO
+        } else if raw > first {
+            first + (raw - first) * Self::MS_FIRST_CAP_RATIO
+        } else if raw < Self::MS_LOWER_CAP {
+            Self::MS_LOWER_CAP_FLOOR + raw * Self::MS_LOWER_CAP_RATIO
+        } else {
+            raw
+        }
+    }
+
+    /// Inverse of [`Self::capped_move_speed`]: the raw movement speed behind a
+    /// value the game shows. Values at or below the lower cap's floor have no
+    /// positive raw value and return `0.0`
+    pub const fn raw_move_speed(capped: f32) -> f32 {
+        let first = Self::MS_FIRST_CAP;
+        let second = Self::MS_SECOND_CAP;
+        let second_capped = first + (second - first) * Self::MS_FIRST_CAP_RATIO;
+
+        if capped > second_capped {
+            second + (capped - second_capped) / Self::MS_SECOND_CAP_RATIO
+        } else if capped > first {
+            first + (capped - first) / Self::MS_FIRST_CAP_RATIO
+        } else if capped < Self::MS_LOWER_CAP {
+            ((capped - Self::MS_LOWER_CAP_FLOOR) / Self::MS_LOWER_CAP_RATIO).max(0.0)
+        } else {
+            capped
+        }
+    }
+
     /// Rune [`RuneId::AxiomArcanist`] bonus damage to `R` if it deals single
     /// target damage. The reduced bonus for area-damaging ultimates is not
     /// yet supported
@@ -1073,6 +1124,9 @@ pub struct PlayerStats {
     pub max_mana: f32,
     #[serde(rename = "resourceValue")]
     pub current_mana: f32,
+    /// Total movement speed, after the soft caps, as the game shows it
+    #[serde(default)]
+    pub move_speed: f32,
 }
 
 macro_rules! impl_default {

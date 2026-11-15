@@ -4,9 +4,9 @@ use types::{AttackSpeedRatio, Ctx, CtxAttacker, CtxTarget, CtxVar};
 #[test]
 fn compact_ratio_preserves_context_cache_line_budget_and_attacker_state() {
     assert_eq!(size_of::<AttackSpeedRatio>(), 2);
-    assert_eq!(size_of::<Ctx>(), 128);
-    assert_eq!(size_of::<CtxAttacker>(), 100);
-    assert_eq!(size_of::<CtxTarget>(), 32);
+    assert_eq!(size_of::<Ctx>(), 124);
+    assert_eq!(size_of::<CtxAttacker>(), 104);
+    assert_eq!(size_of::<CtxTarget>(), 24);
     let attacker = CtxAttacker {
         bonus_attack_speed_ratio: AttackSpeedRatio::new(1.5),
         attack_speed: 2.0,

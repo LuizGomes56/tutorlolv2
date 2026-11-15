@@ -91,6 +91,7 @@ impl InferStats<'_> {
             magic_penetration_flat: 0.0,
             magic_penetration_percent: 0.0,
             crit_chance: 0.0,
+            move_speed: cached_stats.inferred_move_speed(items, runes, game_map),
         };
 
         stats.ability_power += bonus_stats.ability_power;
@@ -810,6 +811,9 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         bonus_attack_speed_ratio: current_player_champion_id
             .stats_on(game_map)
             .bonus_attack_speed_ratio(champion_stats.attack_speed),
+        bonus_move_speed: current_player_champion_id
+            .stats_on(game_map)
+            .bonus_move_speed(champion_stats.move_speed),
         stacks: stacks as _,
         current_stats: champion_stats,
         base_stats: current_player_base_stats,
