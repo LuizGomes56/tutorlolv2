@@ -69,6 +69,10 @@ pub struct MonsterData {
     pub health: MonsterStat,
     pub armor: MonsterStat,
     pub magic_resist: MonsterStat,
+    /// File of its square portrait on the wiki, as `Baron NashorSquare.png`. Minions
+    /// list one per team, and the first is kept
+    #[serde(default)]
+    pub image: Option<String>,
 }
 
 /// Every monster by its name on the wiki, such as `Baron Nashor`
@@ -121,6 +125,16 @@ pub async fn run() -> MayFail {
 }
 
 impl MonsterData {
+    /// The first file of an infobox's `image`, as `Baron NashorSquare.png` from
+    /// `File:Baron NashorSquare.png`
+    fn image(field: &Nodes) -> Option<String> {
+        let first = field.to_string();
+        let first = first.split(',').next()?.trim();
+        let file = first.strip_prefix("File:").unwrap_or(first).trim();
+
+        (!file.is_empty()).then(|| file.to_string())
+    }
+
     /// Every `{{Infobox unit}}` of a page, by the name of the unit
     pub fn from_page(src: &str) -> MayFail<Vec<(String, Self)>> {
         Nodes::parse(src)
@@ -145,6 +159,7 @@ impl MonsterData {
                         health: stat("hp")?,
                         armor: stat("armor")?,
                         magic_resist: stat("magicresist")?,
+                        image: infobox.named("image").and_then(Self::image),
                     },
                 ))
             })

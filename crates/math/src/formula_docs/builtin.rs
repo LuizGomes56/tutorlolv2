@@ -235,12 +235,10 @@ impl FormulaRenderer {
 
                 h.push(Class::Control, "match")
                     .raw(" ")
-                    .push(Class::Number, 0.35)
-                    .raw(" * ")
                     .push(Class::Variable, CtxVar::BonusAd.to_snake_case())
                     .raw("\n\t\t")
                     .raw(" | ")
-                    .push(Class::Number, 0.2)
+                    .push(Class::Number, crate::libgen::rules::turret::AP_RATIO)
                     .raw(" * ")
                     .push(Class::Variable, CtxVar::AbilityPower.to_snake_case())
                     .raw(" ")

@@ -8,7 +8,7 @@
 use crate::{
     components::{
         box_shadow, docs, hover_docs,
-        image::{Entry, image},
+        image::{Entry, image, monster_image},
         tables::{Cell, Column, ROW_HEIGHT, damage_columns, empty_table, table, turret_columns},
     },
     theme,
@@ -26,24 +26,8 @@ use std::rc::Rc;
 /// `gap-4` between the tables.
 const GAP: f32 = 16.0;
 
-/// `MONSTER_HEADERS`: the monsters of each monster row. Only the row count and the widest row
-/// matter until their images exist.
-const MONSTER_HEADERS: [usize; L_MSTR] = [4, 4, 4, 2, 1, 1, 1];
-
-const MONSTER_COUNT: usize = {
-    let mut i = 0;
-    let mut max = 0;
-
-    while i < L_MSTR {
-        if MONSTER_HEADERS[i] > max {
-            max = MONSTER_HEADERS[i];
-        }
-
-        i += 1;
-    }
-
-    max
-};
+/// Rows of the monster table before the first result, as many as its usual groups.
+const MONSTER_PLACEHOLDER_ROWS: usize = 7;
 
 /// A click on an enemy's portrait, which selects it in the enemy panel.
 pub struct SelectEnemy(pub usize);
@@ -66,13 +50,15 @@ impl DamageTables {
     /// row is exactly [`ROW_HEIGHT`] tall.
     fn height(&self) -> Pixels {
         let table = |rows: usize| (rows + 1) as f32 * ROW_HEIGHT;
-        let monsters = table(L_MSTR);
         let turrets = table(1);
 
         // Before the first result only the monster and turret placeholders are shown.
         match &self.game {
-            Some(game) => px(table(game.enemies.len()) + monsters + turrets + 2.0 * GAP),
-            None => px(monsters + turrets + GAP),
+            Some(game) => {
+                let monsters = table(game.damages.monster_groups().len());
+                px(table(game.enemies.len()) + monsters + turrets + 2.0 * GAP)
+            }
+            None => px(table(MONSTER_PLACEHOLDER_ROWS) + turrets + GAP),
         }
     }
 
@@ -88,7 +74,7 @@ impl DamageTables {
     fn tables(&self, cx: &mut Context<Self>) -> Vec<AnyElement> {
         let Some(game) = self.game.clone() else {
             return vec![
-                table_box(empty_table("monsters-empty", MONSTER_HEADERS.len())),
+                table_box(empty_table("monsters-empty", MONSTER_PLACEHOLDER_ROWS)),
                 table_box(empty_table("turrets-empty", 1)),
             ];
         };
@@ -138,7 +124,13 @@ impl DamageTables {
             },
         );
 
-        let monster_rows = (0..L_MSTR).map(|i| damages.row(i)).collect::<Vec<_>>();
+        // Monsters whose damages are all the same share one row
+        let monster_groups = damages.monster_groups();
+        let monster_rows = monster_groups
+            .iter()
+            .map(|group| damages.row(group.row))
+            .collect::<Vec<_>>();
+
         let mut monster_columns = damage_columns(
             &monster_rows,
             player.champion_id,
@@ -147,23 +139,46 @@ impl DamageTables {
             &game.runes_meta,
         );
 
-        // Monster portraits exist only as AVIF: their columns stay empty for now.
-        for _ in 0..MONSTER_COUNT {
-            monster_columns.insert(
-                0,
-                Column {
-                    header: Cell::empty(),
-                    cells: (0..L_MSTR).map(|_| Cell::empty()).collect(),
-                },
-            );
-        }
+        // The portraits of each row's monsters, then their names
+        monster_columns.insert(
+            0,
+            Column {
+                header: Cell::empty(),
+                cells: monster_groups
+                    .iter()
+                    .map(|group| {
+                        let names = group
+                            .monsters
+                            .iter()
+                            .map(|monster| monster.name())
+                            .collect::<Vec<_>>()
+                            .join(", ");
+
+                        Cell::new(
+                            div()
+                                .px_2()
+                                .flex()
+                                .items_center()
+                                .gap_1()
+                                .children(
+                                    group
+                                        .monsters
+                                        .iter()
+                                        .map(|&monster| monster_image(monster).size(px(24.))),
+                                )
+                                .child(div().text_xs().whitespace_nowrap().child(names)),
+                        )
+                    })
+                    .collect(),
+            },
+        );
 
         vec![
             table_box(table("enemy-damages", enemy_columns)),
             table_box(table("monster-damages", monster_columns)),
             table_box(table(
                 "turret-damages",
-                turret_columns(&game.tower_damages, player.adaptive_type),
+                turret_columns(&game.tower_damages, player.tower_damage_type()),
             )),
         ]
     }

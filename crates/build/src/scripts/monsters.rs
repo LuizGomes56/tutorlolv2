@@ -12,11 +12,13 @@ pub fn monsters_code(monsters: &Monsters) -> MayFail<String> {
 
     let mut variants = String::new();
     let mut data = String::new();
+    let mut names = String::new();
 
     for (name, monster) in monsters {
         let variant = name.to_upper_camel_case();
 
         writeln!(variants, "/// {name}\n{variant},")?;
+        writeln!(names, "{name:?},")?;
         writeln!(
             data,
             "MonsterStats {{ health: {}, armor: {}, magic_resist: {} }},",
@@ -41,6 +43,14 @@ pub fn monsters_code(monsters: &Monsters) -> MayFail<String> {
 
             impl Monster {{
                 pub const DATA: [MonsterStats; <Self as strum::EnumCount>::COUNT] = [{data}];
+
+                /// Name of each monster on the wiki, as `Cloud Drake`
+                const NAMES: [&str; <Self as strum::EnumCount>::COUNT] = [{names}];
+
+                /// Name of the monster on the wiki, as `Cloud Drake`
+                pub const fn name(self) -> &'static str {{
+                    Self::NAMES[self as usize]
+                }}
             }}
         }}"
     ))

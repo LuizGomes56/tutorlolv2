@@ -39,6 +39,7 @@ pub enum SaveTo<'a> {
     ImgCentered(&'a str, usize),
     ImgSplash(&'a str, usize),
     ImgRunes(usize),
+    ImgMonster(&'a str),
 }
 
 pub use types::Tag;
@@ -54,6 +55,7 @@ impl<'a> SaveTo<'a> {
             SaveTo::ImgCentered(s, n) => format!("{img}/centered/{s}_{n}.jpg"),
             SaveTo::ImgSplash(s, n) => format!("{img}/splash/{s}_{n}.jpg"),
             SaveTo::ImgRunes(n) => format!("{img}/runes/{n}.png"),
+            SaveTo::ImgMonster(s) => format!("{img}/monsters/{s}.png"),
             SaveTo::RiotCache(s, f) => format!("cache/riot/{s}/{f}.json"),
             SaveTo::RiotItems => "cache/riot/items.json".into(),
             SaveTo::RiotChampions => "cache/riot/champions.json".into(),
@@ -280,6 +282,7 @@ impl HttpClient {
         self.download_arts_img().await?;
         self.download_items_img().await?;
         self.download_runes_img().await?;
+        self.download_monsters_img().await?;
         self.download_general_img().await
     }
 
@@ -357,6 +360,32 @@ impl HttpClient {
             if let Err(e) = future.await {
                 println!("Failed to join future: {e:?}")
             }
+        }
+
+        Ok(())
+    }
+
+    /// Downloads the portrait of every monster from the wiki, as Riot has none, named
+    /// by its variant of `Monster`, as `img/raw/monsters/BaronNashor.png`. Reads the
+    /// files from `cache/wiki/monsters/full.json`, see [`crate::monsters`]
+    pub async fn download_monsters_img(&self) -> MayFail {
+        use heck::ToUpperCamelCase;
+
+        println!("Called fn [download_monsters_img]");
+
+        for (name, monster) in crate::monsters::read()? {
+            let Some(file) = monster.image else {
+                println!("[skipped] {name} has no image");
+                continue;
+            };
+
+            let url = format!(
+                "https://wiki.leagueoflegends.com/en-us/Special:FilePath/{}",
+                file.replace(' ', "_")
+            );
+
+            self.download(url, SaveTo::ImgMonster(&name.to_upper_camel_case()).path())
+                .await?;
         }
 
         Ok(())

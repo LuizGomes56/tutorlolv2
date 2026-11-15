@@ -31,7 +31,7 @@ mod damage_table;
 mod monsters;
 mod owned_input;
 
-pub use damage_table::DamageTableMut;
+pub use damage_table::{DamageTableMut, MonsterGroup};
 pub use monsters::*;
 pub use owned_input::*;
 pub use types::AbilityLevels;
@@ -723,6 +723,18 @@ pub struct OutputCurrentPlayer {
     pub level: NonZeroU8,
 }
 
+impl OutputCurrentPlayer {
+    /// Damage type of this player's basic attacks against turrets, see
+    /// [`RiotFormulas::tower_damage_type`]
+    pub const fn tower_damage_type(&self) -> AdaptiveType {
+        RiotFormulas::tower_damage_type(
+            self.bonus_stats.attack_damage,
+            self.current_stats.ability_power,
+            self.adaptive_type,
+        )
+    }
+}
+
 #[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputGame {
     pub damages: DamageTable,
@@ -962,6 +974,25 @@ impl RiotFormulas {
         accept_negatives: bool,
     ) -> ResistValue {
         ResistValue::new(percent_pen, flat_pen, resist, accept_negatives)
+    }
+
+    /// Damage type of basic attacks against turrets: physical when the bonus attack
+    /// damage is above the AP ratio of [`Self::tower_damage`] times the ability power,
+    /// and magic when it is below. When they are equal, `tie` is used
+    pub const fn tower_damage_type(
+        bonus_attack_damage: f32,
+        ability_power: f32,
+        tie: AdaptiveType,
+    ) -> AdaptiveType {
+        let ap = rules::turret::AP_RATIO * ability_power;
+
+        if bonus_attack_damage > ap {
+            AdaptiveType::Physical
+        } else if bonus_attack_damage < ap {
+            AdaptiveType::Magic
+        } else {
+            tie
+        }
     }
 
     /// Returns an [`i32`] that represents the damage of a basic attack against the
