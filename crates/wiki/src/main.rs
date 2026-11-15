@@ -14,6 +14,9 @@ pub struct Cli {
 pub enum Fetch {
     #[clap(alias = "i")]
     Images,
+    /// Downloads the portraits of monsters from the wiki
+    #[clap(alias = "m")]
+    MonsterImages,
     #[clap(alias = "c")]
     Cache,
     #[clap(alias = "v")]
@@ -163,6 +166,7 @@ async fn main() -> MayFail {
             HTTP_CLIENT.download_arts_img().await?;
             HTTP_CLIENT.download_items_img().await?;
             HTTP_CLIENT.download_runes_img().await?;
+            HTTP_CLIENT.download_monsters_img().await?;
             HTTP_CLIENT.download_general_img().await?;
 
             #[cfg(feature = "avif")]
@@ -179,8 +183,10 @@ async fn main() -> MayFail {
                 HTTP_CLIENT.download_arts_img().await?;
                 HTTP_CLIENT.download_items_img().await?;
                 HTTP_CLIENT.download_runes_img().await?;
+                HTTP_CLIENT.download_monsters_img().await?;
                 HTTP_CLIENT.download_general_img().await?;
             }
+            Fetch::MonsterImages => HTTP_CLIENT.download_monsters_img().await?,
             Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
             Fetch::Version => {
                 let gamev = HTTP_CLIENT.fetch_version().await?;

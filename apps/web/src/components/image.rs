@@ -6,7 +6,6 @@ use yew::prelude::*;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum DragonImage {
-    Elder,
     Fire,
     Ocean,
     Earth,
@@ -14,31 +13,8 @@ pub enum DragonImage {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub enum MinionImage {
-    Melee,
-    Ranged,
-    Cannon,
-    Super,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum MonsterImage {
-    Gromp,
-    Wolves,
-    Red,
-    Blue,
-    Krug,
-    Raptor,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum OtherImage {
-    Voidgrubs,
-    Minion(MinionImage),
     Dragon(DragonImage),
-    Monster(MonsterImage),
-    Baron,
-    Atakhan,
 }
 
 #[derive(PartialEq, Properties)]
@@ -83,6 +59,8 @@ pub enum ImageType {
     Stats(PlayerStatsField),
     StatsFilter(StatName),
     Other(OtherImage),
+    /// Portrait of a monster, as `/monsters/BaronNashor.avif`
+    Monster(math::Monster),
     Tower,
     Ignite,
 }
@@ -162,6 +140,7 @@ impl ImageType {
             }
             ImageType::Item(item_id) => return format!("/items/{}.avif", item_id.riot_id()).into(),
             ImageType::Rune(rune_id) => return format!("/runes/{}.avif", rune_id.riot_id()).into(),
+            ImageType::Monster(monster) => return format!("/monsters/{monster:?}.avif").into(),
             ImageType::Tower => "/other/tower.avif",
             ImageType::BasicAttack => "/other/basic_attack.png",
             ImageType::Ignite => "/other/ignite.avif",
@@ -218,29 +197,11 @@ impl ImageType {
                 StatName::Tenacity => "/stats/tenacity.svg",
             },
             ImageType::Other(other) => match other {
-                OtherImage::Voidgrubs => "/other/voidgrubs.avif",
-                OtherImage::Atakhan => "/other/atakhan.avif",
-                OtherImage::Baron => "/other/baron.avif",
                 OtherImage::Dragon(dragon) => match dragon {
                     DragonImage::Earth => "/other/earth_dragon.avif",
-                    DragonImage::Elder => "/other/elder_dragon.avif",
                     DragonImage::Fire => "/other/fire_dragon.avif",
                     DragonImage::Ocean => "/other/ocean_dragon.avif",
                     DragonImage::Chemtech => "/other/chemtech_dragon.avif",
-                },
-                OtherImage::Monster(monster) => match monster {
-                    MonsterImage::Gromp => "/other/gromp.avif",
-                    MonsterImage::Wolves => "/other/wolves.avif",
-                    MonsterImage::Red => "/other/red_buff.avif",
-                    MonsterImage::Blue => "/other/blue_buff.avif",
-                    MonsterImage::Krug => "/other/krug.avif",
-                    MonsterImage::Raptor => "/other/raptor.avif",
-                },
-                OtherImage::Minion(minion) => match minion {
-                    MinionImage::Melee => "/other/melee_minion.avif",
-                    MinionImage::Ranged => "/other/ranged_minion.avif",
-                    MinionImage::Cannon => "/other/cannon.avif",
-                    MinionImage::Super => "/other/super_minion.avif",
                 },
             },
         };

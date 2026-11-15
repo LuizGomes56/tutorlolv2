@@ -38,6 +38,11 @@ fn convert_to_avif(
             height as usize,
         ))?;
 
+    // A new image folder, as `img/monsters`, exists only after its first image
+    if let Some(parent) = destination.parent() {
+        fs::create_dir_all(parent)?;
+    }
+
     let file = fs::File::create(destination)?;
     let mut buf = std::io::BufWriter::new(file);
 
@@ -103,6 +108,7 @@ pub fn img_convert_avif() {
         "centered",
         "champions",
         "items",
+        "monsters",
         "other",
         "runes",
         "splash",

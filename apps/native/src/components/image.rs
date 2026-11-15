@@ -4,7 +4,7 @@
 //! read from disk. WSL builds translate the default to a Windows-accessible path.
 //! Set `TUTORLOLV2_RAW_IMG` to use another folder.
 use gpui::{ImageSource, Img, IntoElement, div, img, prelude::*};
-use math::{AbilityId, AbilityName, CastId, ChampionId, ItemId, Position, RuneId};
+use math::{AbilityId, AbilityName, CastId, ChampionId, ItemId, Monster, Position, RuneId};
 use std::{
     ffi::OsString,
     path::{Path, PathBuf},
@@ -81,6 +81,12 @@ pub fn ability_image(champion: ChampionId, ability: AbilityId) -> Img {
 /// An embedded image (`assets/`), such as `stats/armor.svg`.
 pub fn asset_image(path: &'static str) -> Img {
     image(path.into())
+}
+
+/// Portrait of a monster, downloaded from the wiki to `img/raw/monsters`, as
+/// `monsters/BaronNashor.png`
+pub fn monster_image(monster: Monster) -> Img {
+    image(raw_img(format!("monsters/{monster:?}.png")))
 }
 
 /// Embedded position icon (`assets/other`).

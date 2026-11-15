@@ -202,6 +202,45 @@ impl DamageTable {
     pub const fn row_mut(&mut self, r: usize) -> DamagesMut<'_> {
         self.as_mut().into_row_mut(r)
     }
+
+    /// Damage values of row `r`, without its context
+    fn values(&self, r: usize) -> &[i32] {
+        let stride = self.layout.stride();
+        &self.values[r * stride..(r + 1) * stride]
+    }
+
+    /// The monster rows, the first [`L_MSTR`] of the table, with the monsters whose
+    /// damages are the same in every column merged into one group, in the order
+    /// their first monster appears
+    pub fn monster_groups(&self) -> alloc::vec::Vec<MonsterGroup> {
+        let mut groups = alloc::vec::Vec::<MonsterGroup>::new();
+
+        for (r, &monster) in <crate::Monster as strum::VariantArray>::VARIANTS
+            .iter()
+            .enumerate()
+        {
+            match groups
+                .iter_mut()
+                .find(|group| self.values(group.row) == self.values(r))
+            {
+                Some(group) => group.monsters.push(monster),
+                None => groups.push(MonsterGroup {
+                    row: r,
+                    monsters: alloc::vec![monster],
+                }),
+            }
+        }
+
+        groups
+    }
+}
+
+/// Monsters that take the same damage in every column, shown as one row
+#[derive(Clone, Debug, PartialEq)]
+pub struct MonsterGroup {
+    /// Row of the table holding the damages, the one of the first monster
+    pub row: usize,
+    pub monsters: alloc::vec::Vec<crate::Monster>,
 }
 
 #[cfg(all(test, feature = "engine"))]

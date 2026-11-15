@@ -140,7 +140,7 @@ macro_rules! impl_repr_codec {
     )*};
 }
 
-impl_repr_codec!(ChampionId => u8, ItemId => u16, RuneId => u8);
+impl_repr_codec!(ChampionId => u8, ItemId => u16, RuneId => u8, Monster => u8);
 
 /// Whether `names` is strictly ascending in byte order, the order `binary_search` expects.
 const fn is_sorted(names: &[&str]) -> bool {

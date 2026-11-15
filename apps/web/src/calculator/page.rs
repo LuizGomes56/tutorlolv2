@@ -11,7 +11,7 @@ use {
             reducer::{DataAction, Enemies, EnemyAction, LastAction, PlayerAction},
         },
         components::{
-            image::{DragonImage, Image, ImageType, MinionImage, MonsterImage, OtherImage},
+            image::{Image, ImageType},
             stack::{Stack, StackInsert, StackRemover, StackTable},
             tables::{
                 body::DamageRenderer, empty::EmptyTable, header::TableHeader, turret::TurretTable,
@@ -21,7 +21,7 @@ use {
         utils::transport,
     },
     math::{
-        GameMap, L_MSTR, L_TWRD,
+        GameMap, L_TWRD,
         model::{Dragons, EnemyStats, InputActivePlayer, InputGame, InputMinData, OutputEnemy},
     },
     std::{cell::RefCell, rc::Rc},
@@ -41,50 +41,8 @@ pub struct EnemyProps {
     pub last_action: Rc<RefCell<LastAction>>,
 }
 
-const MONSTER_HEADERS: [&[OtherImage]; L_MSTR] = [
-    &[
-        OtherImage::Voidgrubs,
-        OtherImage::Minion(MinionImage::Melee),
-        OtherImage::Minion(MinionImage::Ranged),
-        OtherImage::Minion(MinionImage::Cannon),
-    ],
-    &[
-        OtherImage::Dragon(DragonImage::Elder),
-        OtherImage::Dragon(DragonImage::Fire),
-        OtherImage::Dragon(DragonImage::Ocean),
-        OtherImage::Dragon(DragonImage::Earth),
-    ],
-    &[
-        OtherImage::Monster(MonsterImage::Red),
-        OtherImage::Monster(MonsterImage::Blue),
-        OtherImage::Monster(MonsterImage::Gromp),
-        OtherImage::Monster(MonsterImage::Wolves),
-    ],
-    &[
-        OtherImage::Monster(MonsterImage::Krug),
-        OtherImage::Monster(MonsterImage::Raptor),
-    ],
-    &[OtherImage::Baron],
-    &[OtherImage::Atakhan],
-    &[OtherImage::Minion(MinionImage::Super)],
-];
-
-const MONSTER_COUNT: usize = {
-    let mut i = 0;
-    let mut max = 0;
-
-    while i < L_MSTR {
-        let len = MONSTER_HEADERS[i].len();
-
-        if len > max {
-            max = len;
-        }
-
-        i += 1;
-    }
-
-    max
-};
+/// Rows of the monster table before the first result, as many as its usual groups
+const MONSTER_PLACEHOLDER_ROWS: usize = 7;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum TargetEntity {
@@ -266,6 +224,7 @@ pub fn Calculator() -> Html {
 
     let data = match game_data.as_ref() {
         Some(data) => {
+            let monster_level = data.monster_level();
             let Game {
                 damages: damage_table,
                 current_player,
@@ -338,15 +297,15 @@ pub fn Calculator() -> Html {
                     <div class={classes!("box", "overflow-auto")}>
                         <table class={classes!("data-table")}>
                             <TableHeader
-                                skip={MONSTER_COUNT}
+                                skip={1}
                                 champion_id={current_player.champion_id}
                                 {items_meta}
                                 {runes_meta}
                             />
                             <tbody>
                                 {
-                                    (0..math::L_MSTR).map(|i| {
-                                        let damage = damage_table.row(i);
+                                    damage_table.monster_groups().into_iter().map(|group| {
+                                        let damage = damage_table.row(group.row);
                                         let damages = DamageRenderer::new(
                                             damage,
                                             current_player.champion_id,
@@ -356,25 +315,24 @@ pub fn Calculator() -> Html {
                                             None
                                         );
 
-                                        let mut images = Vec::with_capacity(MONSTER_COUNT);
-
-                                        for j in (0..MONSTER_COUNT).rev() {
-                                            let cell = MONSTER_HEADERS[i].get(j).map(|&value| {
-                                                html!(<Image src={ImageType::Other(value)} />)
-                                            });
-
-                                            images.push(html!(
-                                                <td class={classes!(
-                                                    "px-1", "w-8", "first:pl-2", "last:pr-2"
-                                                )}>
-                                                    {cell}
-                                                </td>
-                                            ));
-                                        }
-
                                         html! {
                                             <tr>
-                                                {images}
+                                                <td class={classes!("px-2")}>
+                                                    <div class={classes!(
+                                                        "flex", "flex-wrap", "items-center", "justify-start", "gap-1"
+                                                    )}>
+                                                        {
+                                                            group.monsters.iter().map(|&monster| html! {
+                                                                <span
+                                                                    title={monster.name()}
+                                                                    data_docs={Docs::Monster(monster, monster_level).encode()}
+                                                                >
+                                                                    <Image class={classes!("w-8")} src={ImageType::Monster(monster)} />
+                                                                </span>
+                                                            }).collect::<Html>()
+                                                        }
+                                                    </div>
+                                                </td>
                                                 {damages}
                                             </tr>
                                         }
@@ -391,7 +349,7 @@ pub fn Calculator() -> Html {
                                     html! {
                                         <td
                                             data_docs={Docs::Builtin(Builtin::Tower, DocView::Function).encode()}
-                                            class={classes!(current_player.adaptive_type)}
+                                            class={classes!(current_player.tower_damage_type())}
                                         >
                                             {tower_damages[i]}
                                         </td>
@@ -441,7 +399,7 @@ pub fn Calculator() -> Html {
         None => {
             html! {
                 <>
-                    <EmptyTable rows={MONSTER_HEADERS.len()} />
+                    <EmptyTable rows={MONSTER_PLACEHOLDER_ROWS} />
                     <EmptyTable rows={1} />
                     <div class={classes!("box", "h-96")} />
                 </>

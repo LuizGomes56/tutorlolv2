@@ -8,6 +8,12 @@ fn every_monster_has_a_row() {
 }
 
 #[test]
+fn monsters_have_their_wiki_names() {
+    assert_eq!(Monster::CloudDrake.name(), "Cloud Drake");
+    assert_eq!(Monster::RiftHeraldMercenary.name(), "Rift Herald Mercenary");
+}
+
+#[test]
 fn level_is_rounded_average() {
     assert_eq!(Monster::level([]), 1);
     assert_eq!(Monster::level([1]), 1);

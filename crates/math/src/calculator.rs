@@ -792,7 +792,11 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
 
     let shred = ResistShred::new(&champion_stats);
     let tower_damages = get_tower_damages(
-        adaptive_type,
+        RiotFormulas::tower_damage_type(
+            current_player_bonus_stats.attack_damage,
+            champion_stats.ability_power,
+            adaptive_type,
+        ),
         current_player_base_stats.attack_damage,
         current_player_bonus_stats.attack_damage,
         champion_stats.ability_power,
