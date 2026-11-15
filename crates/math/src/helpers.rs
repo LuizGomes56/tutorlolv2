@@ -299,7 +299,9 @@ impl ChampionId {
             ChampionId::AurelionSol => time(game_time, 190),
             ChampionId::Thresh => time(game_time, 150),
             ChampionId::Kindred => time(game_time, 5),
-            _ => 1.0,
+            ChampionId::Bard => time(game_time, 50),
+            // Champions without permanent stacks start every fight with none
+            _ => 0.0,
         }
     }
 

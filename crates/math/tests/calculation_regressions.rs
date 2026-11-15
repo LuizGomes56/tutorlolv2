@@ -249,10 +249,18 @@ fn estimated_stacks_grow_with_elapsed_time() {
         (ChampionId::Nasus, 600.0),
         (ChampionId::AurelionSol, 190.0),
         (ChampionId::Kindred, 5.0),
+        (ChampionId::Bard, 50.0),
     ] {
         close(champion.avg_stacks(900.0), average / 2.0);
         close(champion.avg_stacks(1800.0), average);
         close(champion.avg_stacks(3600.0), average * 2.0);
+    }
+}
+
+#[test]
+fn champions_without_permanent_stacks_start_with_none() {
+    for champion in [ChampionId::Hecarim, ChampionId::Kalista, ChampionId::Zed] {
+        close(champion.avg_stacks(1800.0), 0.0);
     }
 }
 
