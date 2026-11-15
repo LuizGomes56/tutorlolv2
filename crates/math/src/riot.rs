@@ -108,7 +108,7 @@ pub struct RiotItems {
 
 /// All useful fields from the `all_players` object.
 /// Field `champion_name` can be coerced to enum [`crate::ChampionId`]
-/// by using the `phf` stored in variable [`crate::CHAMPION_NAME_TO_ID`],
+/// with [`crate::ChampionId::from_name`] or [`str::parse`],
 /// which supports all languages. For example, `آتروكس` translates to
 /// [`crate::ChampionId::Aatrox`]
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, BorrowDecode, Deserialize)]

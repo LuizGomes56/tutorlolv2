@@ -7,9 +7,9 @@ description = "League of Legends static library that evaluates damages of abilit
 
 [dependencies]
 bincode = { workspace = true, default-features = false, features = ["alloc", "derive"] }
+hashify = "0.3.2"
 const_sized_bit_set = { version = "0.5.0", default-features = false }
 pastey = { workspace = true }
-phf = { version = "0.14", default-features = false, features = ["macros"] }
 serde = { workspace = true, default-features = false, features = ["alloc", "derive"] }
 strum = { workspace = true, default-features = false, features = ["derive"] }
 codec = { workspace = true, optional = true }

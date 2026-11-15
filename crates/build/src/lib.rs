@@ -117,7 +117,7 @@ impl BuildContext {
             self.out.join(format!("{}_code.rs", tag.as_ref())),
             [
                 parser.id_enum(),
-                parser.phf(aliases),
+                parser.name_lookup(aliases),
                 parser.data_variable(),
                 eval_fn(&eval),
             ]

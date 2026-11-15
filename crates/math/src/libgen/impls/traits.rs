@@ -31,11 +31,7 @@ macro_rules! impl_methods {
                     type Err = ();
 
                     fn from_str(s: &str) -> Result<Self, Self::Err> {
-                        $crate::[<$stru:replace("Id", "s"):lower _code>]
-                        ::[<$stru:replace("Id", ""):upper _NAME_TO_ID>]
-                            .get(s)
-                            .copied()
-                            .ok_or(())
+                        Self::from_name(s).ok_or(())
                     }
                 }
 
@@ -48,10 +44,6 @@ macro_rules! impl_methods {
                 }
 
                 impl $stru {
-                    pub const NAME_TO_ID: &phf::Map<&str, Self> =
-                        &$crate::[<$stru:replace("Id", "s"):lower _code>]
-                        ::[<$stru:replace("Id", ""):upper _NAME_TO_ID>];
-
                     pub const DATA: &[&[<$stru:replace("Id", "")>]] =
                         &$crate::[<$stru:replace("Id", "s"):lower _code>]
                         ::[<$stru:replace("Id", "S"):upper _DATA>];
