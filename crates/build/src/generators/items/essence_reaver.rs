@@ -7,7 +7,7 @@ impl Generator for EssenceReaver {
         let damage = self.formula(Named("Spellblade"))?;
 
         self.damage_type(Physical)
-            .attr(OnhitMax)
+            .trigger(Trigger::Spellblade)
             .set_min(damage)
             .end()
     }

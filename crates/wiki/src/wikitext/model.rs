@@ -10,7 +10,7 @@ use {
         fmt,
         ops::{Add, Div, Mul, Neg, Sub},
     },
-    types::{CtxVar, DamageType, Key, MapMode},
+    types::{Attrs, CtxVar, DamageType, Key, MapMode},
 };
 
 /// Abilities of a champion, by key. The `Vec` is ordered by the page files
@@ -55,6 +55,10 @@ pub struct AbilityModel {
     pub page: String,
     pub name: String,
     pub damage_type: DamageType,
+    /// Area damage from `spelleffects`, and applying on-hit effects from
+    /// `onhiteffects`. Triggers and the basic attack role are not in the wiki
+    #[serde(default)]
+    pub attributes: Attrs,
     /// Visible description text by heading, including continuation fields.
     #[serde(default)]
     pub descriptions: BTreeMap<String, String>,

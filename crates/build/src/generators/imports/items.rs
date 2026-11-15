@@ -10,7 +10,7 @@ pub use crate::{
 };
 pub use lazy_regex::regex;
 pub use types::MapMode;
-pub use types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
+pub use types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*, Trigger};
 pub use wiki::items::item_parser::WikiItem;
 pub use wiki::wikitext::{Formula, IntoFormula};
 

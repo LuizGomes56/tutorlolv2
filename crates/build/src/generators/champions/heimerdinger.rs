@@ -19,7 +19,7 @@ impl Generator for Heimerdinger {
             Damage {
                 name: "H-28G Evolution Turret".into(),
                 damage_type: turret_type,
-                attributes: Undefined,
+                attributes: Attrs::NONE,
                 comment: "Pet: H-28G Evolution Turret basic attack".into(),
                 formula: turret,
             },
@@ -29,7 +29,7 @@ impl Generator for Heimerdinger {
             Damage {
                 name: "H-28Q Apex Turret".into(),
                 damage_type: apex_type,
-                attributes: Undefined,
+                attributes: Attrs::NONE,
                 comment: "Pet: H-28Q Apex Turret basic attack".into(),
                 formula: apex,
             },

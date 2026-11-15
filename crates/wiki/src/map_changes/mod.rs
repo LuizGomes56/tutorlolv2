@@ -631,6 +631,7 @@ mod tests {
                             descriptions: BTreeMap::new(),
                             name: "Takedown".into(),
                             damage_type: types::DamageType::Magic,
+                            attributes: types::Attrs::NONE,
                             effects: vec![],
                             extras: vec![],
                         }],

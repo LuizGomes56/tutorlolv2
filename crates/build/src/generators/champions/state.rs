@@ -27,7 +27,9 @@ use {
     },
     lazy_regex::regex,
     std::{collections::BTreeMap, path::Path, sync::LazyLock},
-    types::{AbilityId, Attrs, ComboElement, CtxVar, DamageType, Key, MapMode},
+    types::{
+        AbilityId, AttackRole, Attrs, ComboElement, CtxVar, DamageType, Key, MapMode, Trigger,
+    },
     wiki::{
         JsonRead,
         map_changes::change::MapChange,
@@ -181,7 +183,9 @@ impl ChampionGenerator {
             name: model.name.clone(),
             damage_type: model.damage_type,
             comment: effect.label.clone(),
-            attributes: Attrs::Undefined,
+            // Area and on-hit come from the wiki; generators set triggers and roles
+            // the wiki does not mark
+            attributes: model.attributes,
         };
 
         self.damages.insert(id, damage);
@@ -320,7 +324,7 @@ impl ChampionGenerator {
             Damage {
                 name: name.into(),
                 damage_type,
-                attributes: Attrs::Undefined,
+                attributes: Attrs::NONE,
                 comment: format!("Pet: {name} basic attack"),
                 formula,
             },
@@ -646,6 +650,22 @@ impl ChampionGenerator {
 
     pub fn attributes(&mut self, id: AbilityId, attributes: Attrs) -> &mut Self {
         self.damage_mut(id).attributes = attributes;
+        self
+    }
+
+    /// When `id`'s damage happens relative to basic attacks, as Kai'Sa's passive on
+    /// every hit. The wiki does not mark it for abilities
+    pub fn trigger(&mut self, id: AbilityId, trigger: Trigger) -> &mut Self {
+        let damage = self.damage_mut(id);
+        damage.attributes = damage.attributes.with_trigger(trigger);
+        self
+    }
+
+    /// How `id` relates to basic attacks, for the abilities the wiki does not mark,
+    /// as Zeri's Q, which is a basic attack
+    pub fn role(&mut self, id: AbilityId, role: AttackRole) -> &mut Self {
+        let damage = self.damage_mut(id);
+        damage.attributes = damage.attributes.with_role(role);
         self
     }
 

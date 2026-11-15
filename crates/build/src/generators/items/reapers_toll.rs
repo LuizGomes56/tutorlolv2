@@ -4,6 +4,6 @@ impl Generator for ReapersToll {
     fn generate(&mut self) -> MayFail {
         // Reap: Stacks = Reap stacks on the target. The other scalings are the
         // health threshold it inflicts
-        self.damage_type(True).attr(Onhit).min(Named("Reap"))?.end()
+        self.damage_type(True).trigger(Trigger::EveryHit).min(Named("Reap"))?.end()
     }
 }

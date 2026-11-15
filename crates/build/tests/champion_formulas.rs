@@ -335,7 +335,7 @@ fn insert_adds_a_damage_no_effect_has() {
         name: "Tibbers".into(),
         damage_type: DamageType::Magic,
         comment: "Pet: Tibbers basic attack".into(),
-        attributes: Attrs::Undefined,
+        attributes: Attrs::NONE,
     };
     c.insert(R(_1), tibbers.clone()).unwrap();
     assert!(c.insert(R(_1), tibbers).is_err());

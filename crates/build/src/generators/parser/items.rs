@@ -20,7 +20,7 @@ use {
         fmt::Write,
         ops::{Index, IndexMut},
     },
-    types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Key, MapMode, Tag},
+    types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Key, MapMode, Tag, Trigger},
     wiki::{
         JsonRead,
         items::item_parser::{ItemEffect, WikiItem},
@@ -335,7 +335,7 @@ impl TryFrom<WikiItem> for Item {
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
-            attributes: Attrs::Undefined,
+            attributes: Attrs::NONE,
             constants: Default::default(),
             map_damages: Default::default(),
             data,
@@ -838,8 +838,9 @@ impl Item {
         self.damage(AttackType::Ranged, DamageIndex::Max, index)
     }
 
-    pub fn attr(&mut self, attrs: Attrs) -> &mut Self {
-        self.attributes = attrs;
+    /// When the item's damage happens, relative to basic attacks
+    pub fn trigger(&mut self, trigger: Trigger) -> &mut Self {
+        self.attributes = self.attributes.with_trigger(trigger);
         self
     }
 

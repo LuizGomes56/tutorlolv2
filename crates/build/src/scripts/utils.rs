@@ -76,7 +76,7 @@ impl ItemOrRune for Rune {
     }
 
     fn attributes(&self) -> Attrs {
-        Attrs::Undefined
+        Attrs::NONE
     }
 
     fn map_damages(&self) -> &[Vec<(MapMode, String)>; 4] {

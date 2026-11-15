@@ -29,7 +29,7 @@ impl Generator for Annie {
                 Damage {
                     name: "Tibbers".into(),
                     damage_type: attack_type,
-                    attributes: Undefined,
+                    attributes: Attrs::NONE,
                     comment: "Pet: Tibbers basic attack".into(),
                     formula: attack,
                 },
@@ -39,7 +39,7 @@ impl Generator for Annie {
                 Damage {
                     name: "Tibbers".into(),
                     damage_type: Magic,
-                    attributes: Undefined,
+                    attributes: Attrs::NONE,
                     comment: format!("Pet: Tibbers Flame Aura per {every} seconds"),
                     formula: aura,
                 },

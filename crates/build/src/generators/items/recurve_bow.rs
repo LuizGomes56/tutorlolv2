@@ -4,7 +4,7 @@ impl Generator for RecurveBow {
     fn generate(&mut self) -> MayFail {
         // Sting
         self.damage_type(Physical)
-            .attr(Onhit)
+            .trigger(Trigger::EveryHit)
             .min(Named("Sting"))?
             .end()
     }

@@ -4,7 +4,7 @@ impl Generator for RapidFirecannon {
     fn generate(&mut self) -> MayFail {
         // Sharpshooter: Energized attack
         self.damage_type(Magic)
-            .attr(OnhitMax)
+            .trigger(Trigger::Energized)
             .min(Named("Sharpshooter"))?
             .end()
     }

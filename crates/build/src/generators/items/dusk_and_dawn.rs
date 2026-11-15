@@ -5,7 +5,7 @@ impl Generator for DuskAndDawn {
         // Spellblade: bonus magic damage on the empowered attack. The other
         // scaling is its healing
         self.damage_type(Magic)
-            .attr(OnhitMax)
+            .trigger(Trigger::Spellblade)
             .min(Named("Spellblade"))?
             .end()
     }

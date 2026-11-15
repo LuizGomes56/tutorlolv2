@@ -5,7 +5,7 @@ impl Generator for DivineSunderer {
         // Spellblade: bonus physical damage on the empowered attack. The other
         // scalings are its healing
         self.damage_type(Physical)
-            .attr(OnhitMax)
+            .trigger(Trigger::Spellblade)
             .min(Event("Spellblade", Spellblade))?
             .end()
     }

@@ -16,7 +16,7 @@ use {
         path::{Path, PathBuf},
         str::FromStr,
     },
-    types::{CtxVar, DamageType, Key},
+    types::{AttackRole, Attrs, CtxVar, DamageType, Key},
 };
 
 /// Variable of a stat as written. Damage stored or dealt can't be computed, so it is
@@ -59,6 +59,23 @@ pub struct PageContext<'a> {
 }
 
 impl AbilityModel {
+    /// Attributes from the `spelleffects` and `onhiteffects` fields. `special`, `proc`
+    /// and an empty field say nothing, and `basic`/`attack` mark abilities that
+    /// empower basic attacks rather than being one, so generators set those
+    pub fn attributes(spell_effects: &str, on_hit_effects: &str) -> Attrs {
+        let area = matches!(
+            spell_effects.trim().to_lowercase().as_str(),
+            "spellaoe" | "aoe" | "area of effect" | "aoedot"
+        );
+
+        let role = match on_hit_effects.trim().to_lowercase().as_str() {
+            "true" => AttackRole::AppliesOnhit,
+            _ => AttackRole::Standalone,
+        };
+
+        Attrs::NONE.with_area(area).with_role(role)
+    }
+
     /// Builds the model of an ability data page, with its key. `None` for pages
     /// without `Ability data`, such as the ones that only redirect. Fails when the
     /// `skill` field is not a single key
@@ -95,6 +112,10 @@ impl AbilityModel {
                 &field("damagetype").unwrap_or_default(),
             ))
             .unwrap_or(DamageType::Unspecified),
+            attributes: Self::attributes(
+                &field("spelleffects").unwrap_or_default(),
+                &field("onhiteffects").unwrap_or_default(),
+            ),
             effects: Vec::new(),
             extras: Vec::new(),
         };

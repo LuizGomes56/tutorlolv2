@@ -4,7 +4,7 @@ impl Generator for KrakenSlayer {
     fn generate(&mut self) -> MayFail {
         // Bring It Down, increased by up to 75% against targets with missing health
         self.damage_type(Physical)
-            .attr(OnhitMax)
+            .trigger(Trigger::NthHit)
             .min(Event("Bring It Down", BaseProc))?;
 
         let amplification = self.maximum_amplification_formula(Named("Bring It Down"))?;

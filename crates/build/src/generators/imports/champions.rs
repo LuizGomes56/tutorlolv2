@@ -13,8 +13,8 @@ pub use crate::{
 };
 pub use lazy_regex::regex;
 pub use types::{
-    AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, CtxVar::*, DamageType::*,
-    Key, MapMode,
+    AbilityId, AbilityId::*, AbilityName::*, AttackRole, Attrs, ComboElement::*, CtxVar::*,
+    DamageType::*, Key, MapMode, Trigger,
 };
 pub use wiki::{
     champions::WikiChampion,

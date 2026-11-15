@@ -315,20 +315,17 @@ pub struct RangeDamage {
 }
 
 impl RangeDamage {
-    /// Takes an attribute and adds the appropriate damage value based on it.
-    /// [`Attrs::Onhit`] and any other variant like this one indicates that the
-    /// current instance deals a constant onhit damage, not being defined as
-    /// minimum-only, or maximum-only
+    /// Adds `damage` to the on-hit columns its attributes count in: an every-hit
+    /// effect to both, any other basic attack trigger to the maximum only. See
+    /// [`Attrs::onhit_min`] and [`Attrs::onhit_max`]
     pub const fn inc_attr(&mut self, attr: Attrs, damage: i32) {
-        match attr {
-            Attrs::OnhitMin | Attrs::AreaOnhitMin => self.minimum_damage += damage,
-            Attrs::OnhitMax | Attrs::AreaOnhitMax => self.maximum_damage += damage,
-            Attrs::Onhit | Attrs::AreaOnhit => {
-                self.minimum_damage += damage;
-                self.maximum_damage += damage;
-            }
-            _ => {}
-        };
+        if attr.onhit_min() {
+            self.minimum_damage += damage;
+        }
+
+        if attr.onhit_max() {
+            self.maximum_damage += damage;
+        }
     }
 }
 

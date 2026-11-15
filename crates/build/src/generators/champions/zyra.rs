@@ -17,7 +17,7 @@ impl Generator for Zyra {
                 Damage {
                     name: "Garden of Thorns".into(),
                     damage_type: plant_type,
-                    attributes: Undefined,
+                    attributes: Attrs::NONE,
                     comment: "Pet: Thorn Spitter / Vine Lasher basic attack".into(),
                     formula: plant,
                 },

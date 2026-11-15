@@ -226,17 +226,7 @@ impl Build for Champion {
         }
 
         // Champions without onhit abilities never write to it
-        let onhit = match metadata.iter().any(|meta| {
-            matches!(
-                meta.attributes,
-                Attrs::Onhit
-                    | Attrs::OnhitMin
-                    | Attrs::OnhitMax
-                    | Attrs::AreaOnhit
-                    | Attrs::AreaOnhitMin
-                    | Attrs::AreaOnhitMax
-            )
-        }) {
+        let onhit = match metadata.iter().any(|meta| meta.attributes.onhit_max()) {
             true => "onhit",
             false => "_onhit",
         };
@@ -284,18 +274,12 @@ impl Build for Champion {
                 let damage = (modifier * {function}(ctx)) as i32;"
             )?;
 
-            match meta.attributes {
-                Attrs::OnhitMin | Attrs::AreaOnhitMin => {
-                    write!(rust, "onhit.minimum_damage += damage;")?
-                }
-                Attrs::OnhitMax | Attrs::AreaOnhitMax => {
-                    write!(rust, "onhit.maximum_damage += damage;")?
-                }
-                Attrs::Onhit | Attrs::AreaOnhit => write!(
-                    rust,
-                    "onhit.minimum_damage += damage; onhit.maximum_damage += damage;"
-                )?,
-                _ => {}
+            if meta.attributes.onhit_min() {
+                write!(rust, "onhit.minimum_damage += damage;")?
+            }
+
+            if meta.attributes.onhit_max() {
+                write!(rust, "onhit.maximum_damage += damage;")?
             }
 
             write!(rust, "out[{i}] = damage;")?;

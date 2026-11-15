@@ -4,7 +4,7 @@ impl Generator for WitsEnd {
     fn generate(&mut self) -> MayFail {
         // Fray
         self.damage_type(Magic)
-            .attr(Onhit)
+            .trigger(Trigger::EveryHit)
             .min(Named("Fray"))?
             .end()
     }

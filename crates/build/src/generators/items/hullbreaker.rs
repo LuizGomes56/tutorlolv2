@@ -5,7 +5,7 @@ impl Generator for Hullbreaker {
         // Empowered attack against champions at maximum stacks. The other
         // scalings are its damage against structures
         self.damage_type(Physical)
-            .attr(OnhitMax)
+            .trigger(Trigger::Charged)
             .min(Named("Skipper"))?
             .end()
     }

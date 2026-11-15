@@ -2346,3 +2346,24 @@ fn pet_abilities_read_each_section_with_its_first_damage() {
     );
     assert!(abilities["Recovery"].damage.is_empty());
 }
+
+#[test]
+fn ability_attributes_read_area_and_on_hit_from_the_wiki_fields() {
+    use types::{AttackRole, Attrs, Trigger};
+
+    let attrs = AbilityModel::attributes;
+
+    for area in ["spellaoe", "aoe", "Area of effect", "aoedot"] {
+        assert!(attrs(area, "").is_area(), "{area}");
+    }
+
+    for single in ["spell", "single target", "special", "proc", "basic", ""] {
+        assert!(!attrs(single, "").is_area(), "{single}");
+    }
+
+    assert_eq!(attrs("spell", "True").role(), AttackRole::AppliesOnhit);
+    assert_eq!(attrs("spell", "special").role(), AttackRole::Standalone);
+    // Triggers are never in the wiki fields
+    assert_eq!(attrs("aoe", "true").trigger(), Trigger::Direct);
+    assert_eq!(attrs("", ""), Attrs::NONE);
+}

@@ -6,7 +6,7 @@ impl Generator for SunderedSky {
         let bonus = self.critical_bonus(Named("Lightshield Strike"))?;
 
         self.damage_type(Physical)
-            .attr(OnhitMax)
+            .trigger(Trigger::Charged)
             .set_min(f![bonus / 100 * AttackDamage])
             .end()
     }

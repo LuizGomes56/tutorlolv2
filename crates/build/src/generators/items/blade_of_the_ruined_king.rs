@@ -20,6 +20,7 @@ impl Generator for BladeOfTheRuinedKing {
         };
 
         self.damage_type(Physical)
+            .trigger(Trigger::EveryHit)
             .assign(Melee, Min, damage(melee_ratio))
             .assign(Ranged, Min, damage(ranged_ratio))
             .end()
