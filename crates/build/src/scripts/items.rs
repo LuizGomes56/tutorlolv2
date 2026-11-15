@@ -97,6 +97,7 @@ impl Build for Item {
         wiki::write(out.with_extension("rs"), rust)?;
 
         Ok(BuildOutput {
+            reads_stacks: false,
             eval: self.eval(),
             formulas: if context.docs {
                 self.formula_docs(&plan)

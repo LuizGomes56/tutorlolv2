@@ -334,6 +334,7 @@ impl Build for Champion {
         Ok(BuildOutput {
             eval,
             formulas: docs,
+            reads_stacks: false,
         })
     }
 }

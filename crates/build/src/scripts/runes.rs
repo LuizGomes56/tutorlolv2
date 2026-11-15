@@ -32,7 +32,6 @@ impl Build for Rune {
                 metadata: {metadata},
                 {fn_names}
                 deals_damage: {deals_damage:?},
-                reads_stacks: {reads_stacks},
                 riot_id: {riot_id},
                 custom: {custom},
 
@@ -42,7 +41,6 @@ impl Build for Rune {
             upper_id = rune_id.to_shouty_snake_case(),
             identifiers = self.identifiers().as_slice().bake(),
             deals_damage = self.deals_damage(),
-            reads_stacks = self.identifiers().contains(&CtxVar::Stacks),
             fn_names = self.function_names(),
             metadata = self.repr_metadata()
         )?;
@@ -55,6 +53,7 @@ impl Build for Rune {
         wiki::write(out.with_extension("rs"), rust)?;
 
         Ok(BuildOutput {
+            reads_stacks: self.identifiers().contains(&CtxVar::Stacks),
             eval: self.eval(),
             formulas: if context.docs {
                 self.formula_docs(&plan)

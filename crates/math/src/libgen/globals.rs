@@ -185,9 +185,6 @@ pub struct Rune {
     pub name: &'static str,
     pub metadata: TypeMetadata<RuneId>,
     pub deals_damage: [bool; 4],
-    /// Its formula reads `ctx.stacks`, which is then this rune's own stacks, not
-    /// the champion's. See [`crate::model::RuneStacks`]
-    pub reads_stacks: bool,
     pub riot_id: u32,
     pub custom: bool,
 

@@ -34,6 +34,9 @@ pub const FORMULA_DOCS_ENV: &str = "CARGO_FEATURE_FORMULA_DOCS";
 pub struct BuildOutput {
     pub eval: String,
     pub formulas: Vec<FormulaDoc>,
+    /// The formulas read `ctx.stacks` as the entity's own stacks. Only runes set
+    /// it, and they are listed in `RuneId::STACKED_IDS`
+    pub reads_stacks: bool,
 }
 
 pub trait Build {
@@ -83,9 +86,14 @@ impl BuildContext {
         let mut eval = String::new();
         let mut docs = Vec::new();
         let mut exports = BTreeMap::new();
+        let mut stacked = Vec::new();
 
         for (index, (id, (output, export))) in keys.iter().zip(builds).enumerate() {
             eval.push_str(&output.eval);
+
+            if output.reads_stacks {
+                stacked.push(format!("Self::{id}"));
+            }
 
             if self.docs {
                 docs.push(EntityDocs {
@@ -113,12 +121,26 @@ impl BuildContext {
             )?;
         }
 
+        let stacked_ids = match tag {
+            Tag::Runes => format!(
+                "impl {enum_name} {{
+                    /// Runes whose formula reads their own stacks, such as Dark Harvest's souls
+                    pub const STACKED_IDS: [Self; {len}] = [{ids}];
+                }}",
+                enum_name = tag.enum_name(),
+                len = stacked.len(),
+                ids = stacked.join(", "),
+            ),
+            _ => String::new(),
+        };
+
         wiki::write(
             self.out.join(format!("{}_code.rs", tag.as_ref())),
             [
                 parser.id_enum(),
                 parser.name_lookup(aliases),
                 parser.data_variable(),
+                stacked_ids,
                 eval_fn(&eval),
             ]
             .concat(),
