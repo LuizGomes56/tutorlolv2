@@ -1480,3 +1480,30 @@ fn runes_read_their_own_stacks_not_the_champions() {
     );
     assert_eq!(dark_harvest(600, &souls), dark_harvest(0, &souls));
 }
+
+#[test]
+fn aphelios_weapons_never_read_stacks() {
+    use math::{AbilityId, AbilityName, Ctx};
+
+    let ctx = |stacks: f32| Ctx {
+        attack_damage: 250.0,
+        base_ad: 100.0,
+        level: 18.0,
+        stacks,
+        ..Default::default()
+    };
+
+    for meta in ChampionId::Aphelios.data().metadata {
+        assert_eq!(
+            ChampionId::Aphelios.eval(&ctx(0.0), meta.kind),
+            ChampionId::Aphelios.eval(&ctx(20.0), meta.kind),
+            "{:?} reads stacks",
+            meta.kind
+        );
+    }
+
+    let crescendum = |name| ChampionId::Aphelios.eval(&ctx(0.0), AbilityId::P(name));
+
+    assert!(crescendum(AbilityName::_5Min) > 0.0);
+    assert!(crescendum(AbilityName::_5Max) > crescendum(AbilityName::_5Min));
+}
