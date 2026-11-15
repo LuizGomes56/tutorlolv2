@@ -217,6 +217,43 @@ pub struct DamageEvalData {
     pub abilities: StaticDamageKind<AbilityId>,
     pub items: DamageKind<ItemId>,
     pub runes: DamageKind<RuneId>,
+    pub rune_stacks: RuneStacks,
+}
+
+/// Stacks of each rune in [`RuneId::STACKED_IDS`]. Their formulas read
+/// `ctx.stacks`, which is replaced by these values while they are evaluated, so
+/// they never see the champion's stacks. Unknown stacks, as in a live game, are `0`
+#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
+pub struct RuneStacks(pub [f32; RuneId::L_STACKED]);
+
+impl RuneStacks {
+    pub const NONE: Self = Self([0.0; RuneId::L_STACKED]);
+
+    /// Stacks given by the user, as rune exceptions
+    pub const fn from_exceptions(exceptions: &[ValueException]) -> Self {
+        let mut result = Self::NONE;
+        let mut i = 0;
+
+        while i < exceptions.len() {
+            if let Some(rune_id) = exceptions[i].get_rune_id()
+                && let Some(index) = rune_id.stacked_index()
+            {
+                result.0[index] = exceptions[i].stacks() as f32;
+            }
+
+            i += 1;
+        }
+
+        result
+    }
+
+    /// Stacks of `rune_id`, or `None` if its formula does not read them
+    pub const fn get(&self, rune_id: RuneId) -> Option<f32> {
+        match rune_id.stacked_index() {
+            Some(index) => Some(self.0[index]),
+            None => None,
+        }
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Serialize, Deserialize)]

@@ -256,7 +256,9 @@ impl MoveSpeedCaps {
     pub fn from_page(src: &str) -> MayFail<Self> {
         let [first_cap] = capture(
             src,
-            regex!(r"When the raw movement speed is greater than ([\d.]+), there are two soft caps"),
+            regex!(
+                r"When the raw movement speed is greater than ([\d.]+), there are two soft caps"
+            ),
         )?;
 
         let [between_low, second_cap, first_percent] = capture(
@@ -284,8 +286,12 @@ impl MoveSpeedCaps {
         // `{{tt|110|220*(1-0.5)}}{{plus}}(Raw MS){{times}}{{fd|0.5}}`
         let [low, lower_floor, lower_ratio] = capture(
             src,
+            // Verbose mode: the line break and indentation are ignored, and spaces
+            // of the text are written as `\ `
             regex!(
-                r"If the raw speed is below ([\d.]+), final speed is increased to \{\{tt\|([\d.]+)\|[^}]*\}\}\{\{plus\}\}\(Raw MS\)\{\{times\}\}\{\{fd\|([\d.]+)\}\}"
+                r"(?x)
+                If\ the\ raw\ speed\ is\ below\ ([\d.]+),\ final\ speed\ is\ increased\ to
+                \ \{\{tt\|([\d.]+)\|[^}]*\}\}\{\{plus\}\}\(Raw\ MS\)\{\{times\}\}\{\{fd\|([\d.]+)\}\}"
             ),
         )?;
 

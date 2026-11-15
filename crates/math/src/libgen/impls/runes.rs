@@ -46,6 +46,56 @@ impl RuneId {
 
     pub const DAMAGING: BitSet = bitset!(RuneId::DAMAGING_IDS);
 
+    /// Number of runes whose formula reads their own stacks
+    pub const L_STACKED: usize = {
+        let mut sum = 0;
+        let mut i = 0;
+
+        while i < Self::COUNT {
+            if Self::DATA[i].reads_stacks {
+                sum += 1;
+            }
+
+            i += 1;
+        }
+
+        sum
+    };
+
+    /// Runes whose formula reads their own stacks, such as Dark Harvest's souls
+    pub const STACKED_IDS: [Self; Self::L_STACKED] = {
+        let mut result: [Self; _] = unsafe { core::mem::zeroed() };
+        let mut i = 0;
+        let mut j = 0;
+
+        while i < Self::COUNT {
+            if Self::DATA[i].reads_stacks {
+                result[j] = Self::from_repr(i as _).unwrap();
+                j += 1;
+            }
+
+            i += 1;
+        }
+
+        result
+    };
+
+    /// Position of this rune in [`Self::STACKED_IDS`], `None` if its formula does
+    /// not read stacks
+    pub const fn stacked_index(&self) -> Option<usize> {
+        let mut i = 0;
+
+        while i < Self::L_STACKED {
+            if Self::STACKED_IDS[i] as u16 == *self as u16 {
+                return Some(i);
+            }
+
+            i += 1;
+        }
+
+        None
+    }
+
     pub const RIOT_IDS: [u32; Self::COUNT] = {
         let mut result = [0; _];
         let mut i = 0;

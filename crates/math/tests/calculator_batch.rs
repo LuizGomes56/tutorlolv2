@@ -56,6 +56,7 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
             },
             items: DamageKind::items(&math::bitset::BitSet::EMPTY, AttackType::Melee),
             runes: DamageKind::runes(&math::bitset::BitSet::EMPTY, AttackType::Melee),
+            rune_stacks: RuneStacks::NONE,
         };
         let modifiers = Modifiers::default();
         // Flat penetration exercises the monsters' negative-resistance path.

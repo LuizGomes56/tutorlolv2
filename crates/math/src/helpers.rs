@@ -10,10 +10,6 @@
 //! Note that most functions have the `const` qualifier, which you
 //! should use to debug and check if the calculated values are correct
 //! without having to compile your project.
-//!
-//! Function pointers can't be called in const context, so if you still
-//! want to do it, you can use the [`crate::const_eval`] module to
-//! do it
 
 use {
     crate::{
@@ -1567,6 +1563,8 @@ impl DamageTable {
             &data.items.metadata,
             &data.items.closures,
             &mut row.items[..n_items],
+            #[cold]
+            |_| None,
         );
 
         Self::eval(
@@ -1576,6 +1574,7 @@ impl DamageTable {
             &data.runes.metadata,
             &data.runes.closures,
             row.runes,
+            |rune_id| data.rune_stacks.get(rune_id),
         );
 
         let a = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
@@ -1617,14 +1616,17 @@ impl DamageTable {
 
     /// Evaluates the damages of all requested items or runes. This function causes
     /// `Undefined Behavior` if the length of `closures` is not twice as much as `metadata`
-    /// or panic in debug mode. See similar function [`ability_id_eval_damage`]
-    pub fn eval<T>(
+    /// or panic in debug mode. See similar function [`ability_id_eval_damage`].
+    /// `own_stacks` returns the stacks an entry reads instead of the champion's,
+    /// see [`RuneStacks`]
+    pub fn eval<T: Copy>(
         ctx: &Ctx,
         onhit: &mut RangeDamage,
         modifiers: Modifiers,
         metadata: &[TypeMetadata<T>],
         closures: &[Closure],
         result: &mut [i32],
+        own_stacks: impl Fn(T) -> Option<f32>,
     ) {
         let out_len = closures.len();
 
@@ -1635,12 +1637,20 @@ impl DamageTable {
 
         while meta_index < metadata.len() {
             let TypeMetadata {
+                kind,
                 damage_type,
                 attributes,
-                ..
             } = *unsafe { metadata.get_unchecked(meta_index) };
 
             let modifier = modifiers.damages.modifier(damage_type);
+            let ctx = match own_stacks(kind) {
+                Some(stacks) => {
+                    core::hint::cold_path();
+                    &Ctx { stacks, ..*ctx }
+                }
+                None => ctx,
+            };
+
             let mut j = 0;
 
             while j < 2 {

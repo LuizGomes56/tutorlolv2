@@ -731,53 +731,6 @@ fn health_scaling_shard_stacks_when_taken_twice() {
 }
 
 #[test]
-fn const_evaluation_preserves_modifiers_with_explicit_stats() {
-    use math::const_eval::{ConstEnemy, ConstInput};
-    const INPUT: ConstInput<1, 1, 0, 0, 0, 0> = ConstInput {
-        champion_id: ChampionId::Gnar,
-        items: [ItemId::SpearOfShojin],
-        runes: [RuneId::AxiomArcanist],
-        rune_exceptions: [],
-        item_exceptions: [],
-        ability_levels: AbilityLevels {
-            q: 5,
-            w: 5,
-            e: 5,
-            r: 3,
-        },
-        stats: None,
-        dragons: Dragons::default(),
-        stacks: 0,
-        level: NonZeroU8::new(18).unwrap(),
-        is_mega_gnar: true,
-        enemy: ConstEnemy {
-            champion_id: ChampionId::Aatrox,
-            items: [],
-            item_exceptions: [],
-            stats: None,
-            stacks: 0,
-            level: NonZeroU8::new(18).unwrap(),
-            is_mega_gnar: false,
-        },
-    };
-    const INFERRED: math::const_eval::ConstOutput<
-        { ChampionId::Gnar.number_of_abilities() },
-        1,
-        1,
-    > = INPUT.eval();
-    const EXPLICIT: math::const_eval::ConstOutput<
-        { ChampionId::Gnar.number_of_abilities() },
-        1,
-        1,
-    > = ConstInput {
-        stats: Some(INFERRED.stats),
-        ..INPUT
-    }
-    .eval();
-    assert_eq!(EXPLICIT.damages.abilities, INFERRED.damages.abilities);
-}
-
-#[test]
 fn owned_warmog_amplifies_health_converted_from_new_mana() {
     let state = SelfState {
         bonus_move_speed: 0.0,
@@ -1495,4 +1448,35 @@ fn inferred_move_speed_adds_the_shard_percent() {
         ),
         RiotFormulas::capped_move_speed((base + 55.0) * 1.025),
     );
+}
+
+#[test]
+fn runes_read_their_own_stacks_not_the_champions() {
+    let enemies = [InputMinData {
+        champion_id: ChampionId::Aatrox,
+        level: NonZeroU8::new(18).unwrap(),
+        ..Default::default()
+    }];
+    let runes = [RuneId::DarkHarvest];
+    let souls = ValueException::pack_runes(&[(RuneId::DarkHarvest, 10)]);
+
+    let dark_harvest = |champion_stacks: u32, exceptions: &[ValueException]| {
+        let mut input = game(&[], &runes, &enemies);
+        input.active_player.data.stacks = champion_stacks;
+        input.active_player.rune_exceptions = exceptions;
+        calculator(input).enemy_damages(0).runes[0]
+    };
+
+    let none = dark_harvest(0, &[]);
+
+    assert_eq!(
+        dark_harvest(600, &[]),
+        none,
+        "champion stacks leak into Dark Harvest"
+    );
+    assert!(
+        dark_harvest(0, &souls) > none,
+        "Dark Harvest ignores its souls"
+    );
+    assert_eq!(dark_harvest(600, &souls), dark_harvest(0, &souls));
 }

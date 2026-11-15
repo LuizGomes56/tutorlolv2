@@ -5,7 +5,7 @@ use crate::{
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
-use types::Tag;
+use types::{CtxVar, Tag};
 use wiki::runes::WikiRune;
 
 impl Build for Rune {
@@ -32,6 +32,7 @@ impl Build for Rune {
                 metadata: {metadata},
                 {fn_names}
                 deals_damage: {deals_damage:?},
+                reads_stacks: {reads_stacks},
                 riot_id: {riot_id},
                 custom: {custom},
 
@@ -41,6 +42,7 @@ impl Build for Rune {
             upper_id = rune_id.to_shouty_snake_case(),
             identifiers = self.identifiers().as_slice().bake(),
             deals_damage = self.deals_damage(),
+            reads_stacks = self.identifiers().contains(&CtxVar::Stacks),
             fn_names = self.function_names(),
             metadata = self.repr_metadata()
         )?;
