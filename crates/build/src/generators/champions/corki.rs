@@ -2,9 +2,12 @@ use super::*;
 
 impl Generator for Corki {
     fn generate(&mut self) -> MayFail {
-        self.take("Innate", P(Void))?
-            .damage_type(P(Void), True)
-            .comment(P(Void), "Bonus true damage per basic attack")
+        // Hextech Munitions: every basic attack deals bonus true damage, which critical
+        // strikes also multiply. It is part of the attack rather than an ability, so a
+        // combo never counts it apart from the attack
+        let munitions = self.value("Innate", Key::P)?;
+
+        self.basic_attack([(Physical, f![AttackDamage]), (True, munitions)])
             .take("Magic Damage", Q(Void))?
             .take("Magic Damage Per Tick", W(Min))?
             .take("Total Magic Damage", W(Max))?

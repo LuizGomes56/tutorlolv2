@@ -1507,3 +1507,43 @@ fn aphelios_weapons_never_read_stacks() {
     assert!(crescendum(AbilityName::_5Min) > 0.0);
     assert!(crescendum(AbilityName::_5Max) > crescendum(AbilityName::_5Min));
 }
+
+#[test]
+fn corki_basic_attacks_add_bonus_true_damage() {
+    let enemies = [InputMinData {
+        champion_id: ChampionId::Aatrox,
+        level: NonZeroU8::new(18).unwrap(),
+        ..Default::default()
+    }];
+    let mut input = game(&[], &[], &enemies);
+    input.active_player.data.champion_id = ChampionId::Corki;
+
+    let output = calculator(input);
+    let damage = output.enemy_damages(0);
+    let ad = damage.ctx.attack_damage;
+    // Hextech Munitions is 20% AD of true damage, which no resistance reduces
+    let expected = ad * damage.ctx.physical_multiplier() + 0.2 * ad;
+
+    assert_eq!(damage.attacks.basic_attack, expected as i32);
+    assert_eq!(
+        damage.attacks.critical_strike,
+        (expected * damage.ctx.crit_damage / 100.0) as i32
+    );
+}
+
+#[test]
+fn champions_without_an_attack_override_deal_physical_attack_damage() {
+    let enemies = [InputMinData {
+        champion_id: ChampionId::Aatrox,
+        level: NonZeroU8::new(18).unwrap(),
+        ..Default::default()
+    }];
+    let output = calculator(game(&[], &[], &enemies));
+    let damage = output.enemy_damages(0);
+
+    assert!(ChampionId::Gnar.data().basic_attack.is_empty());
+    assert_eq!(
+        damage.attacks.basic_attack,
+        (damage.ctx.attack_damage * damage.ctx.physical_multiplier()) as i32
+    );
+}

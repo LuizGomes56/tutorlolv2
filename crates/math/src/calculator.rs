@@ -835,6 +835,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         items: DamageKind::items(&current_player_items, attack_type),
         runes: DamageKind::runes(&current_player_runes, attack_type),
         rune_stacks: RuneStacks::from_exceptions(rune_exceptions),
+        basic_attack: current_player_cache.basic_attack,
     };
 
     let layout = DamageLayout::new(&eval_data, false);

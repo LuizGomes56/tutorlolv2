@@ -218,6 +218,8 @@ pub struct DamageEvalData {
     pub items: DamageKind<ItemId>,
     pub runes: DamageKind<RuneId>,
     pub rune_stacks: RuneStacks,
+    /// The champion's basic attack, see [`crate::libgen::Champion::basic_attack`]
+    pub basic_attack: &'static [(DamageType, Closure)],
 }
 
 /// Stacks of each rune in [`RuneId::STACKED_IDS`]. Their formulas read

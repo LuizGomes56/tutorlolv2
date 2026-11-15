@@ -252,6 +252,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         runes: DamageKind::runes(&current_player_runes, current_player_cache_attack_type),
         // Rune stacks are not in the live game data
         rune_stacks: RuneStacks::NONE,
+        basic_attack: current_player_champion_id.data().basic_attack,
     };
 
     let mut enemy_idx = ::alloc::vec::Vec::with_capacity(all_players.len());

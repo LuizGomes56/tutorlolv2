@@ -28,6 +28,15 @@ pub struct ChampionParser {
     pub data: BTreeMap<String, WikiChampion>,
 }
 
+/// One part of a champion's basic attack, as Corki's bonus true damage. See
+/// [`Champion::basic_attack`]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct AttackPart {
+    pub damage_type: DamageType,
+    /// Rust source of the damage, as [`Ability::damage`]
+    pub damage: String,
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Ability {
     pub name: String,
@@ -46,6 +55,11 @@ pub struct Champion {
     pub combo: Vec<Vec<ComboElement>>,
     #[serde_as(as = "Seq<(_, _)>")]
     pub abilities: BTreeMap<AbilityId, Ability>,
+    /// Damage of a basic attack, part by part, for champions whose attack is not
+    /// `attack_damage` of physical damage. Empty for every other champion. A
+    /// critical strike multiplies every part
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub basic_attack: Vec<AttackPart>,
     #[serde(default, skip_serializing_if = "Constants::is_empty")]
     pub constants: Constants,
     /// Codec source written from the same structured tree as each damage.
@@ -122,6 +136,7 @@ impl TryFrom<WikiChampion> for Champion {
         Ok(Self {
             champion_id: data.champion_id.clone(),
             abilities: Default::default(),
+            basic_attack: Default::default(),
             merge: Default::default(),
             combo: Default::default(),
             constants: Default::default(),

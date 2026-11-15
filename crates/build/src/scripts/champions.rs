@@ -15,8 +15,7 @@ use {
         write,
     },
     types::{
-        AbilityId, AbilityName, Attrs, CtxVar, DamageType, DevMergeData, MergeData, Tag,
-        TypeMetadata,
+        AbilityId, AbilityName, CtxVar, DamageType, DevMergeData, MergeData, Tag, TypeMetadata,
     },
     wiki::champions::WikiChampion,
 };
@@ -122,6 +121,9 @@ impl Build for Champion {
                 {ENGINE_CFG}
                 ability_batch: {batch_name},
 
+                {ENGINE_CFG}
+                basic_attack: &[{basic_attack}],
+
                 {DOCS_CFG}
                 combos: &[{combos}],
 
@@ -193,8 +195,27 @@ impl Build for Champion {
                 })
                 .collect::<Vec<_>>()
                 .join(","),
-            fn_names = functions.join(",")
+            fn_names = functions.join(","),
+            basic_attack = (0..self.basic_attack.len())
+                .map(|i| format!(
+                    "({}, {}_attack{i})",
+                    self.basic_attack[i].damage_type.bake(),
+                    champion_id.to_snake_case()
+                ))
+                .collect::<Vec<_>>()
+                .join(", "),
         )?;
+
+        for (i, part) in self.basic_attack.iter().enumerate() {
+            let rust_formula = cast_f32(&format_formula(&part.damage))?;
+
+            write!(
+                rust,
+                "{ENGINE_CFG} pub const fn {}_attack{i}({param}: &types::Ctx) -> f32 {{{rust_formula}}}",
+                champion_id.to_snake_case(),
+                param = ctx_param(&rust_formula)
+            )?;
+        }
 
         for (i, ((ability_id, ability), function)) in abilities.iter().zip(&functions).enumerate() {
             let Ability { name, comment, .. } = ability;
