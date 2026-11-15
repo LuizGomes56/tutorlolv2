@@ -286,8 +286,11 @@ impl<
                     * enemy.modifiers.physical_mod,
                 magic_mod: modifiers.damages.magic_mod
                     * enemy.magic_values.modifier
-                    * enemy.modifiers.magic_mod,
-                true_mod: modifiers.damages.true_mod * enemy.modifiers.true_mod,
+                    * enemy.modifiers.magic_mod
+                    * enemy.shadowflame_modifier(&items),
+                true_mod: modifiers.damages.true_mod
+                    * enemy.modifiers.true_mod
+                    * enemy.shadowflame_modifier(&items),
                 global_mod: modifiers.damages.global_mod
                     * enemy.modifiers.global_mod
                     * enemy.rune_damage_modifier(&runes),

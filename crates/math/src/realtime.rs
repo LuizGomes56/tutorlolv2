@@ -337,6 +337,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 modifiers.damages.global_mod *=
                     map_mod * full_state.rune_damage_modifier(&owned_runes);
 
+                let shadowflame = full_state.shadowflame_modifier(&owned_items);
+
+                modifiers.damages.magic_mod *= shadowflame;
+                modifiers.damages.true_mod *= shadowflame;
+
                 let modifiers = modifiers.against(&full_state, adaptive_type);
 
                 damages.fill_batch(
@@ -354,6 +359,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 let mut buffs = *buffs;
 
                 buffs.damages.global_mod *= map_mod * target.rune_damage_modifier(&owned_runes);
+
+                // The candidate counts as owned while it is being simulated
+                let shadowflame = match ItemId::SIML[k] {
+                    ItemId::Shadowflame => target.shadowflame_modifier(&[ItemId::Shadowflame]),
+                    _ => target.shadowflame_modifier(&owned_items),
+                };
+
+                buffs.damages.magic_mod *= shadowflame;
+                buffs.damages.true_mod *= shadowflame;
 
                 let modifiers = buffs.against(&target, state.adaptive_type);
                 let mut row = damages.fill_batch(

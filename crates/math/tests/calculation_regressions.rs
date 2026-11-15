@@ -847,6 +847,29 @@ fn coup_de_grace_and_cut_down_depend_on_enemy_health() {
 }
 
 #[test]
+fn shadowflame_only_applies_below_its_health_threshold() {
+    let enemy = |health_ratio: f32| {
+        EnemyState {
+            current_stats: Some(EnemyStats {
+                armor: 50.0,
+                current_health: 1000.0 * health_ratio,
+                magic_resist: 50.0,
+                max_health: 1000.0,
+            }),
+            ..Default::default()
+        }
+        .full_state(ResistShred::new(&PlayerStats::default()), false)
+    };
+
+    for (health_ratio, expected) in [(0.2, 1.2), (0.39, 1.2), (0.4, 1.0), (1.0, 1.0)] {
+        let state = enemy(health_ratio);
+
+        close(state.shadowflame_modifier(&[ItemId::Shadowflame]), expected);
+        close(state.shadowflame_modifier(&[ItemId::Riftmaker]), 1.0);
+    }
+}
+
+#[test]
 fn health_dependent_runes_no_longer_buff_every_target() {
     let mut modifiers = Modifiers::default();
     modifiers.apply_loadout(

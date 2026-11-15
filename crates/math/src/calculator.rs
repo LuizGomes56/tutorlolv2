@@ -858,6 +858,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         EnemyMap {
             champion_id: current_player_champion_id,
             game_map,
+            items: current_player_raw_items,
             runes: current_player_raw_runes,
         },
         |damages, r, ctx, eval_data, modifiers| {
@@ -888,6 +889,8 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
 pub struct EnemyMap<'a> {
     pub champion_id: ChampionId,
     pub game_map: GameMap,
+    /// Items of the current player, some of which depend on each enemy's health
+    pub items: &'a [ItemId],
     /// Runes of the current player, some of which depend on each enemy's health
     pub runes: &'a [RuneId],
 }
@@ -936,6 +939,7 @@ impl DamageTable {
         let EnemyMap {
             champion_id,
             game_map,
+            items,
             runes,
         } = enemy_map;
 
@@ -971,6 +975,7 @@ impl DamageTable {
 
                 let ctx = full_state.ctx(self_state, game_map);
                 let map_mod = champion_id.map_damage_modifier(&e_champion_id, game_map);
+                let shadowflame = full_state.shadowflame_modifier(items);
 
                 let modifiers = Modifiers {
                     damages: DamageModifiers {
@@ -980,8 +985,11 @@ impl DamageTable {
                             * full_state.modifiers.physical_mod,
                         magic_mod: modifiers.damages.magic_mod
                             * full_state.magic_values.modifier
-                            * full_state.modifiers.magic_mod,
-                        true_mod: modifiers.damages.true_mod * full_state.modifiers.true_mod,
+                            * full_state.modifiers.magic_mod
+                            * shadowflame,
+                        true_mod: modifiers.damages.true_mod
+                            * full_state.modifiers.true_mod
+                            * shadowflame,
                         global_mod: modifiers.damages.global_mod
                             * full_state.modifiers.global_mod
                             * full_state.rune_damage_modifier(runes)

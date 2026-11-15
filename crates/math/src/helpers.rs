@@ -50,10 +50,6 @@ impl Modifiers {
     pub const fn apply_item(&mut self, item: ItemId) {
         match item {
             ItemId::Riftmaker => self.damages.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE,
-            ItemId::Shadowflame => {
-                self.damages.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
-                self.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
-            }
             ItemId::SpearOfShojin => {
                 self.abilities.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                 self.abilities.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
@@ -1316,14 +1312,7 @@ impl EnemyFullState {
     pub const fn rune_damage_modifier(&self, owned_runes: &[RuneId]) -> f32 {
         use crate::libgen::runes::{coup_de_grace, cut_down};
 
-        // Computed directly so that exact thresholds such as 60% are not lost to rounding
-        let EnemyStats {
-            current_health,
-            max_health,
-            ..
-        } = self.current_stats;
-
-        let health_ratio = (current_health / max_health.max(1.0)).clamp(0.0, 1.0);
+        let health_ratio = self.health_ratio();
         let mut modifier = 1.0;
         let mut i = 0;
 
@@ -1346,6 +1335,40 @@ impl EnemyFullState {
 }
 
 impl EnemyFullState {
+    /// Ratio of the maximum health this enemy still has, from `0.0` to `1.0`.
+    /// Computed directly so that exact thresholds such as 60% are not lost to rounding
+    const fn health_ratio(&self) -> f32 {
+        let EnemyStats {
+            current_health,
+            max_health,
+            ..
+        } = self.current_stats;
+
+        (current_health / max_health.max(1.0)).clamp(0.0, 1.0)
+    }
+
+    /// Multiplier of [`ItemId::Shadowflame`] on magic and true damage. Cinderbloom
+    /// only applies to enemies below its health threshold, so it is `1.0` otherwise
+    pub const fn shadowflame_modifier(&self, owned_items: &[ItemId]) -> f32 {
+        use crate::libgen::items::shadowflame::CINDERBLOOM_HEALTH_THRESHOLD;
+
+        if self.health_ratio() >= CINDERBLOOM_HEALTH_THRESHOLD {
+            return 1.0;
+        }
+
+        let mut i = 0;
+
+        while i < owned_items.len() {
+            if matches!(owned_items[i], ItemId::Shadowflame) {
+                return RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
+            }
+
+            i += 1;
+        }
+
+        1.0
+    }
+
     /// Part of [`Ctx`] that comes from this target, the same for every attacker state
     pub const fn ctx_target(&self) -> CtxTarget {
         let EnemyFullState {
