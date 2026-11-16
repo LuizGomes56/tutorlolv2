@@ -30,6 +30,7 @@ use {
 pub mod champions;
 pub mod items;
 pub mod model;
+pub mod monster_caps;
 pub mod native_maps;
 pub mod runes;
 

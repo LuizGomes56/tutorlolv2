@@ -22,7 +22,10 @@ use {
         MayFail,
         generators::{
             constants::{Constant, WithConstants},
-            parser::champions::{Ability, Champion},
+            parser::{
+                champions::{Ability, Champion},
+                monster_caps::MonsterCap,
+            },
         },
     },
     lazy_regex::regex,
@@ -792,6 +795,7 @@ impl ChampionGenerator {
         }
 
         self.inner.end()?;
+        self.inner.monster_caps = MonsterCap::extract(&self.model);
 
         // Damages that `end` removed have no source either
         let Champion {

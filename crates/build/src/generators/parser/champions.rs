@@ -57,6 +57,9 @@ pub struct Champion {
     #[serde_as(as = "Seq<(_, _)>")]
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub docs: BTreeMap<AbilityId, String>,
+    /// Damage caps against monsters, read from the wiki but not applied yet
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub monster_caps: Vec<super::monster_caps::MonsterCap>,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -132,6 +135,7 @@ impl TryFrom<WikiChampion> for Champion {
             combo: Default::default(),
             constants: Default::default(),
             docs: Default::default(),
+            monster_caps: Default::default(),
             data,
         })
     }

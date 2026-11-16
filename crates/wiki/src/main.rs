@@ -25,6 +25,8 @@ pub enum Fetch {
 
 #[derive(Subcommand, Debug)]
 pub enum AppArgs {
+    /// Full update: game version, wiki data, recommendations (with `RIOT_API_KEY`),
+    /// Riot's cache, images, then the build's generated code and JSON
     #[command(alias = "u")]
     Update,
     #[command(alias = "a")]
@@ -158,9 +160,22 @@ async fn main() -> MayFail {
     )?;
 
     match args {
+        // Full update of the app: game version, wiki data, recommendations, Riot's
+        // cache, images, and last the build, which writes the generated code and the
+        // JSON of `cache/app` from all of them
         AppArgs::Update => {
             version::check().await?;
             wiki::run().await?;
+
+            // Recommendations need a Riot API key. Without one, the ones of the last
+            // run are kept
+            match wiki::env_var("RIOT_API_KEY") {
+                Ok(_) => stats::StatsConfig::default()
+                    .run()
+                    .await
+                    .map_err(|e| format!("[stats] Error: {e:?}"))?,
+                Err(e) => println!("[stats] Skipped, keeping the last recommendations: {e}"),
+            }
 
             HTTP_CLIENT.update_riot_cache().await?;
             HTTP_CLIENT.download_arts_img().await?;
@@ -172,7 +187,15 @@ async fn main() -> MayFail {
             #[cfg(feature = "avif")]
             wiki::avif::img_convert_avif();
 
-            // scraper::run().await?;
+            // The build crate depends on this one, so it runs as its own process
+            let cargo = std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into());
+            let status = std::process::Command::new(cargo)
+                .args(["run", "-p", "build"])
+                .status()?;
+
+            if !status.success() {
+                return Err(format!("[build] Failed with {status}").into());
+            }
         }
         AppArgs::Avif => {
             #[cfg(feature = "avif")]
