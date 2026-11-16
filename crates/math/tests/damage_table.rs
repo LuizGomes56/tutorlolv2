@@ -1,4 +1,4 @@
-use math::{Ctx, CtxAttacker, CtxTarget, model::*};
+use math::{Ctx, CtxAttacker, CtxTarget, DamageMultipliers, model::*};
 
 const ROW_VALUES: [i32; 8] = {
     let layout = DamageLayout {
@@ -16,7 +16,14 @@ const ROW_VALUES: [i32; 8] = {
         enemy_armor: 45.0,
         ..unsafe { core::mem::zeroed() }
     }];
-    let mut table = DamageTableMut::new(layout, &mut values, &mut attackers, &mut targets);
+    let mut multipliers = [DamageMultipliers::ONE];
+    let mut table = DamageTableMut::new(
+        layout,
+        &mut values,
+        &mut attackers,
+        &mut targets,
+        &mut multipliers,
+    );
     assert!(table.rows() == 1);
     assert!(table.layout().stride() == 8);
     assert!(table.ctx(0).attack_damage == 123.0);
@@ -75,5 +82,6 @@ fn borrowed_table_rejects_inconsistent_storage() {
         &mut [0; 3],
         &mut [CtxAttacker::default()],
         &mut [CtxTarget::default()],
+        &mut [DamageMultipliers::ONE],
     );
 }

@@ -175,6 +175,13 @@ pub const fn zero(_: &types::Ctx) -> f32 {
     0.0
 }
 
+/// Basic attack of every champion that doesn't declare its own, see
+/// [`Champion::basic_attack`]
+#[cfg(feature = "engine")]
+pub const fn basic_attack(ctx: &types::Ctx) -> f32 {
+    ctx.attack_damage * ctx.physical_multiplier()
+}
+
 pub const L_MSTR: usize = <Monster as strum::EnumCount>::COUNT;
 /// One turret for each number of Bulwark stacks, from none to the maximum
 pub const L_TWRD: usize = rules::turret::BULWARK_MAX_STACKS + 1;

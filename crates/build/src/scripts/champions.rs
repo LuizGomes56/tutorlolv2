@@ -122,7 +122,7 @@ impl Build for Champion {
                 ability_batch: {batch_name},
 
                 {ENGINE_CFG}
-                basic_attack: &[{basic_attack}],
+                basic_attack: {basic_attack},
 
                 {DOCS_CFG}
                 combos: &[{combos}],
@@ -196,32 +196,42 @@ impl Build for Champion {
                 .collect::<Vec<_>>()
                 .join(","),
             fn_names = functions.join(","),
-            basic_attack = (0..self.basic_attack.len())
-                .map(|i| format!(
-                    "({}, {}_attack{i})",
-                    self.basic_attack[i].damage_type.bake(),
-                    champion_id.to_snake_case()
-                ))
-                .collect::<Vec<_>>()
-                .join(", "),
+            basic_attack = match self.basic_attack {
+                Some(_) => format!("{}_basic_attack", champion_id.to_snake_case()),
+                None => "crate::libgen::basic_attack".into(),
+            },
         )?;
 
-        for (i, part) in self.basic_attack.iter().enumerate() {
-            let rust_formula = cast_f32(&format_formula(&part.damage))?;
+        if let Some(damage) = &self.basic_attack {
+            let rust_formula = cast_f32(&format_formula(damage))?;
 
             write!(
                 rust,
-                "{ENGINE_CFG} pub const fn {}_attack{i}({param}: &types::Ctx) -> f32 {{{rust_formula}}}",
+                "{ENGINE_CFG} pub const fn {}_basic_attack({param}: &types::Ctx) -> f32 {{{rust_formula}}}",
                 champion_id.to_snake_case(),
                 param = ctx_param(&rust_formula)
             )?;
         }
 
         for (i, ((ability_id, ability), function)) in abilities.iter().zip(&functions).enumerate() {
-            let Ability { name, comment, .. } = ability;
+            let Ability {
+                name,
+                comment,
+                damage_type,
+                ..
+            } = ability;
 
             let body = &damages[i];
             let rust_formula = cast_f32(body)?;
+
+            // Mixed values get only the global multiplier, so each part must
+            // multiply by its own or it ignores the target's resists
+            if *damage_type == DamageType::Mixed && !rust_formula.contains("_multiplier") {
+                println!(
+                    "cargo:warning=[{champion_id}] {ability_id:?} is mixed damage without a \
+                     per-type multiplier, so resists and modifiers don't apply to it"
+                );
+            }
 
             write!(
                 rust,

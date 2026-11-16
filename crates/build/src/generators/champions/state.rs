@@ -22,7 +22,7 @@ use {
         MayFail,
         generators::{
             constants::{Constant, WithConstants},
-            parser::champions::{Ability, AttackPart, Champion},
+            parser::champions::{Ability, Champion},
         },
     },
     lazy_regex::regex,
@@ -653,19 +653,12 @@ impl ChampionGenerator {
         self
     }
 
-    /// Replaces the champion's basic attack, which is `attack_damage` of physical
-    /// damage, with these parts. Include the physical part when the attack keeps
-    /// it, as Corki's, which adds bonus true damage to it. A critical strike
-    /// multiplies every part
-    pub fn basic_attack<const N: usize>(&mut self, parts: [(DamageType, Formula); N]) -> &mut Self {
-        self.inner.basic_attack = parts
-            .into_iter()
-            .map(|(damage_type, formula)| AttackPart {
-                damage_type,
-                damage: formula.rust(),
-            })
-            .collect();
-
+    /// Replaces the champion's basic attack, `f![AttackDamage * PhysicalMultiplier]`.
+    /// Its damage type is mixed, so `damage` multiplies each part by its own
+    /// multiplier, as Corki's bonus true damage by `TrueMultiplier`. A critical
+    /// strike multiplies the whole attack
+    pub fn basic_attack(&mut self, damage: Formula) -> &mut Self {
+        self.inner.basic_attack = Some(damage.rust());
         self
     }
 

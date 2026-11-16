@@ -418,6 +418,7 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
         .chain(match damage_type {
             DamageType::Physical => Some(CtxVar::PhysicalMultiplier),
             DamageType::Magic => Some(CtxVar::MagicMultiplier),
+            DamageType::True => Some(CtxVar::TrueMultiplier),
             _ => None,
         })
 }

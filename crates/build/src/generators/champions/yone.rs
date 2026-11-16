@@ -12,6 +12,9 @@ impl Generator for Yone {
             .edit(R(Void), mix)
             .damage_type(W(Void), Mixed)
             .damage_type(R(Void), Mixed)
+            // Soul Unbound's recast deals a share of the damage stored, `stacks`
+            .take("Damage Stored", E(Void))?
+            .comment(E(Void), "Soul Unbound recast, share of the damage stored")
             .combos([
                 &[
                     Ability(R(Void)),

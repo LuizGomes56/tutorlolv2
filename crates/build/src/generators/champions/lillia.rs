@@ -6,8 +6,12 @@ impl Generator for Lillia {
             .comment(P(Void), "Dream Dust total magic damage over 3 seconds")
             .map_change(P(Void), "Total base damage health ratio")?
             .take("Magic Damage", Q(Min))?
-            .take("Total Mixed Damage", Q(Max))?
             .damage_type(Q(Min), Magic)
+            // The outer edge adds the same amount as true damage
+            .derive(Q(Max), Q(Min), |q| {
+                f![(q) * MagicMultiplier + (q) * TrueMultiplier]
+            })?
+            .damage_type(Q(Max), Mixed)
             .take("Magic Damage", W(Min))?
             .take("Increased Damage", W(Max))?
             .take("Magic Damage", E(Void))?

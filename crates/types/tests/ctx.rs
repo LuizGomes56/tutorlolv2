@@ -5,7 +5,7 @@ use types::{
 
 #[test]
 fn ctx_fits_in_two_cache_lines() {
-    assert_eq!(size_of::<Ctx>(), 124);
+    assert_eq!(size_of::<Ctx>(), 136);
     // Output tables store these parts instead of a context per row
     assert_eq!(size_of::<CtxAttacker>(), 104);
     assert_eq!(size_of::<CtxTarget>(), 24);
@@ -26,8 +26,8 @@ fn flags_select_the_protections_and_the_adaptive_multiplier() {
     assert_eq!(ctx.randuin_effect(), 1.0);
     assert_eq!(ctx.rocksolid_effect(), Ctx::ROCKSOLID_PROTECTION);
     // Percent penetration is clamped to 100, so all the armor is ignored
-    assert_eq!(ctx.physical_multiplier(), 1.0);
-    assert_eq!(ctx.magic_multiplier(), 100.0 / 150.0);
+    assert_eq!(ctx.physical_resist(), 1.0);
+    assert_eq!(ctx.magic_resist(), 100.0 / 150.0);
     assert_eq!(ctx.adaptive_damage(), ctx.magic_multiplier());
     assert_eq!(ctx.life_steal(), 0.0);
 }
@@ -41,7 +41,7 @@ fn negative_resists_need_their_flag() {
             flags: CtxFlags::target(false, false, false, negatives),
             ..Default::default()
         }
-        .physical_multiplier()
+        .physical_resist()
     };
 
     assert_eq!(resist(false), 1.0);
@@ -78,6 +78,12 @@ fn attacker_and_target_parts_rebuild_the_context() {
         ..Default::default()
     };
     let rebuilt = Ctx::new(&ctx.attacker(), &ctx.target());
+
+    // Without a row's own multipliers, the resists alone
+    assert_eq!(rebuilt.physical_multiplier(), ctx.physical_resist());
+    assert_eq!(rebuilt.magic_multiplier(), ctx.magic_resist());
+
+    let rebuilt = rebuilt.with_multipliers(ctx.multipliers);
 
     assert_eq!(rebuilt, ctx);
     for var in CtxVar::iter() {
@@ -118,5 +124,6 @@ fn a_zeroed_context_has_no_map_changes() {
     let zeroed = unsafe { core::mem::zeroed::<Ctx>() };
 
     assert_eq!(zeroed.map, MapMode::Default);
-    assert_eq!(zeroed, Ctx::default());
+    // Multipliers are written with every row, see `DamageMultipliers`
+    assert_eq!(zeroed.with_multipliers(Default::default()), Ctx::default());
 }

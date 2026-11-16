@@ -11,13 +11,18 @@ impl Generator for KSante {
 
         let health = f![start / 100 + (high - low) / levels / 100 * (Level - 1)];
 
+        // All Out's bonus true damage at the end of the channel
+        let all_out = self.value("Maximum Bonus True Damage", Key::W)?;
+
         self.take_nth("Innate", 0, P(Void))?
             .damage_type(P(Void), Physical)
             .comment(P(Void), "Mark consumption bonus damage")
             .map_ratio(P(Void), mode, &[EnemyMaxHealth], health)?
             .take("Physical Damage", Q(Void))?
             .take("Physical Damage", W(Min))?
-            .take("Total Maximum Mixed Damage", W(Max))?
+            .derive(W(Max), W(Min), |w| {
+                f![(w) * PhysicalMultiplier + (all_out) * TrueMultiplier]
+            })?
             .damage_type(W(Max), Mixed)
             .take("Strike Physical Damage", R(Min))?
             .take("Total Physical Damage", R(Max))?

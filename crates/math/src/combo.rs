@@ -139,11 +139,12 @@ impl ChampionId {
             // Plasma: one per hit, up to 4. The rupture consumes them
             (ChampionId::Kaisa, Ability(AbilityId::P(AbilityName::_1))) => fight.stacks = 0.0,
             (ChampionId::Kaisa, _) if onhit => fight.stacks = (fight.stacks + 1.0).min(4.0),
-            // Death Mark stores the damage dealt until it pops. The whole combo
-            // before `R` is taken as inside the mark, so `R` pops with all of it,
-            // and nothing after it is stored
-            (ChampionId::Zed, Ability(AbilityId::R(_))) => fight.counter = 1,
-            (ChampionId::Zed, _) if fight.counter == 0 => fight.stacks += damage,
+            // Zed's Death Mark and Yone's Soul Unbound store the damage dealt until
+            // they pop. The whole combo before the popping ability is taken as
+            // stored, so it pops with all of it, and nothing after it is stored
+            (ChampionId::Zed, Ability(AbilityId::R(_)))
+            | (ChampionId::Yone, Ability(AbilityId::E(_))) => fight.counter = 1,
+            (ChampionId::Zed | ChampionId::Yone, _) if fight.counter == 0 => fight.stacks += damage,
             _ => {}
         }
     }
@@ -325,7 +326,7 @@ impl ComboSource<'_> {
         ctx: &Ctx,
         modifiers: &Modifiers,
     ) -> (f32, bool, bool, bool) {
-        let attack = || Attacks::raw(ctx, &modifiers.damages, self.data.basic_attack);
+        let attack = || (self.data.basic_attack)(ctx);
 
         match step {
             ComboStep::Attack => (attack(), true, true, true),
@@ -446,6 +447,8 @@ impl ComboSource<'_> {
             damages.true_mod *= shadowflame;
             damages.physical_mod *= armor_ratio;
 
+            // Parts of mixed values read them from the context
+            let ctx = ctx.with_multipliers(modifiers.damages.multipliers());
             let (mut damage, physical, onhit, is_attack) = self.step_damage(step, &ctx, &modifiers);
 
             if onhit {

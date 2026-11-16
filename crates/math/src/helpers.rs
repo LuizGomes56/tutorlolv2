@@ -1469,16 +1469,10 @@ impl Modifiers {
 
 impl Attacks {
     /// Evaluates the damage of basic attacks, onhit damages and critical strikes.
-    /// `parts` is the champion's basic attack, see [`Champion::basic_attack`]: when
-    /// empty, an attack deals `attack_damage` of physical damage. A critical strike
-    /// multiplies every part
-    pub fn new(
-        ctx: &Ctx,
-        mut onhit_damage: RangeDamage,
-        modifiers: &DamageModifiers,
-        parts: &[(DamageType, Closure)],
-    ) -> Self {
-        let basic_attack = Self::raw(ctx, modifiers, parts);
+    /// `basic_attack` is the champion's, see [`Champion::basic_attack`], and reads
+    /// the multipliers of `ctx`. A critical strike multiplies the whole attack
+    pub fn new(ctx: &Ctx, mut onhit_damage: RangeDamage, basic_attack: Closure) -> Self {
+        let basic_attack = basic_attack(ctx);
         let critical_strike = (basic_attack * ctx.crit_damage / 100.0) as i32;
         let basic_attack = basic_attack as i32;
 
@@ -1490,39 +1484,6 @@ impl Attacks {
             critical_strike,
             onhit_damage,
         }
-    }
-
-    /// Damage of one basic attack, before it is rounded. See [`Self::new`]
-    pub fn raw(ctx: &Ctx, modifiers: &DamageModifiers, parts: &[(DamageType, Closure)]) -> f32 {
-        match parts.len() {
-            0 => ctx.attack_damage * modifiers.physical_mod,
-            _ => {
-                core::hint::cold_path();
-                Self::sum_parts(ctx, modifiers, parts)
-            }
-        }
-    }
-
-    /// Damage of a basic attack made of `parts`, after the damage modifiers. The
-    /// global modifier is left out, as for the default attack
-    fn sum_parts(ctx: &Ctx, modifiers: &DamageModifiers, parts: &[(DamageType, Closure)]) -> f32 {
-        let mut sum = 0.0;
-        let mut i = 0;
-
-        while i < parts.len() {
-            let (damage_type, closure) = parts[i];
-            let modifier = match damage_type {
-                DamageType::Physical => modifiers.physical_mod,
-                DamageType::Magic => modifiers.magic_mod,
-                DamageType::True => modifiers.true_mod,
-                _ => 1.0,
-            };
-
-            sum += modifier * closure(ctx);
-            i += 1;
-        }
-
-        sum
     }
 }
 
@@ -1577,6 +1538,9 @@ impl DamageTable {
         modifiers: Modifiers,
         batch: Option<AbilityBatch>,
     ) -> DamagesMut<'_> {
+        // Parts of mixed values read the row's multipliers from the context
+        let ctx = ctx.with_multipliers(modifiers.damages.multipliers());
+
         self.set_ctx(r, &ctx);
 
         // excludes the reserved candidate pair
@@ -1618,7 +1582,7 @@ impl DamageTable {
             |rune_id| data.rune_stacks.get(rune_id),
         );
 
-        let a = Attacks::new(&ctx, onhit, &modifiers.damages, data.basic_attack);
+        let a = Attacks::new(&ctx, onhit, data.basic_attack);
 
         *row.attacks = [
             a.basic_attack,

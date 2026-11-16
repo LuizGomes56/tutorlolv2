@@ -15,8 +15,9 @@ impl Generator for Ahri {
             .take("Total Single-Target Damage", W(Max))?
             .take("Magic Damage", E(Void))?
             .take("Magic Damage", R(Min))?
-            .derive(Q(Max), Q(Min), |qmin| f![(qmin * MagicMultiplier) + qmin])?
+            .derive(Q(Max), Q(Min), |qmin| f![(qmin * MagicMultiplier) + (qmin * TrueMultiplier)])?
             .derive(R(Max), R(Min), |rmin| f![casts * (rmin)])?
+            .damage_type(Q(Min), Magic)
             .damage_type(Q(Max), Mixed)
             .combos([
                 &[Attack, Ability(E(Void)), Ability(Q(Max)), Ability(W(Max))],

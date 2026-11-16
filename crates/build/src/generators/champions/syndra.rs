@@ -9,7 +9,7 @@ impl Generator for Syndra {
 
         let bonus = self.damage(W(Void))?;
 
-        self.edit(W(Max), |w| f![w * MagicMultiplier + bonus])
+        self.edit(W(Max), |w| f![w * MagicMultiplier + bonus * TrueMultiplier])
             .take("Magic Damage", E(Void))?
             .take("Magic Damage per Sphere", R(Void))?
             .take("Maximum Magic Damage", R(Max))?

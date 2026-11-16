@@ -251,3 +251,16 @@ fn zed_death_mark_pops_with_the_damage_dealt_before_it() {
     // Nothing after the first `R` is stored
     assert_eq!(steps[3], steps[2]);
 }
+
+#[test]
+fn yone_soul_unbound_pops_with_the_damage_dealt_before_it() {
+    let input = game("Yone", &[]);
+    let e = ComboStep::Ability(AbilityId::E(AbilityName::Void));
+    let alone = realtime_with_combo(&input, &[e]).unwrap();
+    let out = realtime_with_combo(&input, &[ComboStep::Attack, ComboStep::Attack, e, e]).unwrap();
+    let steps = combo_of(&out).steps;
+
+    assert_eq!(combo_of(&alone).steps[0], 0);
+    assert!(steps[2] > 0);
+    assert_eq!(steps[3], steps[2]);
+}

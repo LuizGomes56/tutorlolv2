@@ -7,7 +7,7 @@ impl Generator for Corki {
         // combo never counts it apart from the attack
         let munitions = self.value("Innate", Key::P)?;
 
-        self.basic_attack([(Physical, f![AttackDamage]), (True, munitions)])
+        self.basic_attack(f![AttackDamage * PhysicalMultiplier + (munitions) * TrueMultiplier])
             .take("Magic Damage", Q(Void))?
             .take("Magic Damage Per Tick", W(Min))?
             .take("Total Magic Damage", W(Max))?

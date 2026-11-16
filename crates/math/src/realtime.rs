@@ -445,6 +445,7 @@ pub fn realtime_with_combo<'a>(
                 buffs.damages.true_mod *= shadowflame;
 
                 let modifiers = buffs.against(&target, state.adaptive_type);
+                let ctx = ctx.with_multipliers(modifiers.damages.multipliers());
                 let mut row = damages.fill_batch(
                     base_row + 1 + k,
                     ctx,

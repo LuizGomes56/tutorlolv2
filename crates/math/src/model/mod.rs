@@ -20,7 +20,7 @@ use {
     strum::EnumCount,
     types::{
         AbilityId, AbilityName, AdaptiveType, AttackSpeedRatio, Attrs, Ctx, CtxAttacker, CtxTarget,
-        DamageType, GameMap, Position, TypeMetadata,
+        DamageMultipliers, DamageType, GameMap, Position, TypeMetadata,
     },
 };
 
@@ -218,14 +218,14 @@ pub struct EnemyFullState {
 }
 
 #[cfg(feature = "engine")]
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
+#[derive(Clone, Debug)]
 pub struct DamageEvalData {
     pub abilities: StaticDamageKind<AbilityId>,
     pub items: DamageKind<ItemId>,
     pub runes: DamageKind<RuneId>,
     pub rune_stacks: RuneStacks,
     /// The champion's basic attack, see [`crate::libgen::Champion::basic_attack`]
-    pub basic_attack: &'static [(DamageType, Closure)],
+    pub basic_attack: Closure,
 }
 
 /// Stacks of each rune in [`RuneId::STACKED_IDS`]. Their formulas read
@@ -460,6 +460,8 @@ pub struct DamageTable {
     /// each part once keeps every value that differs between rows
     pub(crate) attackers: Box<[CtxAttacker]>,
     pub(crate) targets: Box<[CtxTarget]>,
+    /// Multipliers of each row, which depend on both parts, see [`DamageMultipliers`]
+    pub(crate) multipliers: Box<[DamageMultipliers]>,
 }
 
 /// View type over the `damages` each holds. One single allocation
@@ -722,6 +724,15 @@ pub struct DamageModifiers {
 }
 
 impl DamageModifiers {
+    /// Per-type multipliers that [`Ctx`] carries, see [`DamageMultipliers`]
+    pub const fn multipliers(&self) -> DamageMultipliers {
+        DamageMultipliers {
+            physical: self.physical_mod,
+            magic: self.magic_mod,
+            true_damage: self.true_mod,
+        }
+    }
+
     pub const fn modifier(&self, damage_type: DamageType) -> f32 {
         self.global_mod
             * match damage_type {
@@ -748,8 +759,8 @@ impl Modifiers {
         Self {
             damages: DamageModifiers {
                 adaptive_type,
-                physical_mod: ctx.physical_multiplier(),
-                magic_mod: ctx.magic_multiplier(),
+                physical_mod: ctx.physical_resist(),
+                magic_mod: ctx.magic_resist(),
                 true_mod: 1.0,
                 global_mod: 1.0,
             },

@@ -1522,7 +1522,7 @@ fn corki_basic_attacks_add_bonus_true_damage() {
     let damage = output.enemy_damages(0);
     let ad = damage.ctx.attack_damage;
     // Hextech Munitions is 20% AD of true damage, which no resistance reduces
-    let expected = ad * damage.ctx.physical_multiplier() + 0.2 * ad;
+    let expected = ad * damage.ctx.physical_multiplier() + 0.2 * ad * damage.ctx.true_multiplier();
 
     assert_eq!(damage.attacks.basic_attack, expected as i32);
     assert_eq!(
@@ -1541,7 +1541,6 @@ fn champions_without_an_attack_override_deal_physical_attack_damage() {
     let output = calculator(game(&[], &[], &enemies));
     let damage = output.enemy_damages(0);
 
-    assert!(ChampionId::Gnar.data().basic_attack.is_empty());
     assert_eq!(
         damage.attacks.basic_attack,
         (damage.ctx.attack_damage * damage.ctx.physical_multiplier()) as i32

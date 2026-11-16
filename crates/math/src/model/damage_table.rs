@@ -12,6 +12,7 @@ pub struct DamageTableMut<'a> {
     values: &'a mut [i32],
     attackers: &'a mut [CtxAttacker],
     targets: &'a mut [CtxTarget],
+    multipliers: &'a mut [DamageMultipliers],
 }
 
 impl<'a> DamageTableMut<'a> {
@@ -26,6 +27,7 @@ impl<'a> DamageTableMut<'a> {
         values: &'a mut [i32],
         attackers: &'a mut [CtxAttacker],
         targets: &'a mut [CtxTarget],
+        multipliers: &'a mut [DamageMultipliers],
     ) -> Self {
         assert!(!attackers.is_empty(), "at least one attacker is required");
 
@@ -39,12 +41,14 @@ impl<'a> DamageTableMut<'a> {
             .expect("damage values length overflow");
 
         assert!(values.len() == len, "damage values do not match the layout");
+        assert!(multipliers.len() == rows, "one set of multipliers per row");
 
         Self {
             layout,
             values,
             attackers,
             targets,
+            multipliers,
         }
     }
 
@@ -61,14 +65,20 @@ impl<'a> DamageTableMut<'a> {
 
     /// Context the row was evaluated with
     pub const fn ctx(&self, r: usize) -> Ctx {
-        Self::read_ctx(self.attackers, self.targets, r)
+        Self::read_ctx(self.attackers, self.targets, self.multipliers, r)
     }
 
-    const fn read_ctx(attackers: &[CtxAttacker], targets: &[CtxTarget], r: usize) -> Ctx {
+    const fn read_ctx(
+        attackers: &[CtxAttacker],
+        targets: &[CtxTarget],
+        multipliers: &[DamageMultipliers],
+        r: usize,
+    ) -> Ctx {
         Ctx::new(
             &attackers[r % attackers.len()],
             &targets[r / attackers.len()],
         )
+        .with_multipliers(multipliers[r])
     }
 
     /// Stores the parts of the context of a row. Rows must be filled with the
@@ -85,6 +95,9 @@ impl<'a> DamageTableMut<'a> {
         if attacker == 0 {
             self.targets[target] = ctx.target();
         }
+
+        // They depend on both the attacker and the target, so each row has its own
+        self.multipliers[r] = ctx.multipliers;
     }
 
     pub const fn layout(&self) -> DamageLayout {
@@ -126,6 +139,7 @@ impl<'a> DamageTableMut<'a> {
             values: self.values,
             attackers: self.attackers,
             targets: self.targets,
+            multipliers: self.multipliers,
         }
         .into_row_mut(r)
     }
@@ -171,6 +185,7 @@ impl DamageTable {
             values: unsafe { Box::new_zeroed_slice(rows * layout.stride()).assume_init() },
             attackers: unsafe { Box::new_zeroed_slice(rows_per_target).assume_init() },
             targets: unsafe { Box::new_zeroed_slice(targets).assume_init() },
+            multipliers: alloc::vec![DamageMultipliers::ONE; rows].into_boxed_slice(),
         }
     }
 
@@ -181,6 +196,7 @@ impl DamageTable {
             values: &mut self.values,
             attackers: &mut self.attackers,
             targets: &mut self.targets,
+            multipliers: &mut self.multipliers,
         }
     }
 
@@ -194,7 +210,7 @@ impl DamageTable {
 
     /// Context the row was evaluated with.
     pub const fn ctx(&self, r: usize) -> Ctx {
-        DamageTableMut::read_ctx(&self.attackers, &self.targets, r)
+        DamageTableMut::read_ctx(&self.attackers, &self.targets, &self.multipliers, r)
     }
 
     /// Stores the parts shared by a row, checking that previously stored parts
@@ -270,7 +286,14 @@ mod tests {
         // All fields in the context parts are numeric and accept zero.
         let mut attackers: [CtxAttacker; 2] = unsafe { core::mem::zeroed() };
         let mut targets: [CtxTarget; 2] = unsafe { core::mem::zeroed() };
-        let mut table = DamageTableMut::new(layout, &mut values, &mut attackers, &mut targets);
+        let mut multipliers = [DamageMultipliers::ONE; 4];
+        let mut table = DamageTableMut::new(
+            layout,
+            &mut values,
+            &mut attackers,
+            &mut targets,
+            &mut multipliers,
+        );
         let mut ctx: Ctx = unsafe { core::mem::zeroed() };
         ctx.attack_damage = 100.0;
         ctx.enemy_armor = 30.0;

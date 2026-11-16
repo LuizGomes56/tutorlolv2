@@ -70,10 +70,11 @@ pub struct Champion {
     #[cfg(feature = "engine")]
     pub closures: &'static [Closure],
 
-    /// Parts of a basic attack, for champions whose attack is not `attack_damage` of
-    /// physical damage, as Corki's bonus true damage. Empty for every other champion
+    /// Damage of a basic attack after the per-type multipliers of [`types::Ctx`],
+    /// but not the global one. [`crate::libgen::basic_attack`] unless the champion
+    /// declares its own, as Corki's bonus true damage
     #[cfg(feature = "engine")]
-    pub basic_attack: &'static [(types::DamageType, Closure)],
+    pub basic_attack: Closure,
 
     #[cfg(feature = "engine")]
     pub ability_batch: AbilityBatch,

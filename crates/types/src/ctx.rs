@@ -133,6 +133,9 @@ macro_rules! create_eval_struct {
             pub struct Ctx {
                 $(pub $attacker: f32,)*
                 $(pub $target: f32,)*
+                /// Every per-type multiplier of the row, resists included, see
+                /// [`DamageMultipliers`]
+                pub multipliers: DamageMultipliers,
                 /// Stored as integers, read as `f32` through methods such as
                 /// [`Ctx::q_level`]. Last, so that it adds no padding
                 pub ability_levels: AbilityLevels,
@@ -193,15 +196,26 @@ macro_rules! create_eval_struct {
 
             impl Ctx {
                 /// Joins the parts of an attacker and a target
+                /// The multipliers are those of the resists alone, see
+                /// [`Self::with_multipliers`] for a row's own
                 pub const fn new(attacker: &CtxAttacker, target: &CtxTarget) -> Self {
-                    Self {
+                    let mut ctx = Self {
                         $($attacker: attacker.$attacker,)*
                         $($target: target.$target,)*
+                        multipliers: DamageMultipliers::ONE,
                         ability_levels: attacker.ability_levels,
                         flags: attacker.flags.union(target.flags),
                         map: attacker.map,
                         bonus_attack_speed_ratio: attacker.bonus_attack_speed_ratio,
-                    }
+                    };
+
+                    ctx.multipliers = DamageMultipliers {
+                        physical: ctx.physical_resist(),
+                        magic: ctx.magic_resist(),
+                        true_damage: 1.0,
+                    };
+
+                    ctx
                 }
 
                 pub const fn attacker(&self) -> CtxAttacker {
@@ -287,8 +301,34 @@ create_eval_struct!(
         unknown,
         w_level,
         bonus_attack_speed_ratio,
+        true_multiplier,
     }
 );
+
+/// Multiplier of each damage type on one row of a table, everything but the
+/// global multiplier and the ability ones: resists, items, runes and the enemy's
+/// reductions. Formulas of [`DamageType::Mixed`] values multiply each part by
+/// its own, since a single multiplier can't fit them
+#[derive(Clone, Copy, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+pub struct DamageMultipliers {
+    pub physical: f32,
+    pub magic: f32,
+    pub true_damage: f32,
+}
+
+impl DamageMultipliers {
+    pub const ONE: Self = Self {
+        physical: 1.0,
+        magic: 1.0,
+        true_damage: 1.0,
+    };
+}
+
+impl Default for DamageMultipliers {
+    fn default() -> Self {
+        Self::ONE
+    }
+}
 
 /// Booleans and the adaptive type behind the multipliers of [`Ctx`], packed
 /// so that the context fits in two cache lines
@@ -436,9 +476,32 @@ impl Ctx {
         self.select(CtxFlags::ROCKSOLID, Self::ROCKSOLID_PROTECTION)
     }
 
-    /// Multiplier of physical damage after the enemy's armor. Penetration is
-    /// clamped as in the shred the enemy's resists were computed with
+    /// Every multiplier of physical damage on this row: the enemy's armor, items,
+    /// runes and the enemy's damage reductions. Parts of a [`DamageType::Mixed`]
+    /// value multiply by it, see [`DamageMultipliers`]
     pub const fn physical_multiplier(&self) -> f32 {
+        self.multipliers.physical
+    }
+
+    /// Every multiplier of magic damage on this row, see [`Self::physical_multiplier`]
+    pub const fn magic_multiplier(&self) -> f32 {
+        self.multipliers.magic
+    }
+
+    /// Every multiplier of true damage on this row, see [`Self::physical_multiplier`]
+    pub const fn true_multiplier(&self) -> f32 {
+        self.multipliers.true_damage
+    }
+
+    /// This context with the multipliers of a row
+    pub const fn with_multipliers(mut self, multipliers: DamageMultipliers) -> Self {
+        self.multipliers = multipliers;
+        self
+    }
+
+    /// Multiplier of physical damage after the enemy's armor alone. Penetration
+    /// is clamped as in the shred the enemy's resists were computed with
+    pub const fn physical_resist(&self) -> f32 {
         ResistValue::new(
             self.armor_penetration_percent.clamp(0.0, 100.0),
             self.armor_penetration_flat,
@@ -448,8 +511,8 @@ impl Ctx {
         .modifier
     }
 
-    /// Multiplier of magic damage after the enemy's magic resist
-    pub const fn magic_multiplier(&self) -> f32 {
+    /// Multiplier of magic damage after the enemy's magic resist alone
+    pub const fn magic_resist(&self) -> f32 {
         ResistValue::new(
             self.magic_penetration_percent.clamp(0.0, 100.0),
             self.magic_penetration_flat,

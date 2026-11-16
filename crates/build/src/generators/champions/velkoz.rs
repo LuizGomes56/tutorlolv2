@@ -9,6 +9,10 @@ impl Generator for Velkoz {
             .take("Magic Damage", E(Void))?
             .take("Damage Per Tick", R(Min))?
             .take("Maximum Damage", R(Max))?
+            // The ray deals true damage to Researched targets only, which a table
+            // can't know, so it is magic damage as on any other target
+            .damage_type(R(Min), Magic)
+            .damage_type(R(Max), Magic)
             .combos([
                 &[
                     Ability(Q(Void)),

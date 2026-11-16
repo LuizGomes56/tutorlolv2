@@ -39,6 +39,7 @@ const CTX: Ctx = Ctx {
     enemy_current_health: 2600.0,
     enemy_magic_resist: 95.0,
     enemy_max_health: 3500.0,
+    multipliers: math::DamageMultipliers::ONE,
     ability_levels: AbilityLevels {
         q: 5,
         w: 5,
