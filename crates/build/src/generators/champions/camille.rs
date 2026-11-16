@@ -11,10 +11,34 @@ impl Generator for Camille {
 
         let outer_cone = self.value("Outer Cone Bonus Damage", Key::W)?;
 
+        // Recast: "40 to 100 for 16 of the attack's total damage" is dealt as true
+        // damage, growing evenly by level until level 16, and kept from there to 18.
+        // Without the levels after the cap, the table would become a growth that
+        // passes 100%
+        let [low, high, cap] = self.description(Key::Q, "Recast")?.capture(regex!(
+            r"(\d+) to (\d+) for (\d+) of the attack's total damage"
+        ))?;
+
+        let cap = cap as u8;
+        let step = (high - low) / f64::from(cap - 1);
+        let true_share = Formula::Table {
+            var: Level,
+            keys: (1..=wiki::monsters::MAX_LEVEL).collect(),
+            values: (0..wiki::monsters::MAX_LEVEL)
+                .map(|i| (low + step * f64::from(i.min(cap - 1))) / 100.0)
+                .collect(),
+        };
+
         self.take("Bonus Physical Damage", Q(Min))?
             .take("Increased Mixed Damage", Q(Max))?
             .damage_type(Q(Min), Physical)
             .damage_type(Q(Max), Mixed)
+            // The doubled bonus rides on a basic attack, whose total is then split
+            .edit(Q(Max), |q| {
+                let total = f![AttackDamage + (q)];
+                f![(total) * (1 - (true_share)) * PhysicalMultiplier
+                    + (total) * (true_share) * TrueMultiplier]
+            })
             .take("Physical Damage", W(Min))?
             .derive(W(Max), W(Min), |w| f![w + outer_cone])?
             .comment(W(Max), "Outer cone damage")

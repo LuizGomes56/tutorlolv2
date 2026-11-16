@@ -355,7 +355,7 @@ async fn calculate(
 ) -> Result<Game, String> {
     cx.background_spawn(async move {
         let frame = chunk.frame(frame).ok_or("Missing replay frame")?;
-        Game::from_frame(&frame).map_err(|error| error.to_string())
+        Game::from_frame(&frame, &[], false).map_err(|error| error.to_string())
     })
     .await
 }

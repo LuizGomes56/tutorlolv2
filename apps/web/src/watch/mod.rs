@@ -243,9 +243,10 @@ fn Viewer(props: &ViewerProps) -> Html {
                                 );
                             }
 
-                            let game = crate::utils::transport::realtime_from(&frame.frame)
-                                .await
-                                .map_err(|e| e.to_string())?;
+                            let game =
+                                crate::utils::transport::realtime_from(&frame.frame, &[], false)
+                                    .await
+                                    .map_err(|e| e.to_string())?;
 
                             seq = frame.seq;
                             Ok(Some(game))

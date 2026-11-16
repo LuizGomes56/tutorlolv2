@@ -83,7 +83,7 @@ pub fn poll<T: 'static>(
                     idle = false;
 
                     let result = cx
-                        .background_spawn(async move { Game::from_json(&bytes) })
+                        .background_spawn(async move { Game::from_json(&bytes, &[], false) })
                         .await;
 
                     let alive = this
@@ -134,7 +134,7 @@ fn demo_game() -> Result<Game, game::Error> {
     let (frame, _): (math::riot::RiotRealtime<'_>, _) =
         bincode::borrow_decode_from_slice(bytes, crate::backend::BINCODE_CONFIG)?;
 
-    Game::from_frame(&frame)
+    Game::from_frame(&frame, &[], false)
 }
 
 impl Render for Livegame {

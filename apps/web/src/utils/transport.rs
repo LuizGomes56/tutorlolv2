@@ -2,9 +2,12 @@
 #[cfg(any(test, not(all(feature = "tauri", feature = "local-calculation"))))]
 use super::BINCODE_CONFIG;
 use math::{
-    model::{InputGame, OutputGame},
+    model::{ComboStep, InputGame, OutputGame},
     riot::RiotRealtime,
 };
+
+#[cfg(not(feature = "local-calculation"))]
+use math::riot::RealtimeRequest;
 
 #[cfg(not(feature = "local-calculation"))]
 use crate::utils::api::WebClient;
@@ -54,9 +57,14 @@ pub async fn calculator(input: InputGame<'_>) -> Result<OutputGame, Error> {
     }
 }
 
+/// Calculates a viewer frame with `combo` evaluated on every row, and with simulated
+/// purchases consuming their owned components if `consume_components`, see
+/// [`RealtimeRequest`]
 pub async fn realtime(
     #[cfg(not(feature = "tauri"))] bytes: &[u8],
     #[cfg(feature = "tauri")] bytes: web_sys::js_sys::Uint8Array,
+    combo: &[ComboStep],
+    consume_components: bool,
 ) -> Result<crate::livegame::Game, Error> {
     #[cfg(feature = "local-calculation")]
     {
@@ -68,7 +76,8 @@ pub async fn realtime(
         let bytes = buffer.as_slice();
 
         let input = decode_realtime_input(bytes)?;
-        let output = math::realtime::realtime(&input).map_err(|error| error.to_string())?;
+        let output = math::realtime::realtime_with_combo(&input, combo, consume_components)
+            .map_err(|error| error.to_string())?;
 
         Ok(output.into())
     }
@@ -80,10 +89,14 @@ pub async fn realtime(
 
         #[cfg(feature = "tauri")]
         let bytes = buffer.as_slice();
-        let input = decode_realtime_input(bytes)?;
+        let request = RealtimeRequest {
+            frame: decode_realtime_input(bytes)?,
+            combo: combo.into(),
+            consume_components,
+        };
 
         let response = WebClient::public()
-            .send::<::api::Realtime>(&NoPath, &NoQuery, &NoHeaders, &input, None)
+            .send::<::api::Realtime>(&NoPath, &NoQuery, &NoHeaders, &request, None)
             .await?;
 
         let output = response.decode()?;
@@ -92,19 +105,33 @@ pub async fn realtime(
     }
 }
 
-/// Calculate an already decoded viewer frame without serializing it locally.
-pub async fn realtime_from(input: &RiotRealtime<'_>) -> Result<crate::livegame::Game, Error> {
+/// Calculate an already decoded viewer frame without serializing it locally, see
+/// [`realtime`] for `combo` and `consume_components`
+pub async fn realtime_from(
+    input: &RiotRealtime<'_>,
+    combo: &[ComboStep],
+    consume_components: bool,
+) -> Result<crate::livegame::Game, Error> {
     #[cfg(feature = "local-calculation")]
     {
-        Ok(math::realtime::realtime(input)
-            .map_err(|e| format!("Unable to calculate frame: {e:?}"))?
-            .into())
+        Ok(
+            math::realtime::realtime_with_combo(input, combo, consume_components)
+                .map_err(|e| format!("Unable to calculate frame: {e:?}"))?
+                .into(),
+        )
     }
 
     #[cfg(not(feature = "local-calculation"))]
     {
+        // The request owns its frame, which the caller keeps for later frames
+        let request = RealtimeRequest {
+            frame: input.clone(),
+            combo: combo.into(),
+            consume_components,
+        };
+
         let response = WebClient::public()
-            .send::<::api::Realtime>(&NoPath, &NoQuery, &NoHeaders, input, None)
+            .send::<::api::Realtime>(&NoPath, &NoQuery, &NoHeaders, &request, None)
             .await?;
 
         let output = response.decode()?;

@@ -26,5 +26,5 @@ pub async fn get_desktop_data() -> Result<Game, Box<dyn core::error::Error>> {
     #[cfg(not(feature = "tauri"))]
     let bytes = include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/example.bincode")).as_slice();
 
-    transport::realtime(bytes).await
+    transport::realtime(bytes, &[], false).await
 }

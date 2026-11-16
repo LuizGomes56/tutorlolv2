@@ -1546,3 +1546,31 @@ fn champions_without_an_attack_override_deal_physical_attack_damage() {
         (damage.ctx.attack_damage * damage.ctx.physical_multiplier()) as i32
     );
 }
+
+#[test]
+fn camille_q_recast_splits_the_whole_attack_into_true_damage_by_level() {
+    use math::libgen::champions::camille::camille_qmax;
+
+    let ctx = |level: f32| types::Ctx {
+        attack_damage: 100.0,
+        level,
+        ability_levels: types::AbilityLevels {
+            q: 1,
+            ..Default::default()
+        },
+        multipliers: types::DamageMultipliers {
+            physical: 0.5,
+            magic: 1.0,
+            true_damage: 1.0,
+        },
+        ..Default::default()
+    };
+    // The attack and its doubled bonus, 100 + 40% AD
+    let total = 140.0;
+
+    close(camille_qmax(&ctx(1.0)), total * (0.6 * 0.5 + 0.4));
+    close(camille_qmax(&ctx(10.0)), total * (0.24 * 0.5 + 0.76));
+    // Capped at level 16
+    close(camille_qmax(&ctx(16.0)), total);
+    close(camille_qmax(&ctx(18.0)), total);
+}

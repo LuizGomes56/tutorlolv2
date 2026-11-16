@@ -15,17 +15,6 @@ pub const fn generator_directory(tag: Tag) -> &'static str {
 }
 
 pub trait RegExtractor: Display {
-    /// Returns a vector of all the numbers that could be extracted
-    /// from some string, preserving the order that they were found
-    fn capture_numbers(&self) -> Vec<f64> {
-        let text = self.to_string();
-
-        regex!(r"\d+(?:\.\d+)?")
-            .find_iter(&text)
-            .filter_map(|m| m.as_str().parse().ok())
-            .collect()
-    }
-
     /// Numbers matched by the `N` capture groups of `pattern`, in order. Fails
     /// when the text no longer matches, so a wiki change can't go unnoticed
     /// `pattern` is usually built with [`regex!`](lazy_regex::regex), which checks

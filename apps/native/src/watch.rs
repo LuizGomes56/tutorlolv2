@@ -409,7 +409,7 @@ async fn live_frame(
             return Err("The live stream returned an old frame. Retry to reconnect.".into());
         }
 
-        let game = Game::from_frame(&frame.frame).map_err(|e| e.to_string())?;
+        let game = Game::from_frame(&frame.frame, &[], false).map_err(|e| e.to_string())?;
         Ok(Some((frame.seq, game)))
     })
     .await

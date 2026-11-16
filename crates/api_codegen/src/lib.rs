@@ -206,6 +206,7 @@ fn valid_type(ty: &Type, locals: &BTreeSet<String>) -> Result<()> {
         "math::model::OutputGame",
         "math::model::Realtime<'wire>",
         "math::riot::RiotRealtime<'wire>",
+        "math::riot::RealtimeRequest<'wire>",
         "math::riot::FrameChunk<'wire>",
     ]
     .contains(&rendered.as_str())

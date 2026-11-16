@@ -172,6 +172,21 @@ pub struct RiotRealtimeEvents<'a> {
 }
 
 /// Struct holding all the useful information provided in Riot's API
+/// A realtime frame with the combo of the viewer, see
+/// [`crate::realtime::realtime_with_combo`]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Deserialize, Serialize)]
+pub struct RealtimeRequest<'a> {
+    #[serde(borrow)]
+    pub frame: RiotRealtime<'a>,
+    /// Steps of the combo, before expansion. May be empty
+    #[serde(default)]
+    pub combo: Box<[ComboStep]>,
+    /// F4: a simulated purchase consumes the owned items it builds from, see
+    /// [`crate::ItemId::consume_components`]
+    #[serde(default)]
+    pub consume_components: bool,
+}
+
 #[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[derive(Serialize)]

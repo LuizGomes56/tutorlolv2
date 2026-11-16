@@ -5,6 +5,14 @@ use server::server::endpoint::EndpointExt;
 use server::server::{codec::OCTET_STREAM, games::*};
 use std::num::NonZeroU8;
 
+fn request(combo: &[ComboStep]) -> RealtimeRequest<'static> {
+    RealtimeRequest {
+        frame: live_game(),
+        combo: combo.into(),
+        consume_components: false,
+    }
+}
+
 fn live_game() -> RiotRealtime<'static> {
     let scores = RiotScoreboard {
         kills: 0,
@@ -110,7 +118,7 @@ async fn realtime_accepts_bincode_and_returns_borrowable_output() {
         ),
     )
     .await;
-    let bytes = bincode::encode_to_vec(live_game(), types::BINCODE_CONFIG).unwrap();
+    let bytes = bincode::encode_to_vec(request(&[]), types::BINCODE_CONFIG).unwrap();
     let response = test::call_service(
         &app,
         test::TestRequest::post()
@@ -131,6 +139,40 @@ async fn realtime_accepts_bincode_and_returns_borrowable_output() {
 }
 
 #[actix_web::test]
+async fn realtime_evaluates_the_requested_combo() {
+    let app = test::init_service(
+        App::new().service(
+            RealtimeEndpoint::resource("/api/games")
+                .route(RealtimeEndpoint::route().to(realtime_handler)),
+        ),
+    )
+    .await;
+    let combo = [ComboStep::Attack, ComboStep::Attack];
+    let bytes = bincode::encode_to_vec(request(&combo), types::BINCODE_CONFIG).unwrap();
+    let response = test::call_service(
+        &app,
+        test::TestRequest::post()
+            .uri("/realtime")
+            .set_payload(bytes)
+            .to_request(),
+    )
+    .await;
+    assert_eq!(response.status(), StatusCode::OK);
+    let body = test::read_body(response).await;
+    let output = protocol::ApiResponse::<Realtime<'_>>::borrow_decode(&body, 200)
+        .unwrap()
+        .result
+        .unwrap();
+    assert_eq!(&*output.combo, &combo);
+    let row = output
+        .damages
+        .combo(0)
+        .expect("the enemy row has combo columns");
+    assert_eq!(row.steps.len(), combo.len());
+    assert!(row.total > 0);
+}
+
+#[actix_web::test]
 async fn malformed_and_trailing_bytes_return_bad_request_for_both_endpoints() {
     let app = test::init_service(
         App::new()
@@ -146,7 +188,7 @@ async fn malformed_and_trailing_bytes_return_bad_request_for_both_endpoints() {
     .await;
     let mut calc = bincode::encode_to_vec(InputGame::default(), types::BINCODE_CONFIG).unwrap();
     calc.push(0);
-    let mut live = bincode::encode_to_vec(live_game(), types::BINCODE_CONFIG).unwrap();
+    let mut live = bincode::encode_to_vec(request(&[]), types::BINCODE_CONFIG).unwrap();
     live.push(0);
     for (path, bytes) in [
         ("/calculator", vec![255]),

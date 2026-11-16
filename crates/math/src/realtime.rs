@@ -19,9 +19,7 @@ use {
         riot::*,
     },
     alloc::boxed::Box,
-    bincode::{BorrowDecode, Encode},
     core::{num::NonZeroU8, str::FromStr},
-    serde::{Deserialize, Serialize},
     strum::{EnumCount, VariantArray},
     types::{AdaptiveType, AttackType, GameMap, Position},
 };
@@ -94,20 +92,6 @@ impl core::error::Error for RealtimeError<'_> {}
 /// struct [`RiotRealtime`] and call this function
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeError<'a>> {
     realtime_with_combo(game, &[], false)
-}
-
-/// A realtime frame with the combo of the viewer, see [`realtime_with_combo`]
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Deserialize, Serialize)]
-pub struct RealtimeRequest<'a> {
-    #[serde(borrow)]
-    pub frame: RiotRealtime<'a>,
-    /// Steps of the combo, before expansion. May be empty
-    #[serde(default)]
-    pub combo: Box<[ComboStep]>,
-    /// F4: a simulated purchase consumes the owned items it builds from, see
-    /// [`ItemId::consume_components`]
-    #[serde(default)]
-    pub consume_components: bool,
 }
 
 impl RealtimeRequest<'_> {

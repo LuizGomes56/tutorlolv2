@@ -468,7 +468,7 @@ impl Endpoint for Realtime {
     type Path = NoPath;
     type Query = NoQuery;
     type Headers = NoHeaders;
-    type Body<'a> = math::riot::RiotRealtime<'a>;
+    type Body<'a> = math::riot::RealtimeRequest<'a>;
     type Output<'a> = math::model::Realtime<'a>;
     const METHOD: Method = Method::POST;
     const PATH: &'static str = "/api/games/realtime";

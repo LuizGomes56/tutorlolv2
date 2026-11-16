@@ -7,7 +7,8 @@ use gpui::SharedString;
 use math::{
     AdaptiveType, ChampionId, ItemId, Position, RuneId, TypeMetadata,
     model::{
-        AbilityLevels, BasicStats, DamageTable, Damages, Dragons, EnemyStats, PlayerStats, Team,
+        AbilityLevels, BasicStats, ComboStep, DamageTable, Damages, Dragons, EnemyStats,
+        PlayerStats, Team,
     },
     riot::RiotRealtime,
 };
@@ -76,17 +77,28 @@ impl Game {
         list
     }
 
-    /// Calculates the Riot JSON of port 2999, as the recorder keeps it.
-    pub fn from_json(bytes: &[u8]) -> Result<Self, Error> {
+    /// Calculates the Riot JSON of port 2999, as the recorder keeps it, see
+    /// [`Self::from_frame`]
+    pub fn from_json(
+        bytes: &[u8],
+        combo: &[ComboStep],
+        consume_components: bool,
+    ) -> Result<Self, Error> {
         let input: RiotRealtime<'_> = serde_json::from_slice(bytes)?;
-        Self::from_frame(&input)
+        Self::from_frame(&input, combo, consume_components)
     }
 
-    /// Calculates an already decoded frame (replays).
-    pub fn from_frame(input: &RiotRealtime<'_>) -> Result<Self, Error> {
+    /// Calculates an already decoded frame (replays), with `combo` evaluated on every
+    /// row, and with simulated purchases consuming their owned components if
+    /// `consume_components`, see [`math::riot::RealtimeRequest`]
+    pub fn from_frame(
+        input: &RiotRealtime<'_>,
+        combo: &[ComboStep],
+        consume_components: bool,
+    ) -> Result<Self, Error> {
         #[cfg(feature = "local-calculation")]
         {
-            let output = math::realtime::realtime(input)
+            let output = math::realtime::realtime_with_combo(input, combo, consume_components)
                 .map_err(|error| format!("Unable to calculate frame: {error}"))?;
 
             Ok(output.into())
@@ -94,7 +106,13 @@ impl Game {
 
         #[cfg(all(not(feature = "local-calculation"), feature = "api"))]
         {
-            let response = crate::api::send::<::api::Realtime>(input)?;
+            // The request owns its frame, which the caller keeps for later frames
+            let request = math::riot::RealtimeRequest {
+                frame: input.clone(),
+                combo: combo.into(),
+                consume_components,
+            };
+            let response = crate::api::send::<::api::Realtime>(&request)?;
             Ok(response.decode()?.into())
         }
     }

@@ -117,7 +117,7 @@ pub fn use_replay_controller(
                             continue;
                         };
 
-                        match crate::utils::transport::realtime_from(frame).await {
+                        match crate::utils::transport::realtime_from(frame, &[], false).await {
                             Ok(value) if running.get() => {
                                 game.set(Some(Rc::new(value)));
                                 message.set(String::new());
