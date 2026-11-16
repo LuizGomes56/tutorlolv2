@@ -255,6 +255,9 @@ pub struct Item {
     /// then ranged. Serialized, since the build reads the generator's output
     #[serde(default, skip_serializing_if = "super::no_map_damages")]
     pub map_damages: [Vec<(MapMode, String)>; 4],
+    /// Damage caps against monsters, read from the wiki but not applied yet
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub monster_caps: Vec<super::monster_caps::MonsterCap>,
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -338,6 +341,7 @@ impl TryFrom<WikiItem> for Item {
             attributes: Attrs::NONE,
             constants: Default::default(),
             map_damages: Default::default(),
+            monster_caps: super::monster_caps::MonsterCap::from_item(&data.effects),
             data,
         })
     }

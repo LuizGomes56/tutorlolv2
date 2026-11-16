@@ -4,7 +4,10 @@ use build::generators::parser::monster_caps::{
 };
 use std::collections::BTreeMap;
 use types::{CtxVar, DamageType, Key};
-use wiki::wikitext::{AbilityModel, ChampionModel, EffectModel, Formula, Sample};
+use wiki::{
+    items::item_parser::{ItemEffect, ItemEffects},
+    wikitext::{AbilityModel, ChampionModel, EffectModel, Formula, Sample},
+};
 
 fn effect(label: &str, formula: Formula) -> EffectModel {
     EffectModel {
@@ -171,6 +174,98 @@ fn effects_labelled_as_caps_are_kept_with_their_formula() {
                 CapBound::Min,
                 CapPart::PerHit,
                 CapMonsters::NonEpic
+            ),
+        ]
+    );
+}
+
+#[test]
+fn a_cap_continues_with_the_value_for_other_monsters() {
+    let stacks = |values: Vec<f64>| Formula::Table {
+        var: CtxVar::Stacks,
+        keys: vec![1, 2, 3],
+        values,
+    };
+    let caps = caps(
+        "This damage is capped at50/4 to (50/4)*3 per tick against non-epic monsters and \
+         80/4 to (80/4)*3 per tick against epic monsters. It deals 40% against minions and \
+         50% against monsters.",
+        vec![],
+        vec![
+            effect("Innate", stacks(vec![12.5, 25.0, 37.5])),
+            effect("Innate", stacks(vec![20.0, 40.0, 60.0])),
+        ],
+    );
+
+    let found: Vec<_> = caps
+        .iter()
+        .map(|cap| (cap.bound, cap.part, cap.monsters, cap.formula.clone()))
+        .collect();
+    assert_eq!(
+        found,
+        [
+            (
+                CapBound::Max,
+                CapPart::PerTick,
+                CapMonsters::NonEpic,
+                Some(stacks(vec![12.5, 25.0, 37.5]))
+            ),
+            (
+                CapBound::Max,
+                CapPart::PerTick,
+                CapMonsters::Epic,
+                Some(stacks(vec![20.0, 40.0, 60.0]))
+            ),
+        ]
+    );
+}
+
+#[test]
+fn items_read_their_caps_from_the_wikitext_of_each_effect() {
+    let effect = |name: &str, raw: &str| {
+        Some(ItemEffect {
+            name: Some(name.into()),
+            raw_description: Some(raw.into()),
+            ..Default::default()
+        })
+    };
+    let caps = MonsterCap::from_item(&ItemEffects {
+        pass: effect(
+            "Torment",
+            "Burns enemies{{ft|, capped at 20 per tick against monsters.|, capped at 120 \
+             against {{tip|monsters}}.}}",
+        ),
+        pass2: effect(
+            "Mist's Edge",
+            "Deals damage, with a '''maximum''' of 100 against {{tip|minions}} and {{tip|monsters}}.",
+        ),
+        ..Default::default()
+    });
+
+    let found: Vec<_> = caps
+        .iter()
+        .map(|cap| (cap.key, cap.ability.as_str(), cap.part, cap.formula.clone()))
+        .collect();
+    assert_eq!(
+        found,
+        [
+            (
+                None,
+                "Torment",
+                CapPart::PerTick,
+                Some(Formula::Const(20.0))
+            ),
+            (
+                None,
+                "Torment",
+                CapPart::Damage,
+                Some(Formula::Const(120.0))
+            ),
+            (
+                None,
+                "Mist's Edge",
+                CapPart::Damage,
+                Some(Formula::Const(100.0))
             ),
         ]
     );
