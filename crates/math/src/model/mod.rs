@@ -1120,6 +1120,17 @@ impl RiotFormulas {
         a + b - (a * b * 0.01)
     }
 
+    /// Inverse of [`Self::combine_percentage`]: the percentage that combined with
+    /// `part` gives `total`
+    pub const fn uncombine_percentage(total: f32, part: f32) -> f32 {
+        let part = part.clamp(0.0, 100.0);
+
+        match part >= 100.0 {
+            true => 0.0,
+            false => ((total - part) / (1.0 - part * 0.01)).clamp(0.0, 100.0),
+        }
+    }
+
     /// Returns the real resistence value in a struct [`ResistValue`], taking into account
     /// if it can go below zero or not. If `accept_negatives` is set to `false`, then the
     /// `real` field will be clamped to `0.0`, and the modifier will be set to `1.0`, meaning

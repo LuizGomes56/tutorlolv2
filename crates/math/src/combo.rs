@@ -100,7 +100,15 @@ pub struct ComboTarget<'a> {
     /// The item simulated on the row, owned while it is evaluated: its listed
     /// steps deal damage, and Guinsoo's Rageblade and Black Cleaver apply
     pub candidate: Option<ItemId>,
+    /// Owned items the candidate consumed, which no longer deal damage
+    pub consumed: &'a [ItemId],
 }
+
+/// The row's candidate damage and the items it consumed, see [`ComboTarget`]
+type Extras<'a> = (
+    Option<(TypeMetadata<ItemId>, &'a [Closure; 2])>,
+    &'a [ItemId],
+);
 
 /// State of the fight that steps change, see [`ChampionId::after_step`]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -273,12 +281,13 @@ impl ComboSource<'_> {
         modifier * closures[0](ctx).max(closures[1](ctx))
     }
 
-    /// Damage of every owned effect whose attributes pass `filter`
+    /// Damage of every owned effect whose attributes pass `filter`, but the
+    /// `consumed` items
     fn sum_entries(
         &self,
         ctx: &Ctx,
         modifiers: &Modifiers,
-        extra_item: Option<(TypeMetadata<ItemId>, &[Closure; 2])>,
+        (extra_item, consumed): Extras,
         filter: impl Fn(Attrs) -> bool,
     ) -> f32 {
         let DamageEvalData {
@@ -291,7 +300,7 @@ impl ComboSource<'_> {
         let mut sum = 0.0;
 
         for (metadata, closures) in items.metadata.iter().zip(items.closures.as_chunks::<2>().0) {
-            if filter(metadata.attributes) {
+            if filter(metadata.attributes) && !consumed.contains(&metadata.kind) {
                 sum += Self::entry_damage(ctx, modifiers, metadata.damage_type, closures);
             }
         }
@@ -333,7 +342,7 @@ impl ComboSource<'_> {
         step: ComboStep,
         ctx: &Ctx,
         modifiers: &Modifiers,
-        extra_item: Option<(TypeMetadata<ItemId>, &[Closure; 2])>,
+        extras: Extras,
     ) -> (f32, bool, bool, bool) {
         let attack = || (self.data.basic_attack)(ctx);
 
@@ -343,7 +352,7 @@ impl ComboSource<'_> {
             // The implied attack deals the every-hit part
             ComboStep::OnhitMin => (0.0, false, false, false),
             ComboStep::OnhitMax => {
-                let procs = self.sum_entries(ctx, modifiers, extra_item, |attributes| {
+                let procs = self.sum_entries(ctx, modifiers, extras, |attributes| {
                     attributes.onhit_max() && !attributes.onhit_min()
                 });
 
@@ -415,6 +424,7 @@ impl ComboSource<'_> {
             shadowflame_items,
             extra_item,
             candidate,
+            consumed,
         } = target;
 
         debug_assert_eq!(out.len(), steps.len() + ComboRow::SUMMARY);
@@ -423,8 +433,11 @@ impl ComboSource<'_> {
         // starting health, so each step applies the ratio to them
         let start_runes = state.rune_damage_modifier(self.owned_runes);
         let start_shadowflame = state.shadowflame_modifier(shadowflame_items);
+        let owns = |item_id| {
+            (self.owned_items.contains(&item_id) && !consumed.contains(&item_id))
+                || candidate == Some(item_id)
+        };
 
-        let owns = |item_id| self.owned_items.contains(&item_id) || candidate == Some(item_id);
         let guinsoo = owns(ItemId::GuinsoosRageblade);
         let cleaver = owns(ItemId::BlackCleaver);
         let base_armor = state.armor_values.modifier;
@@ -463,11 +476,13 @@ impl ComboSource<'_> {
             let (mut damage, physical, onhit, is_attack) = match step {
                 // A candidate listed in the combo, on another row
                 ComboStep::Item(item_id) if !owns(item_id) => (0.0, false, false, false),
-                _ => self.step_damage(step, &ctx, &modifiers, extra_item),
+                _ => self.step_damage(step, &ctx, &modifiers, (extra_item, consumed)),
             };
 
             if onhit {
-                let every_hit = self.sum_entries(&ctx, &modifiers, extra_item, Attrs::onhit_min);
+                let every_hit =
+                    self.sum_entries(&ctx, &modifiers, (extra_item, consumed), Attrs::onhit_min);
+
                 let seething_strike =
                     guinsoo && is_attack && (attacks + 1).is_multiple_of(SEETHING_STRIKE_ATTACKS);
 

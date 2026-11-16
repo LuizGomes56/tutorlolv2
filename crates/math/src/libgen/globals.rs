@@ -177,8 +177,9 @@ pub struct Item {
     #[cfg(feature = "client-data")]
     pub identifiers: &'static [CtxVar],
 
-    #[cfg(any(feature = "yew", feature = "formula-docs"))]
+    #[cfg(any(feature = "engine", feature = "yew", feature = "formula-docs"))]
     /// Immediate recipe components, preserving quantities as repeated entries.
+    /// The engine reads it to consume components, see [`ItemId::consume_components`]
     pub builds_from: &'static [ItemId],
 
     #[cfg(any(feature = "yew", feature = "formula-docs"))]

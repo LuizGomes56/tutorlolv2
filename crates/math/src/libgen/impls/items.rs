@@ -266,9 +266,35 @@ impl ItemId {
         self.data().maps
     }
 
-    #[cfg(any(feature = "yew", feature = "formula-docs"))]
+    #[cfg(any(feature = "engine", feature = "yew", feature = "formula-docs"))]
     pub const fn builds_from(&self) -> &'static [Self] {
         self.data().builds_from
+    }
+
+    /// The owned items that buying this one consumes, taken out of `owned`. Each
+    /// component consumes one owned copy, or else its own components, recursively:
+    /// with `[200, 210, 250]` owned, buying `300` built from `200 + 210` leaves
+    /// `[250]` and returns `[200, 210]`
+    #[cfg(feature = "engine")]
+    pub fn consume_components(&self, owned: &mut alloc::vec::Vec<Self>) -> alloc::vec::Vec<Self> {
+        let mut consumed = alloc::vec::Vec::new();
+
+        self.consume_into(owned, &mut consumed);
+        consumed
+    }
+
+    #[cfg(feature = "engine")]
+    fn consume_into(
+        &self,
+        owned: &mut alloc::vec::Vec<Self>,
+        consumed: &mut alloc::vec::Vec<Self>,
+    ) {
+        for component in self.builds_from() {
+            match owned.iter().position(|item| item == component) {
+                Some(i) => consumed.push(owned.remove(i)),
+                None => component.consume_into(owned, consumed),
+            }
+        }
     }
 
     #[cfg(any(feature = "yew", feature = "formula-docs"))]

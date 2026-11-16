@@ -93,7 +93,7 @@ impl core::error::Error for RealtimeError<'_> {}
 /// If feature `livegame` or `serde` are not enabled, it is your job to get a
 /// struct [`RiotRealtime`] and call this function
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeError<'a>> {
-    realtime_with_combo(game, &[])
+    realtime_with_combo(game, &[], false)
 }
 
 /// A realtime frame with the combo of the viewer, see [`realtime_with_combo`]
@@ -104,20 +104,27 @@ pub struct RealtimeRequest<'a> {
     /// Steps of the combo, before expansion. May be empty
     #[serde(default)]
     pub combo: Box<[ComboStep]>,
+    /// F4: a simulated purchase consumes the owned items it builds from, see
+    /// [`ItemId::consume_components`]
+    #[serde(default)]
+    pub consume_components: bool,
 }
 
 impl RealtimeRequest<'_> {
     pub fn eval(&self) -> Result<Realtime<'_>, RealtimeError<'_>> {
-        realtime_with_combo(&self.frame, &self.combo)
+        realtime_with_combo(&self.frame, &self.combo, self.consume_components)
     }
 }
 
 /// Same as [`realtime`], and evaluates `combo` on every row of the table, see
 /// [`crate::combo`]. The expanded steps are in [`Realtime::combo`] and each row's
-/// results in [`DamageTable::combo`]
+/// results in [`DamageTable::combo`]. With `consume_components`, each simulated
+/// purchase consumes the owned items it builds from: their stats, passives and
+/// damage are gone from its rows, see [`ItemId::consume_components`]
 pub fn realtime_with_combo<'a>(
     game: &'a RiotRealtime,
     combo: &[ComboStep],
+    consume_components: bool,
 ) -> Result<Realtime<'a>, RealtimeError<'a>> {
     let RiotRealtime {
         active_player:
@@ -245,9 +252,26 @@ pub fn realtime_with_combo<'a>(
     // Prepare attacker-side inputs once; target defenses and contexts remain per enemy.
     let simulated_candidates: [_; ItemId::L_SIML] = core::array::from_fn(|i| {
         let candidate = ItemId::SIML[i];
+
+        // Items kept after the purchase, only allocated when something is consumed
+        let mut kept = ::alloc::vec::Vec::new();
+        let consumed = match consume_components {
+            true => {
+                kept.extend_from_slice(&owned_items);
+                candidate.consume_components(&mut kept)
+            }
+            false => ::alloc::vec::Vec::new(),
+        };
+
+        let owned: &[ItemId] = match consumed.is_empty() {
+            true => &owned_items,
+            false => &kept,
+        };
+
         let state = self_state.simulated_purchase_with_multipliers(
             candidate,
-            &owned_items,
+            owned,
+            &consumed,
             current_player_champion_id,
             fire,
             earth,
@@ -257,9 +281,9 @@ pub fn realtime_with_combo<'a>(
         let shred = ResistShred::new(&state.current_stats);
         let mut buffs = Modifiers::default();
 
-        buffs.apply_loadout(&owned_items, &owned_runes, &state.current_stats);
+        buffs.apply_loadout(owned, &owned_runes, &state.current_stats);
 
-        if !owned_items.contains(&candidate) {
+        if !owned.contains(&candidate) {
             buffs.apply_item(candidate);
         }
 
@@ -276,7 +300,12 @@ pub fn realtime_with_combo<'a>(
                 None
             };
 
-        (state, shred, buffs, extra_item)
+        let kept = match consumed.is_empty() {
+            true => ::alloc::vec::Vec::new(),
+            false => kept,
+        };
+
+        (state, shred, buffs, extra_item, kept, consumed)
     });
 
     let eval_data = DamageEvalData {
@@ -421,13 +450,21 @@ pub fn realtime_with_combo<'a>(
                             shadowflame_items: &owned_items,
                             extra_item: None,
                             candidate: None,
+                            consumed: &[],
                         },
                         row.combo,
                     );
                 }
             }
 
-            for (k, (state, shred, buffs, extra_item)) in simulated_candidates.iter().enumerate() {
+            for (k, (state, shred, buffs, extra_item, kept, consumed)) in
+                simulated_candidates.iter().enumerate()
+            {
+                let owned: &[ItemId] = match consumed.is_empty() {
+                    true => &owned_items,
+                    false => kept,
+                };
+
                 let target = full_state.with_shred(*shred, false);
                 let ctx = state.ctx(&target, game_map);
                 let mut buffs = *buffs;
@@ -437,7 +474,7 @@ pub fn realtime_with_combo<'a>(
                 // The candidate counts as owned while it is being simulated
                 let shadowflame_items: &[ItemId] = match ItemId::SIML[k] {
                     ItemId::Shadowflame => &[ItemId::Shadowflame],
-                    _ => &owned_items,
+                    _ => owned,
                 };
 
                 let shadowflame = target.shadowflame_modifier(shadowflame_items);
@@ -470,8 +507,18 @@ pub fn realtime_with_combo<'a>(
                     row.inc_onhit(metadata.attributes, b);
                 }
 
-                // Only the candidate's every-hit damage reaches the combo, since
-                // a combo can't list an item that isn't owned
+                // Consumed components deal no damage on this row
+                for (j, metadata) in eval_data.items.metadata.iter().enumerate() {
+                    if consumed.contains(&metadata.kind) {
+                        core::hint::cold_path();
+
+                        for slot in j << 1..(j << 1) + 2 {
+                            let damage = core::mem::take(&mut row.items[slot]);
+                            row.inc_onhit(metadata.attributes, -damage);
+                        }
+                    }
+                }
+
                 if !combo.is_empty() {
                     combo_source.eval(
                         &combo,
@@ -483,6 +530,7 @@ pub fn realtime_with_combo<'a>(
                             shadowflame_items,
                             extra_item: *extra_item,
                             candidate: Some(ItemId::SIML[k]),
+                            consumed,
                         },
                         row.combo,
                     );

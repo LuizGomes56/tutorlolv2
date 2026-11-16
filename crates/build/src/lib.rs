@@ -29,6 +29,9 @@ pub const ENGINE_CFG: &str = r#"#[cfg(feature = "engine")]"#;
 pub const CLIENT_CFG: &str = r#"#[cfg(feature = "client-data")]"#;
 /// Data that the formula docs need, with or without yew.
 pub const DOCS_CFG: &str = r#"#[cfg(any(feature = "yew", feature = "formula-docs"))]"#;
+/// Data the engine reads, that the documentation shows as well
+pub const ENGINE_OR_DOCS_CFG: &str =
+    r#"#[cfg(any(feature = "engine", feature = "yew", feature = "formula-docs"))]"#;
 pub const FORMULA_DOCS_ENV: &str = "CARGO_FEATURE_FORMULA_DOCS";
 
 pub struct BuildOutput {

@@ -100,7 +100,7 @@ fn listed_procs_imply_one_attack_per_group() {
         .map(|metadata| ComboStep::Ability(metadata.kind))
         .unwrap();
     let lich = ComboStep::Item(ItemId::LichBane);
-    let out = realtime_with_combo(
+    let out = with_combo(
         &input,
         &[q, lich, ComboStep::OnhitMin, ComboStep::OnhitMin, q],
     )
@@ -124,7 +124,7 @@ fn listed_procs_imply_one_attack_per_group() {
 fn attacks_subtract_health_and_report_the_kill() {
     let input = game("Gnar", &[]);
     let combo = [ComboStep::Attack; 40];
-    let out = realtime_with_combo(&input, &combo).unwrap();
+    let out = with_combo(&input, &combo).unwrap();
     let row = combo_of(&out);
     let start = out.enemies[0].current_stats.current_health as i32;
     let attack = out.enemy_damages(0).attacks.basic_attack;
@@ -147,8 +147,8 @@ fn every_hit_items_apply_on_each_attack() {
     let nashor = game("Gnar", &[ItemId::NashorsTooth]);
     let combo = [ComboStep::Attack];
 
-    let plain = realtime_with_combo(&plain, &combo).unwrap();
-    let nashor = realtime_with_combo(&nashor, &combo).unwrap();
+    let plain = with_combo(&plain, &combo).unwrap();
+    let nashor = with_combo(&nashor, &combo).unwrap();
     let item = nashor.enemy_damages(0).items[0];
 
     assert!(item > 0);
@@ -158,7 +158,7 @@ fn every_hit_items_apply_on_each_attack() {
 #[test]
 fn ruined_king_deals_less_as_the_target_loses_health() {
     let input = game("Gnar", &[ItemId::BladeOfTheRuinedKing]);
-    let out = realtime_with_combo(&input, &[ComboStep::Attack; 10]).unwrap();
+    let out = with_combo(&input, &[ComboStep::Attack; 10]).unwrap();
     let row = combo_of(&out);
 
     assert!(row.steps.windows(2).all(|pair| pair[1] <= pair[0]));
@@ -169,7 +169,7 @@ fn ruined_king_deals_less_as_the_target_loses_health() {
 fn hecarim_rampage_stacks_grow_per_cast() {
     let input = game("Hecarim", &[]);
     let q = ComboStep::Ability(AbilityId::Q(AbilityName::Void));
-    let out = realtime_with_combo(&input, &[q, q, q, q]).unwrap();
+    let out = with_combo(&input, &[q, q, q, q]).unwrap();
     let steps = combo_of(&out).steps;
 
     // The table evaluates Q with no stacks, as the first cast
@@ -182,7 +182,7 @@ fn hecarim_rampage_stacks_grow_per_cast() {
 #[test]
 fn black_cleaver_raises_later_physical_damage() {
     let input = game("Gnar", &[ItemId::BlackCleaver]);
-    let out = realtime_with_combo(&input, &[ComboStep::Crit; 7]).unwrap();
+    let out = with_combo(&input, &[ComboStep::Crit; 7]).unwrap();
     let steps = combo_of(&out).steps;
 
     // Five stacks of Carve, then no more
@@ -193,7 +193,7 @@ fn black_cleaver_raises_later_physical_damage() {
 #[test]
 fn invalid_combos_are_rejected() {
     let input = game("Gnar", &[ItemId::NashorsTooth]);
-    let error = |combo: &[ComboStep]| match realtime_with_combo(&input, combo) {
+    let error = |combo: &[ComboStep]| match with_combo(&input, combo) {
         Err(RealtimeError::Combo(error)) => error,
         other => panic!("expected a combo error, got {other:?}"),
     };
@@ -215,7 +215,7 @@ fn invalid_combos_are_rejected() {
         .expect("a damaging item that is not a candidate");
 
     assert_eq!(error(&[not_candidate]), ComboError::NotOwned(not_candidate));
-    assert!(realtime_with_combo(&input, &[lich]).is_ok());
+    assert!(with_combo(&input, &[lich]).is_ok());
     assert_eq!(error(&[nashor]), ComboError::EveryHitListed(nashor));
     assert_eq!(
         error(&[ComboStep::Ability(unknown)]),
@@ -230,7 +230,7 @@ fn invalid_combos_are_rejected() {
 #[test]
 fn candidate_rows_have_combo_columns() {
     let input = game("Gnar", &[]);
-    let out = realtime_with_combo(&input, &[ComboStep::Attack]).unwrap();
+    let out = with_combo(&input, &[ComboStep::Attack]).unwrap();
     let nashor = ItemId::SIML
         .iter()
         .position(|&item| item == ItemId::NashorsTooth)
@@ -252,12 +252,12 @@ fn zed_death_mark_pops_with_the_damage_dealt_before_it() {
         .position(|metadata| metadata.kind == AbilityId::R(AbilityName::Void))
         .unwrap();
 
-    let alone = realtime_with_combo(&input, &[r]).unwrap();
+    let alone = with_combo(&input, &[r]).unwrap();
     let table_r = alone.enemy_damages(0).abilities[r_index];
 
     assert!((combo_of(&alone).steps[0] - table_r).abs() <= 1);
 
-    let out = realtime_with_combo(&input, &[ComboStep::Attack, ComboStep::Attack, r, r]).unwrap();
+    let out = with_combo(&input, &[ComboStep::Attack, ComboStep::Attack, r, r]).unwrap();
     let steps = combo_of(&out).steps;
 
     assert!(steps[2] > table_r);
@@ -269,8 +269,8 @@ fn zed_death_mark_pops_with_the_damage_dealt_before_it() {
 fn yone_soul_unbound_pops_with_the_damage_dealt_before_it() {
     let input = game("Yone", &[]);
     let e = ComboStep::Ability(AbilityId::E(AbilityName::Void));
-    let alone = realtime_with_combo(&input, &[e]).unwrap();
-    let out = realtime_with_combo(&input, &[ComboStep::Attack, ComboStep::Attack, e, e]).unwrap();
+    let alone = with_combo(&input, &[e]).unwrap();
+    let out = with_combo(&input, &[ComboStep::Attack, ComboStep::Attack, e, e]).unwrap();
     let steps = combo_of(&out).steps;
 
     assert_eq!(combo_of(&alone).steps[0], 0);
@@ -288,7 +288,7 @@ fn siml(item: ItemId) -> usize {
 #[test]
 fn candidates_are_ranked_by_combo_damage() {
     let input = game("Gnar", &[]);
-    let out = realtime_with_combo(&input, &[ComboStep::Attack; 5]).unwrap();
+    let out = with_combo(&input, &[ComboStep::Attack; 5]).unwrap();
     let ranking = out.combo_ranking(0);
     let total = |k: u16| out.siml_combo(0, k as usize).unwrap().total;
 
@@ -305,7 +305,7 @@ fn candidates_are_ranked_by_combo_damage() {
 fn a_listed_candidate_deals_damage_on_its_own_row_only() {
     let input = game("Gnar", &[]);
     let lich = ComboStep::Item(ItemId::LichBane);
-    let out = realtime_with_combo(&input, &[lich]).unwrap();
+    let out = with_combo(&input, &[lich]).unwrap();
 
     // The proc implies an attack: `[Attack, Lich Bane]`
     assert_eq!(&*out.combo, &[ComboStep::Attack, lich]);
@@ -320,10 +320,73 @@ fn a_listed_candidate_deals_damage_on_its_own_row_only() {
 #[test]
 fn a_black_cleaver_candidate_carves_on_its_row() {
     let input = game("Gnar", &[]);
-    let out = realtime_with_combo(&input, &[ComboStep::Crit; 7]).unwrap();
+    let out = with_combo(&input, &[ComboStep::Crit; 7]).unwrap();
     let steps = out.siml_combo(0, siml(ItemId::BlackCleaver)).unwrap().steps;
     let plain = combo_of(&out).steps;
 
     assert!(steps[5] > steps[0]);
     assert_eq!(plain[5], plain[0]);
+}
+
+fn with_combo<'a>(
+    input: &'a RiotRealtime<'a>,
+    combo: &[ComboStep],
+) -> Result<Realtime<'a>, RealtimeError<'a>> {
+    realtime_with_combo(input, combo, false)
+}
+
+#[test]
+fn a_purchase_consumes_owned_components_recursively() {
+    // Owning the components of a component consumes them in its place
+    let (item, component) = <ItemId as strum::VariantArray>::VARIANTS
+        .iter()
+        .find_map(|&item| {
+            item.builds_from()
+                .iter()
+                .find(|component| !component.builds_from().is_empty())
+                .map(|&component| (item, component))
+        })
+        .expect("an item with a two-level recipe");
+
+    let mut owned = component.builds_from().to_vec();
+    owned.push(ItemId::LichBane);
+
+    let consumed = item.consume_components(&mut owned);
+
+    assert_eq!(owned, [ItemId::LichBane]);
+    assert_eq!(consumed, component.builds_from());
+
+    // A component owned as itself is consumed whole
+    let mut owned = vec![ItemId::NeedlesslyLargeRod, ItemId::NeedlesslyLargeRod];
+    let consumed = ItemId::RabadonsDeathcap.consume_components(&mut owned);
+
+    assert!(owned.is_empty());
+    assert_eq!(consumed, [ItemId::NeedlesslyLargeRod; 2]);
+}
+
+#[test]
+fn consuming_components_removes_their_stats_from_the_purchase() {
+    // A candidate built from a component that has stats of its own
+    let (k, component) = ItemId::SIML
+        .iter()
+        .enumerate()
+        .find_map(|(k, item)| {
+            item.builds_from()
+                .iter()
+                .find(|component| !component.stats().is_empty())
+                .map(|&component| (k, component))
+        })
+        .expect("a candidate with a component");
+
+    let input = game("Gnar", &[component]);
+    let stats = |consume| {
+        let ctx = realtime_with_combo(&input, &[ComboStep::Attack], consume)
+            .unwrap()
+            .siml_damages(0, k)
+            .ctx;
+
+        ctx.ability_power + ctx.attack_damage + ctx.max_health + ctx.armor + ctx.magic_resist
+    };
+
+    assert!(stats(true) < stats(false), "{:?}", ItemId::SIML[k]);
 }

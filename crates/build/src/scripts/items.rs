@@ -1,5 +1,5 @@
 use crate::{
-    Build, BuildContext, BuildOutput, CLIENT_CFG, DOCS_CFG, MayFail,
+    Build, BuildContext, BuildOutput, CLIENT_CFG, DOCS_CFG, ENGINE_OR_DOCS_CFG, MayFail,
     generators::parser::{items::Item, map_changes},
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
@@ -65,7 +65,7 @@ impl Build for Item {
                 {CLIENT_CFG}
                 identifiers: {identifiers},
 
-                {DOCS_CFG}
+                {ENGINE_OR_DOCS_CFG}
                 builds_from: {builds_from},
 
                 {DOCS_CFG}

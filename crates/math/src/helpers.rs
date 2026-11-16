@@ -602,11 +602,75 @@ impl PlayerStats {
         earth: f32,
         game_map: GameMap,
     ) -> Self {
+        self.with_purchase_stats(item, &[], fire, earth, game_map)
+    }
+
+    /// Stats after buying `item`, without those of the owned items it `consumed`,
+    /// see [`ItemId::consume_components`]
+    pub(crate) const fn with_purchase_stats(
+        &self,
+        item: ItemId,
+        consumed: &[ItemId],
+        fire: f32,
+        earth: f32,
+        game_map: GameMap,
+    ) -> Self {
         let mut added = PlayerStats::default();
 
         // A simulated purchase keeps the observed movement speed
         added.get_item_bonus_stats(&[item], &mut Modifiers::default(), &mut 0.0, game_map);
 
+        let this = match consumed.len() {
+            0 => *self,
+            _ => {
+                core::hint::cold_path();
+                self.without_items(consumed, fire, earth, game_map)
+            }
+        };
+
+        this.with_added(added, fire, earth)
+    }
+
+    /// Removes the stats of owned `items`. Percent penetration combines
+    /// multiplicatively, so it is undone with the inverse
+    const fn without_items(
+        &self,
+        items: &[ItemId],
+        fire: f32,
+        earth: f32,
+        game_map: GameMap,
+    ) -> Self {
+        let mut removed = PlayerStats::default();
+
+        removed.get_item_bonus_stats(items, &mut Modifiers::default(), &mut 0.0, game_map);
+
+        Self {
+            ability_power: self.ability_power - removed.ability_power * fire,
+            attack_damage: self.attack_damage - removed.attack_damage * fire,
+            armor: self.armor - removed.armor * earth,
+            magic_resist: self.magic_resist - removed.magic_resist * earth,
+            max_health: self.max_health - removed.max_health,
+            current_health: self.current_health - removed.max_health,
+            max_mana: self.max_mana - removed.max_mana,
+            current_mana: self.current_mana - removed.max_mana,
+            attack_speed: self.attack_speed - removed.attack_speed,
+            crit_chance: (self.crit_chance - removed.crit_chance).max(0.0),
+            crit_damage: self.crit_damage - removed.crit_damage,
+            armor_penetration_flat: self.armor_penetration_flat - removed.armor_penetration_flat,
+            magic_penetration_flat: self.magic_penetration_flat - removed.magic_penetration_flat,
+            armor_penetration_percent: RiotFormulas::uncombine_percentage(
+                self.armor_penetration_percent,
+                removed.armor_penetration_percent,
+            ),
+            magic_penetration_percent: RiotFormulas::uncombine_percentage(
+                self.magic_penetration_percent,
+                removed.magic_penetration_percent,
+            ),
+            ..*self
+        }
+    }
+
+    const fn with_added(&self, added: PlayerStats, fire: f32, earth: f32) -> Self {
         Self {
             ability_power: self.ability_power + added.ability_power * fire,
             attack_damage: self.attack_damage + added.attack_damage * fire,
@@ -1063,6 +1127,7 @@ impl SelfState {
         self.simulated_purchase_with_multipliers(
             item,
             owned,
+            &[],
             champion,
             RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons),
             RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons),
@@ -1071,17 +1136,22 @@ impl SelfState {
     }
 
     /// Prepare a purchase using dragon multipliers shared by all candidates.
+    /// `owned` are the items kept after the purchase, and `consumed` the owned
+    /// components it used up, whose stats are removed, see
+    /// [`ItemId::consume_components`]
+    #[allow(clippy::too_many_arguments)]
     pub(crate) const fn simulated_purchase_with_multipliers(
         &self,
         item: ItemId,
         owned: &[ItemId],
+        consumed: &[ItemId],
         champion: ChampionId,
         fire: f32,
         earth: f32,
         game_map: GameMap,
     ) -> Self {
         let current = self.current_stats;
-        let mut stats = current.with_item_stats_with_multipliers(item, fire, earth, game_map);
+        let mut stats = current.with_purchase_stats(item, consumed, fire, earth, game_map);
         let data = champion.data();
 
         // Item attack speed is a percent bonus, while live attack_speed is attacks/sec.
