@@ -26,7 +26,13 @@ impl Generator for Zoe {
 
         self.map_base(W(Max), mode, per_bolt.times(bolt_count))?
             .take("Magic Damage", E(Min))?
-            .derive(E(Max), E(Min), |dmg| f![((dmg) * MagicMultiplier) + dmg])?
+            // Through terrain, it adds bonus true damage equal to the post-mitigation
+            // damage, capped at the bubble's damage. The cap only binds when the
+            // magic multiplier exceeds 1, which formulas can't branch on, so it's left out
+            .derive(E(Max), E(Min), |dmg| {
+                f![(dmg) * MagicMultiplier + (dmg) * MagicMultiplier * TrueMultiplier]
+            })?
+            .damage_type(E(Max), Mixed)
             .combos([
                 &[Ability(E(Max)), Ability(Q(Min)), Ability(Q(Min))],
                 &[Ability(Q(Min)), Ability(Q(Min)), Attack],

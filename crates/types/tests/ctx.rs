@@ -5,16 +5,16 @@ use types::{
 
 #[test]
 fn ctx_fits_in_two_cache_lines() {
-    assert_eq!(size_of::<Ctx>(), 136);
+    assert_eq!(size_of::<Ctx>(), 128);
     // Output tables store these parts instead of a context per row
-    assert_eq!(size_of::<CtxAttacker>(), 104);
+    assert_eq!(size_of::<CtxAttacker>(), 96);
     assert_eq!(size_of::<CtxTarget>(), 24);
 }
 
 #[test]
 fn flags_select_the_protections_and_the_adaptive_multiplier() {
     let ctx = Ctx {
-        armor_penetration_percent: 150.0,
+        armor_penetration_percent: types::Percent::new(150.0),
         enemy_armor: 100.0,
         enemy_magic_resist: 50.0,
         flags: CtxFlags::target(true, false, true, false)

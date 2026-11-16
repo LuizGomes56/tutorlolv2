@@ -330,7 +330,7 @@ impl ComboSource<'_> {
 
         match step {
             ComboStep::Attack => (attack(), true, true, true),
-            ComboStep::Crit => (attack() * ctx.crit_damage / 100.0, true, true, true),
+            ComboStep::Crit => (attack() * ctx.crit_damage() / 100.0, true, true, true),
             // The implied attack deals the every-hit part
             ComboStep::OnhitMin => (0.0, false, false, false),
             ComboStep::OnhitMax => {

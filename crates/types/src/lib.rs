@@ -11,6 +11,7 @@ mod attack_speed_ratio;
 mod ctx;
 mod damage;
 mod entity;
+mod fixed;
 mod game;
 mod metadata;
 mod stats;
@@ -19,7 +20,8 @@ mod stats;
 pub mod yew;
 
 pub use {
-    ability::*, attack_speed_ratio::*, ctx::*, damage::*, entity::*, game::*, metadata::*, stats::*,
+    ability::*, attack_speed_ratio::*, ctx::*, damage::*, entity::*, fixed::*, game::*,
+    metadata::*, stats::*,
 };
 
 use bincode::{Decode, Encode};

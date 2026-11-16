@@ -486,7 +486,7 @@ fn simulated_penetration_changes_resistance_multipliers() {
         100.0
             / (100.0
                 + enemy.current_stats.magic_resist
-                    * (1.0 - magic_sim.magic_penetration_percent / 100.0)),
+                    * (1.0 - magic_sim.magic_penetration_percent() / 100.0)),
     );
 }
 
@@ -1527,7 +1527,7 @@ fn corki_basic_attacks_add_bonus_true_damage() {
     assert_eq!(damage.attacks.basic_attack, expected as i32);
     assert_eq!(
         damage.attacks.critical_strike,
-        (expected * damage.ctx.crit_damage / 100.0) as i32
+        (expected * damage.ctx.crit_damage() / 100.0) as i32
     );
 }
 

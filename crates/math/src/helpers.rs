@@ -1029,17 +1029,17 @@ impl SelfState {
             base_magic_resist,
             base_mana,
             armor_penetration_flat,
-            armor_penetration_percent,
+            armor_penetration_percent: types::Percent::new(armor_penetration_percent),
             magic_penetration_flat,
-            magic_penetration_percent,
+            magic_penetration_percent: types::Percent::new(magic_penetration_percent),
             max_mana,
             current_mana,
             max_health,
             current_health,
             armor,
             magic_resist,
-            crit_chance,
-            crit_damage,
+            crit_chance: types::Percent::new(crit_chance),
+            crit_damage: types::CritDamage::new(crit_damage),
             attack_speed,
             ability_power,
             attack_damage,
@@ -1473,7 +1473,7 @@ impl Attacks {
     /// the multipliers of `ctx`. A critical strike multiplies the whole attack
     pub fn new(ctx: &Ctx, mut onhit_damage: RangeDamage, basic_attack: Closure) -> Self {
         let basic_attack = basic_attack(ctx);
-        let critical_strike = (basic_attack * ctx.crit_damage / 100.0) as i32;
+        let critical_strike = (basic_attack * ctx.crit_damage() / 100.0) as i32;
         let basic_attack = basic_attack as i32;
 
         onhit_damage.minimum_damage += basic_attack;

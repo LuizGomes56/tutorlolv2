@@ -16,7 +16,7 @@ fn compiled_numeric_progression_interpolates_fractional_inputs_and_caps() {
         let ctx = Ctx {
             base_ad: 100.0,
             attack_damage: 100.0,
-            crit_chance,
+            crit_chance: math::Percent::new(crit_chance),
             ..Default::default()
         };
         close(
@@ -57,7 +57,7 @@ fn shield_bash_uses_the_triggering_shield_as_auxiliary_input() {
 #[test]
 fn compiled_lethal_tempo_scales_with_the_compact_percentage_input() {
     use types::AttackSpeedRatio;
-    assert_eq!(size_of::<Ctx>(), 136);
+    assert_eq!(size_of::<Ctx>(), 128);
     for (ratio, melee, ranged) in [
         (0.0, 30.0, 20.01),
         (0.75, 52.5, 35.0175),

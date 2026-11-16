@@ -16,6 +16,7 @@ use super::*;
 macro_rules! create_eval_struct {
     (
         attacker { $($attacker:ident),*$(,)? }
+        compact { $($compact:ident: $compact_ty:ty),*$(,)? }
         target { $($target:ident),*$(,)? }
         methods { $($method:ident),*$(,)? }
     ) => {
@@ -53,6 +54,10 @@ macro_rules! create_eval_struct {
                     [<$attacker:camel>],
                 )*
                 $(
+                    #[strum(serialize = "" $compact, serialize = "" [<$compact:camel>])]
+                    [<$compact:camel>],
+                )*
+                $(
                     #[strum(serialize = "" $target, serialize = "" [<$target:camel>])]
                     [<$target:camel>],
                 )*
@@ -70,6 +75,7 @@ macro_rules! create_eval_struct {
                 pub const fn to_snake_case(&self) -> &'static str {
                     match self {
                         $(Self::[<$attacker:camel>] => stringify!($attacker),)*
+                        $(Self::[<$compact:camel>] => stringify!($compact),)*
                         $(Self::[<$target:camel>] => stringify!($target),)*
                         $(Self::[<$method:camel>] => stringify!($method),)*
                     }
@@ -81,6 +87,9 @@ macro_rules! create_eval_struct {
                     match self {
                         $(
                             Self::[<$attacker:camel>] => concat!("ctx.", stringify!($attacker)),
+                        )*
+                        $(
+                            Self::[<$compact:camel>] => concat!("ctx.", stringify!($compact)),
                         )*
                         $(
                             Self::[<$target:camel>] => concat!("ctx.", stringify!($target)),
@@ -96,6 +105,8 @@ macro_rules! create_eval_struct {
                 pub const fn is_method(&self) -> bool {
                     match self {
                         $(Self::[<$method:camel>] => true,)*
+                        // Stored compactly, so read through a method of the same name
+                        $(Self::[<$compact:camel>] => true,)*
                         _ => false,
                     }
                 }
@@ -108,10 +119,18 @@ macro_rules! create_eval_struct {
             }
 
             impl Ctx {
+                $(
+                    /// Reads the compact field of the same name
+                    pub const fn $compact(&self) -> f32 {
+                        self.$compact.get()
+                    }
+                )*
+
                 /// Reads a field, or evaluates a method, of this context
                 pub const fn get(&self, var: CtxVar) -> f32 {
                     match var {
                         $(CtxVar::[<$attacker:camel>] => self.$attacker,)*
+                        $(CtxVar::[<$compact:camel>] => self.$compact.get(),)*
                         $(CtxVar::[<$target:camel>] => self.$target,)*
                         $(CtxVar::[<$method:camel>] => self.$method(),)*
                     }
@@ -132,6 +151,7 @@ macro_rules! create_eval_struct {
             )]
             pub struct Ctx {
                 $(pub $attacker: f32,)*
+                $(pub $compact: $compact_ty,)*
                 $(pub $target: f32,)*
                 /// Every per-type multiplier of the row, resists included, see
                 /// [`DamageMultipliers`]
@@ -165,6 +185,7 @@ macro_rules! create_eval_struct {
             )]
             pub struct CtxAttacker {
                 $(pub $attacker: f32,)*
+                $(pub $compact: $compact_ty,)*
                 pub ability_levels: AbilityLevels,
                 /// Only the bits of [`CtxFlags::ATTACKER`]
                 pub flags: CtxFlags,
@@ -201,6 +222,7 @@ macro_rules! create_eval_struct {
                 pub const fn new(attacker: &CtxAttacker, target: &CtxTarget) -> Self {
                     let mut ctx = Self {
                         $($attacker: attacker.$attacker,)*
+                        $($compact: attacker.$compact,)*
                         $($target: target.$target,)*
                         multipliers: DamageMultipliers::ONE,
                         ability_levels: attacker.ability_levels,
@@ -221,6 +243,7 @@ macro_rules! create_eval_struct {
                 pub const fn attacker(&self) -> CtxAttacker {
                     CtxAttacker {
                         $($attacker: self.$attacker,)*
+                        $($compact: self.$compact,)*
                         ability_levels: self.ability_levels,
                         flags: self.flags.intersection(CtxFlags::ATTACKER),
                         map: self.map,
@@ -250,7 +273,6 @@ create_eval_struct!(
         ability_power,
         armor,
         armor_penetration_flat,
-        armor_penetration_percent,
         attack_damage,
         attack_speed,
         base_ad,
@@ -260,17 +282,20 @@ create_eval_struct!(
         base_magic_resist,
         base_mana,
         bonus_move_speed,
-        crit_chance,
-        crit_damage,
         current_health,
         current_mana,
         level,
         magic_penetration_flat,
-        magic_penetration_percent,
         magic_resist,
         max_health,
         max_mana,
         stacks,
+    }
+    compact {
+        armor_penetration_percent: Percent,
+        crit_chance: Percent,
+        crit_damage: CritDamage,
+        magic_penetration_percent: Percent,
     }
     target {
         enemy_armor,
@@ -503,7 +528,7 @@ impl Ctx {
     /// is clamped as in the shred the enemy's resists were computed with
     pub const fn physical_resist(&self) -> f32 {
         ResistValue::new(
-            self.armor_penetration_percent.clamp(0.0, 100.0),
+            self.armor_penetration_percent().clamp(0.0, 100.0),
             self.armor_penetration_flat,
             self.enemy_armor,
             self.flags.contains(CtxFlags::NEGATIVE_RESISTS),
@@ -514,7 +539,7 @@ impl Ctx {
     /// Multiplier of magic damage after the enemy's magic resist alone
     pub const fn magic_resist(&self) -> f32 {
         ResistValue::new(
-            self.magic_penetration_percent.clamp(0.0, 100.0),
+            self.magic_penetration_percent().clamp(0.0, 100.0),
             self.magic_penetration_flat,
             self.enemy_magic_resist,
             self.flags.contains(CtxFlags::NEGATIVE_RESISTS),
