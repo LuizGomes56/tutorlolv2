@@ -25,9 +25,6 @@ pub const MAX_COMBO_STEPS: usize = 64;
 /// Largest damage table a combo may produce, in bytes
 pub const MAX_TABLE_BYTES: usize = 1 << 20;
 
-/// Stacks of Black Cleaver's Carve. The wiki states it in the item's text only
-pub const CARVE_MAX_STACKS: u8 = 5;
-
 /// Guinsoo's Rageblade's Seething Strike applies on-hit effects twice on every
 /// this many attacks
 pub const SEETHING_STRIKE_ATTACKS: u32 = 3;
@@ -113,8 +110,15 @@ pub struct FightState {
 impl ChampionId {
     /// Changes the fight after `step` dealt its damage. Hand-written for the
     /// champions whose `ctx.stacks` count something in the current fight, see
-    /// D17 of the combo spec. `onhit` is whether the step applied on-hit effects
-    pub const fn after_step(self, step: ComboStep, onhit: bool, fight: &mut FightState) {
+    /// D17 of the combo spec. `damage` is what the step dealt, and `onhit` is
+    /// whether it applied on-hit effects
+    pub const fn after_step(
+        self,
+        step: ComboStep,
+        damage: f32,
+        onhit: bool,
+        fight: &mut FightState,
+    ) {
         use ComboStep::*;
 
         match (self, step) {
@@ -135,6 +139,11 @@ impl ChampionId {
             // Plasma: one per hit, up to 4. The rupture consumes them
             (ChampionId::Kaisa, Ability(AbilityId::P(AbilityName::_1))) => fight.stacks = 0.0,
             (ChampionId::Kaisa, _) if onhit => fight.stacks = (fight.stacks + 1.0).min(4.0),
+            // Death Mark stores the damage dealt until it pops. The whole combo
+            // before `R` is taken as inside the mark, so `R` pops with all of it,
+            // and nothing after it is stored
+            (ChampionId::Zed, Ability(AbilityId::R(_))) => fight.counter = 1,
+            (ChampionId::Zed, _) if fight.counter == 0 => fight.stacks += damage,
             _ => {}
         }
     }
@@ -409,7 +418,7 @@ impl ComboSource<'_> {
         let base_armor = state.armor_values.modifier;
 
         let mut armor_ratio = 1.0;
-        let mut carve = 0u8;
+        let mut carve = 0.0;
         let mut fight = FightState {
             stacks: ctx.stacks,
             counter: 0,
@@ -464,13 +473,14 @@ impl ComboSource<'_> {
             }
 
             // Carve: each physical hit reduces the target's armor for the next ones
-            if cleaver && physical && damage > 0.0 && carve < CARVE_MAX_STACKS {
-                carve += 1;
+            if cleaver && physical && damage > 0.0 && carve < items::black_cleaver::CARVE_MAX_STACKS
+            {
+                carve += 1.0;
 
                 let armor_values = RiotFormulas::real_resist(
                     RiotFormulas::combine_percentage(
                         shred.armor_penetration_percent,
-                        items::black_cleaver::CARVE_ARMOR_REDUCTION_PER_STACK * carve as f32,
+                        items::black_cleaver::CARVE_ARMOR_REDUCTION_PER_STACK * carve,
                     ),
                     shred.armor_penetration_flat,
                     state.current_stats.armor,
@@ -480,7 +490,7 @@ impl ComboSource<'_> {
                 armor_ratio = armor_values.modifier / base_armor;
             }
 
-            self.champion_id.after_step(step, onhit, &mut fight);
+            self.champion_id.after_step(step, damage, onhit, &mut fight);
         }
 
         let n = steps.len();

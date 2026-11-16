@@ -228,3 +228,26 @@ fn candidate_rows_have_combo_columns() {
 
     assert!(with_nashor > base);
 }
+
+#[test]
+fn zed_death_mark_pops_with_the_damage_dealt_before_it() {
+    let input = game("Zed", &[]);
+    let r = ComboStep::Ability(AbilityId::R(AbilityName::Void));
+    let r_index = ChampionId::Zed
+        .metadata()
+        .iter()
+        .position(|metadata| metadata.kind == AbilityId::R(AbilityName::Void))
+        .unwrap();
+
+    let alone = realtime_with_combo(&input, &[r]).unwrap();
+    let table_r = alone.enemy_damages(0).abilities[r_index];
+
+    assert!((combo_of(&alone).steps[0] - table_r).abs() <= 1);
+
+    let out = realtime_with_combo(&input, &[ComboStep::Attack, ComboStep::Attack, r, r]).unwrap();
+    let steps = combo_of(&out).steps;
+
+    assert!(steps[2] > table_r);
+    // Nothing after the first `R` is stored
+    assert_eq!(steps[3], steps[2]);
+}

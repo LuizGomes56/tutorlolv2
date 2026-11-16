@@ -1,3 +1,6 @@
+#[cfg(wrong_target)]
+compile_error!("native requires --target x86_64-pc-windows-msvc, see `cargo native-check`");
+
 use crate::{assets::Assets, shell::Shell};
 use gpui::{
     App, AppContext, Application, Bounds, TitlebarOptions, WindowBounds, WindowOptions, px, size,

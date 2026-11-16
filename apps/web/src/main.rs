@@ -1,5 +1,8 @@
 #![allow(clippy::type_complexity)]
 
+#[cfg(wrong_target)]
+compile_error!("web requires --target wasm32-unknown-unknown, see `cargo web-check`");
+
 use {
     crate::{
         about::About,

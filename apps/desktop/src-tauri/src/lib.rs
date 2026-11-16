@@ -1,3 +1,6 @@
+#[cfg(wrong_target)]
+compile_error!("desktop requires --target x86_64-pc-windows-msvc, see `cargo desktop-check`");
+
 use recorder_task::{LatestSnapshot, RecorderHandle};
 use shortcut_commands::{get_overlay_shortcut, set_overlay_shortcut, set_shortcut_recording};
 use std::time::Duration;
