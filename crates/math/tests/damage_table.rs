@@ -5,6 +5,7 @@ const ROW_VALUES: [i32; 8] = {
         abilities: 1,
         items: 2,
         runes: 1,
+        combo: 0,
     };
     let mut values = [0; 8];
     let mut attackers = [CtxAttacker {
@@ -42,6 +43,7 @@ fn owned_table_exposes_the_same_storage_through_its_view() {
             abilities: 1,
             items: 0,
             runes: 0,
+            combo: 0,
         },
         2,
         2,
@@ -68,6 +70,7 @@ fn borrowed_table_rejects_inconsistent_storage() {
             abilities: 0,
             items: 0,
             runes: 0,
+            combo: 0,
         },
         &mut [0; 3],
         &mut [CtxAttacker::default()],

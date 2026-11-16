@@ -53,6 +53,9 @@ pub mod calculator;
 pub mod helpers;
 
 #[cfg(feature = "engine")]
+pub mod combo;
+
+#[cfg(feature = "engine")]
 pub mod realtime;
 
 pub mod bitset;

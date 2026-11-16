@@ -11,9 +11,17 @@
 //! types extracted from the json file in port 2999
 
 use {
-    crate::{ChampionId, ItemId, RuneId, helpers::*, model::*, riot::*},
+    crate::{
+        ChampionId, ItemId, RuneId,
+        combo::{ComboError, ComboSource, ComboTarget, MAX_TABLE_BYTES},
+        helpers::*,
+        model::*,
+        riot::*,
+    },
     alloc::boxed::Box,
+    bincode::{BorrowDecode, Encode},
     core::{num::NonZeroU8, str::FromStr},
+    serde::{Deserialize, Serialize},
     strum::{EnumCount, VariantArray},
     types::{AdaptiveType, AttackType, GameMap, Position},
 };
@@ -33,16 +41,18 @@ const _: () = {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RealtimeError<'a> {
     UnrecognizedCurrentPlayer(&'a str),
+    Combo(ComboError),
 }
 
 impl core::fmt::Display for RealtimeError<'_> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        let RealtimeError::UnrecognizedCurrentPlayer(id) = self;
-
-        write!(
-            f,
-            "Unable to find current player with `riot_id`: {id} in field `all_players`"
-        )
+        match self {
+            RealtimeError::UnrecognizedCurrentPlayer(id) => write!(
+                f,
+                "Unable to find current player with `riot_id`: {id} in field `all_players`"
+            ),
+            RealtimeError::Combo(error) => write!(f, "Invalid combo: {error}"),
+        }
     }
 }
 
@@ -83,6 +93,32 @@ impl core::error::Error for RealtimeError<'_> {}
 /// If feature `livegame` or `serde` are not enabled, it is your job to get a
 /// struct [`RiotRealtime`] and call this function
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeError<'a>> {
+    realtime_with_combo(game, &[])
+}
+
+/// A realtime frame with the combo of the viewer, see [`realtime_with_combo`]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Deserialize, Serialize)]
+pub struct RealtimeRequest<'a> {
+    #[serde(borrow)]
+    pub frame: RiotRealtime<'a>,
+    /// Steps of the combo, before expansion. May be empty
+    #[serde(default)]
+    pub combo: Box<[ComboStep]>,
+}
+
+impl RealtimeRequest<'_> {
+    pub fn eval(&self) -> Result<Realtime<'_>, RealtimeError<'_>> {
+        realtime_with_combo(&self.frame, &self.combo)
+    }
+}
+
+/// Same as [`realtime`], and evaluates `combo` on every row of the table, see
+/// [`crate::combo`]. The expanded steps are in [`Realtime::combo`] and each row's
+/// results in [`DamageTable::combo`]
+pub fn realtime_with_combo<'a>(
+    game: &'a RiotRealtime,
+    combo: &[ComboStep],
+) -> Result<Realtime<'a>, RealtimeError<'a>> {
     let RiotRealtime {
         active_player:
             RiotActivePlayer {
@@ -284,7 +320,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         })
         .collect::<Box<[_]>>();
 
-    let layout = DamageLayout::new(&eval_data, true);
+    let combo_source = ComboSource {
+        champion_id: current_player_champion_id,
+        data: &eval_data,
+        owned_items: &owned_items,
+        owned_runes: &owned_runes,
+        attack_type: current_player_cache_attack_type,
+        level,
+    };
+
+    let combo = combo_source.expand(combo).map_err(RealtimeError::Combo)?;
+    let layout = DamageLayout::new(&eval_data, true).with_combo(combo.len());
+    let table_bytes = enemy_idx.len() * Realtime::ROWS_PER_ENEMY * layout.stride() * 4;
+
+    if !combo.is_empty() && table_bytes > MAX_TABLE_BYTES {
+        return Err(RealtimeError::Combo(ComboError::TooLarge(table_bytes)));
+    }
+
     let mut damages = DamageTable::zeroed(layout, enemy_idx.len(), Realtime::ROWS_PER_ENEMY);
     // candidate simulated purchase pair lives at [n_items..n_items + 2]
     let n_items = eval_data.items.closures.len();
@@ -349,14 +401,29 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 modifiers.damages.true_mod *= shadowflame;
 
                 let modifiers = modifiers.against(&full_state, adaptive_type);
-
-                damages.fill_batch(
+                let ctx = self_state.ctx(&full_state, game_map);
+                let row = damages.fill_batch(
                     base_row,
-                    self_state.ctx(&full_state, game_map),
+                    ctx,
                     &eval_data,
                     modifiers,
                     current_player_champion_id.data().ability_batch,
                 );
+
+                if !combo.is_empty() {
+                    combo_source.eval(
+                        &combo,
+                        ComboTarget {
+                            ctx,
+                            state: full_state,
+                            modifiers,
+                            shred,
+                            shadowflame_items: &owned_items,
+                            extra_item: None,
+                        },
+                        row.combo,
+                    );
+                }
             }
 
             for (k, (state, shred, buffs, extra_item)) in simulated_candidates.iter().enumerate() {
@@ -367,10 +434,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 buffs.damages.global_mod *= map_mod * target.rune_damage_modifier(&owned_runes);
 
                 // The candidate counts as owned while it is being simulated
-                let shadowflame = match ItemId::SIML[k] {
-                    ItemId::Shadowflame => target.shadowflame_modifier(&[ItemId::Shadowflame]),
-                    _ => target.shadowflame_modifier(&owned_items),
+                let shadowflame_items: &[ItemId] = match ItemId::SIML[k] {
+                    ItemId::Shadowflame => &[ItemId::Shadowflame],
+                    _ => &owned_items,
                 };
+
+                let shadowflame = target.shadowflame_modifier(shadowflame_items);
 
                 buffs.damages.magic_mod *= shadowflame;
                 buffs.damages.true_mod *= shadowflame;
@@ -397,6 +466,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
                     row.inc_onhit(metadata.attributes, a);
                     row.inc_onhit(metadata.attributes, b);
+                }
+
+                // Only the candidate's every-hit damage reaches the combo, since
+                // a combo can't list an item that isn't owned
+                if !combo.is_empty() {
+                    combo_source.eval(
+                        &combo,
+                        ComboTarget {
+                            ctx,
+                            state: target,
+                            modifiers,
+                            shred: *shred,
+                            shadowflame_items,
+                            extra_item: *extra_item,
+                        },
+                        row.combo,
+                    );
                 }
             }
 
@@ -430,6 +516,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         },
         enemies,
         damages,
+        combo,
         scoreboard,
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,

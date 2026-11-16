@@ -1478,14 +1478,7 @@ impl Attacks {
         modifiers: &DamageModifiers,
         parts: &[(DamageType, Closure)],
     ) -> Self {
-        let basic_attack = match parts.len() {
-            0 => ctx.attack_damage * modifiers.physical_mod,
-            _ => {
-                core::hint::cold_path();
-                Self::sum_parts(ctx, modifiers, parts)
-            }
-        };
-
+        let basic_attack = Self::raw(ctx, modifiers, parts);
         let critical_strike = (basic_attack * ctx.crit_damage / 100.0) as i32;
         let basic_attack = basic_attack as i32;
 
@@ -1496,6 +1489,17 @@ impl Attacks {
             basic_attack,
             critical_strike,
             onhit_damage,
+        }
+    }
+
+    /// Damage of one basic attack, before it is rounded. See [`Self::new`]
+    pub fn raw(ctx: &Ctx, modifiers: &DamageModifiers, parts: &[(DamageType, Closure)]) -> f32 {
+        match parts.len() {
+            0 => ctx.attack_damage * modifiers.physical_mod,
+            _ => {
+                core::hint::cold_path();
+                Self::sum_parts(ctx, modifiers, parts)
+            }
         }
     }
 

@@ -27,10 +27,12 @@ use {
 #[cfg(feature = "engine")]
 use crate::libgen::Closure;
 
+mod combo;
 mod damage_table;
 mod monsters;
 mod owned_input;
 
+pub use combo::*;
 pub use damage_table::{DamageTableMut, MonsterGroup};
 pub use monsters::*;
 pub use owned_input::*;
@@ -90,6 +92,10 @@ pub struct Realtime<'a> {
     /// Holds a contiguous table with all the damages that have been calculated,
     /// for each enemy, including the simulated purchases and evaluation context
     pub damages: DamageTable,
+
+    /// Steps of the combo after [`crate::combo::ComboSource::expand`], labels of
+    /// the columns of [`DamageTable::combo`]. Empty without a combo
+    pub combo: Box<[ComboStep]>,
 
     /// The game's scoreboard. Contains meaningful information about each champion
     /// in both teams, including the current player. This data is not guaranteed
@@ -395,6 +401,9 @@ pub struct DamageLayout {
     pub abilities: u16,
     pub items: u16,
     pub runes: u16,
+    /// Steps of the expanded combo, see [`ComboRow`]. Rows have no combo columns
+    /// when it is `0`
+    pub combo: u16,
 }
 
 impl DamageLayout {
@@ -408,11 +417,33 @@ impl DamageLayout {
             abilities: data.abilities.closures.len() as _,
             items: (data.items.closures.len() + if extra_pair { 2 } else { 0 }) as _,
             runes: data.runes.closures.len() as _,
+            combo: 0,
+        }
+    }
+
+    /// Same layout with `steps` combo steps
+    pub const fn with_combo(self, steps: usize) -> Self {
+        Self {
+            combo: steps as _,
+            ..self
+        }
+    }
+
+    /// Columns of the combo: one per step, then the total, the final health and
+    /// the killing step. None without a combo
+    pub const fn combo_columns(&self) -> usize {
+        match self.combo {
+            0 => 0,
+            steps => steps as usize + ComboRow::SUMMARY,
         }
     }
 
     pub const fn stride(&self) -> usize {
-        Self::ATTACKS + self.abilities as usize + self.items as usize + self.runes as usize
+        Self::ATTACKS
+            + self.abilities as usize
+            + self.items as usize
+            + self.runes as usize
+            + self.combo_columns()
     }
 }
 
@@ -448,6 +479,8 @@ pub struct DamagesMut<'a> {
     pub abilities: &'a mut [i32],
     pub items: &'a mut [i32],
     pub runes: &'a mut [i32],
+    /// Combo columns, see [`ComboRow`]. Empty without a combo
+    pub combo: &'a mut [i32],
 }
 
 impl DamagesMut<'_> {

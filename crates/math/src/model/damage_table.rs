@@ -101,7 +101,8 @@ impl<'a> DamageTableMut<'a> {
         let (row, _) = rest.split_at(s);
         let (attacks, rest) = row.split_at(DamageLayout::ATTACKS);
         let (abilities, rest) = rest.split_at(layout.abilities as usize);
-        let (items, runes) = rest.split_at(layout.items as usize);
+        let (items, rest) = rest.split_at(layout.items as usize);
+        let (runes, _) = rest.split_at(layout.runes as usize);
 
         Damages {
             attacks: Attacks {
@@ -137,7 +138,8 @@ impl<'a> DamageTableMut<'a> {
         let (row, _) = rest.split_at_mut(s);
         let (attacks, rest) = row.split_at_mut(DamageLayout::ATTACKS);
         let (abilities, rest) = rest.split_at_mut(self.layout.abilities as usize);
-        let (items, runes) = rest.split_at_mut(self.layout.items as usize);
+        let (items, rest) = rest.split_at_mut(self.layout.items as usize);
+        let (runes, combo) = rest.split_at_mut(self.layout.runes as usize);
 
         DamagesMut {
             // We're sure that the length is always 4 in this case
@@ -145,11 +147,20 @@ impl<'a> DamageTableMut<'a> {
             abilities,
             items,
             runes,
+            combo,
         }
     }
 }
 
 impl DamageTable {
+    /// Combo columns of row `r`, or `None` if the table has no combo
+    pub fn combo(&self, r: usize) -> Option<ComboRow<'_>> {
+        let columns = self.layout.combo_columns();
+        let row = self.values(r);
+
+        ComboRow::new(&row[row.len() - columns..])
+    }
+
     /// Table with `rows_per_target` rows for each target, one per attacker state.
     /// `rows_per_target` must not be zero
     pub fn zeroed(layout: DamageLayout, targets: usize, rows_per_target: usize) -> Self {
@@ -253,6 +264,7 @@ mod tests {
             abilities: 0,
             items: 0,
             runes: 0,
+            combo: 0,
         };
         let mut values = [0; 16];
         // All fields in the context parts are numeric and accept zero.
