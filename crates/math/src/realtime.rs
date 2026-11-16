@@ -420,6 +420,7 @@ pub fn realtime_with_combo<'a>(
                             shred,
                             shadowflame_items: &owned_items,
                             extra_item: None,
+                            candidate: None,
                         },
                         row.combo,
                     );
@@ -481,6 +482,7 @@ pub fn realtime_with_combo<'a>(
                             shred: *shred,
                             shadowflame_items,
                             extra_item: *extra_item,
+                            candidate: Some(ItemId::SIML[k]),
                         },
                         row.combo,
                     );
@@ -502,7 +504,25 @@ pub fn realtime_with_combo<'a>(
         })
         .collect::<Box<[_]>>();
 
+    // F3: the candidates of each enemy, by the total damage of the combo
+    let combo_ranking = match combo.is_empty() {
+        true => Box::default(),
+        false => (0..enemies.len())
+            .flat_map(|e| {
+                let base_row = e * Realtime::ROWS_PER_ENEMY;
+                let total = |k: usize| damages.combo(base_row + 1 + k).map_or(0, |row| row.total);
+
+                let mut ranking = (0..ItemId::L_SIML as u16).collect::<::alloc::vec::Vec<_>>();
+
+                // Stable, so ties keep the order of `ItemId::SIML`
+                ranking.sort_by_key(|&k| core::cmp::Reverse(total(k as usize)));
+                ranking
+            })
+            .collect(),
+    };
+
     Ok(Realtime {
+        combo_ranking,
         current_player: CurrentPlayer {
             riot_id,
             base_stats: current_player_base_stats,

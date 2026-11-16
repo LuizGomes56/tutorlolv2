@@ -35,7 +35,8 @@ pub enum ComboError {
     TooLong(usize),
     /// The champion has no such ability
     UnknownAbility(AbilityId),
-    /// The step names a damaging item or rune the player doesn't own
+    /// The step names a damaging rune the player doesn't own, or a damaging item
+    /// that is neither owned nor a simulated purchase, see [`ItemId::SIML`]
     NotOwned(ComboStep),
     /// Every-hit effects apply on every attack, so they are never listed
     EveryHitListed(ComboStep),
@@ -96,6 +97,9 @@ pub struct ComboTarget<'a> {
     pub shadowflame_items: &'a [ItemId],
     /// The simulated purchase of the row, if it deals damage
     pub extra_item: Option<(TypeMetadata<ItemId>, &'a [Closure; 2])>,
+    /// The item simulated on the row, owned while it is evaluated: its listed
+    /// steps deal damage, and Guinsoo's Rageblade and Black Cleaver apply
+    pub candidate: Option<ItemId>,
 }
 
 /// State of the fight that steps change, see [`ChampionId::after_step`]
@@ -183,7 +187,11 @@ impl ComboSource<'_> {
                 )
             }
             ComboStep::Item(item_id) => {
-                match self.owned_items.contains(&item_id) && item_id.deals_damage() {
+                // A candidate deals its damage on its own row only, see `ComboTarget`
+                let available =
+                    self.owned_items.contains(&item_id) || ItemId::SIML.contains(&item_id);
+
+                match available && item_id.deals_damage() {
                     true => proc(item_id.data().metadata.attributes),
                     false => Err(ComboError::NotOwned(step)),
                 }
@@ -325,6 +333,7 @@ impl ComboSource<'_> {
         step: ComboStep,
         ctx: &Ctx,
         modifiers: &Modifiers,
+        extra_item: Option<(TypeMetadata<ItemId>, &[Closure; 2])>,
     ) -> (f32, bool, bool, bool) {
         let attack = || (self.data.basic_attack)(ctx);
 
@@ -334,7 +343,7 @@ impl ComboSource<'_> {
             // The implied attack deals the every-hit part
             ComboStep::OnhitMin => (0.0, false, false, false),
             ComboStep::OnhitMax => {
-                let procs = self.sum_entries(ctx, modifiers, None, |attributes| {
+                let procs = self.sum_entries(ctx, modifiers, extra_item, |attributes| {
                     attributes.onhit_max() && !attributes.onhit_min()
                 });
 
@@ -405,6 +414,7 @@ impl ComboSource<'_> {
             shred,
             shadowflame_items,
             extra_item,
+            candidate,
         } = target;
 
         debug_assert_eq!(out.len(), steps.len() + ComboRow::SUMMARY);
@@ -414,8 +424,9 @@ impl ComboSource<'_> {
         let start_runes = state.rune_damage_modifier(self.owned_runes);
         let start_shadowflame = state.shadowflame_modifier(shadowflame_items);
 
-        let guinsoo = self.owned_items.contains(&ItemId::GuinsoosRageblade);
-        let cleaver = self.owned_items.contains(&ItemId::BlackCleaver);
+        let owns = |item_id| self.owned_items.contains(&item_id) || candidate == Some(item_id);
+        let guinsoo = owns(ItemId::GuinsoosRageblade);
+        let cleaver = owns(ItemId::BlackCleaver);
         let base_armor = state.armor_values.modifier;
 
         let mut armor_ratio = 1.0;
@@ -449,7 +460,11 @@ impl ComboSource<'_> {
 
             // Parts of mixed values read them from the context
             let ctx = ctx.with_multipliers(modifiers.damages.multipliers());
-            let (mut damage, physical, onhit, is_attack) = self.step_damage(step, &ctx, &modifiers);
+            let (mut damage, physical, onhit, is_attack) = match step {
+                // A candidate listed in the combo, on another row
+                ComboStep::Item(item_id) if !owns(item_id) => (0.0, false, false, false),
+                _ => self.step_damage(step, &ctx, &modifiers, extra_item),
+            };
 
             if onhit {
                 let every_hit = self.sum_entries(&ctx, &modifiers, extra_item, Attrs::onhit_min);

@@ -202,7 +202,20 @@ fn invalid_combos_are_rejected() {
     let nashor = ComboStep::Item(ItemId::NashorsTooth);
     let unknown = AbilityId::Q(AbilityName::_8);
 
-    assert_eq!(error(&[lich]), ComboError::NotOwned(lich));
+    // Damaging items that are not simulated can only be listed when owned
+    let not_candidate = <ItemId as strum::VariantArray>::VARIANTS
+        .iter()
+        .copied()
+        .find(|item| {
+            item.deals_damage()
+                && !ItemId::SIML.contains(item)
+                && !item.data().metadata.attributes.onhit_min()
+        })
+        .map(ComboStep::Item)
+        .expect("a damaging item that is not a candidate");
+
+    assert_eq!(error(&[not_candidate]), ComboError::NotOwned(not_candidate));
+    assert!(realtime_with_combo(&input, &[lich]).is_ok());
     assert_eq!(error(&[nashor]), ComboError::EveryHitListed(nashor));
     assert_eq!(
         error(&[ComboStep::Ability(unknown)]),
@@ -263,4 +276,54 @@ fn yone_soul_unbound_pops_with_the_damage_dealt_before_it() {
     assert_eq!(combo_of(&alone).steps[0], 0);
     assert!(steps[2] > 0);
     assert_eq!(steps[3], steps[2]);
+}
+
+fn siml(item: ItemId) -> usize {
+    ItemId::SIML
+        .iter()
+        .position(|&candidate| candidate == item)
+        .expect("a simulated candidate")
+}
+
+#[test]
+fn candidates_are_ranked_by_combo_damage() {
+    let input = game("Gnar", &[]);
+    let out = realtime_with_combo(&input, &[ComboStep::Attack; 5]).unwrap();
+    let ranking = out.combo_ranking(0);
+    let total = |k: u16| out.siml_combo(0, k as usize).unwrap().total;
+
+    assert_eq!(ranking.len(), ItemId::L_SIML);
+    assert!(
+        ranking
+            .windows(2)
+            .all(|pair| total(pair[0]) >= total(pair[1]))
+    );
+    assert!(realtime(&input).unwrap().combo_ranking(0).is_empty());
+}
+
+#[test]
+fn a_listed_candidate_deals_damage_on_its_own_row_only() {
+    let input = game("Gnar", &[]);
+    let lich = ComboStep::Item(ItemId::LichBane);
+    let out = realtime_with_combo(&input, &[lich]).unwrap();
+
+    // The proc implies an attack: `[Attack, Lich Bane]`
+    assert_eq!(&*out.combo, &[ComboStep::Attack, lich]);
+    assert_eq!(combo_of(&out).steps[1], 0);
+    assert!(out.siml_combo(0, siml(ItemId::LichBane)).unwrap().steps[1] > 0);
+    assert_eq!(
+        out.siml_combo(0, siml(ItemId::NashorsTooth)).unwrap().steps[1],
+        0
+    );
+}
+
+#[test]
+fn a_black_cleaver_candidate_carves_on_its_row() {
+    let input = game("Gnar", &[]);
+    let out = realtime_with_combo(&input, &[ComboStep::Crit; 7]).unwrap();
+    let steps = out.siml_combo(0, siml(ItemId::BlackCleaver)).unwrap().steps;
+    let plain = combo_of(&out).steps;
+
+    assert!(steps[5] > steps[0]);
+    assert_eq!(plain[5], plain[0]);
 }

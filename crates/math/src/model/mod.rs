@@ -97,6 +97,11 @@ pub struct Realtime<'a> {
     /// the columns of [`DamageTable::combo`]. Empty without a combo
     pub combo: Box<[ComboStep]>,
 
+    /// F3: for each enemy, [`ItemId::L_SIML`] indexes of [`ItemId::SIML`], from the
+    /// candidate whose combo deals the most damage to the least. Empty without a
+    /// combo, see [`Realtime::combo_ranking`]
+    pub combo_ranking: Box<[u16]>,
+
     /// The game's scoreboard. Contains meaningful information about each champion
     /// in both teams, including the current player. This data is not guaranteed
     /// to be ordered based on team. Sorting this vector has to be done by the caller
@@ -131,6 +136,20 @@ impl Realtime<'_> {
 
     pub fn siml_damages(&self, e: usize, i: usize) -> Damages<'_> {
         self.damages.row(e * Self::ROWS_PER_ENEMY + 1 + i)
+    }
+
+    /// Candidates against enemy `e`, best first: indexes of [`ItemId::SIML`]. Their
+    /// combo results are in `damages.combo(e * ROWS_PER_ENEMY + 1 + i)`. Empty
+    /// without a combo
+    pub fn combo_ranking(&self, e: usize) -> &[u16] {
+        self.combo_ranking
+            .get(e * ItemId::L_SIML..(e + 1) * ItemId::L_SIML)
+            .unwrap_or_default()
+    }
+
+    /// Combo results of candidate `i` against enemy `e`, see [`ComboRow`]
+    pub fn siml_combo(&self, e: usize, i: usize) -> Option<ComboRow<'_>> {
+        self.damages.combo(e * Self::ROWS_PER_ENEMY + 1 + i)
     }
 }
 
